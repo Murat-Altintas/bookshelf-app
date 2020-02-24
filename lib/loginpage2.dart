@@ -76,16 +76,26 @@ class _LoginPage2State extends State<LoginPage2> {
     ),
   );
 
+  double heightSize(double value){
+    value /=100;
+    return MediaQuery.of(context).size.height *value;
+  }
+  double widthSize(double value){
+    value /=100;
+    return MediaQuery.of(context).size.width* value;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
       Positioned(
         left: 0,
         right: 0,
+        top: -20,
         child: Image.asset("assets/images/splash.png"),
       ),
       Positioned(
-        bottom: 20,
+        bottom: 30,
         left: 0,
         right: 0,
         child: SafeArea(
@@ -96,7 +106,7 @@ class _LoginPage2State extends State<LoginPage2> {
                 style: title,
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               userNameField,
               SizedBox(

@@ -8,13 +8,23 @@ class MasterPage extends StatefulWidget {
 }
 
 class MasterPageState extends State<MasterPage> {
+  double heightSize(double value) {
+    value /= 100;
+    return MediaQuery.of(context).size.height * value;
+  }
+
+  double widthSize(double value) {
+    value /= 100;
+    return MediaQuery.of(context).size.width * value;
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget searchBar() => Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              width: 300,
+              width: widthSize(75),
               child: TextField(
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 20, top: 3),
@@ -50,7 +60,14 @@ class MasterPageState extends State<MasterPage> {
           ],
         );
     var bgGradient = Container(
-      height: SizeConfig.blockSizeVertical * 60,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Text(
+          "My Bookshelf", style: TextStyle(fontSize: 25),
+        ),
+      ),
+      height: heightSize(100),
+      width: widthSize(100),
       decoration: BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -90,9 +107,107 @@ class MasterPageState extends State<MasterPage> {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment(1, .25),
-              child: searchBar(),
+            Column(
+              children: <Widget>[
+                SizedBox(
+                  height: heightSize(55),
+                ),
+                searchBar(),
+                SizedBox(
+                  height: heightSize(2),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        child: Center(
+                            child: Text(
+                          "my bookshelf",
+                          textAlign: TextAlign.center,
+                        )),
+                        color: mainBlue,
+                        width: widthSize(28),
+                        height: heightSize(14),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        child: Center(
+                            child: Text(
+                          "my favorites",
+                          textAlign: TextAlign.center,
+                        )),
+                        color: mainBlue,
+                        width: widthSize(28),
+                        height: heightSize(14),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        child: Center(
+                            child: Text(
+                          "acquisitions",
+                          textAlign: TextAlign.center,
+                        )),
+                        color: mainBlue,
+                        width: widthSize(28),
+                        height: heightSize(14),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: heightSize(2),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        child: Center(
+                            child: Text(
+                          "my notes",
+                          textAlign: TextAlign.center,
+                        )),
+                        color: mainBlue,
+                        width: widthSize(28),
+                        height: heightSize(14),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        child: Center(
+                            child: Text(
+                          "user panel",
+                          textAlign: TextAlign.center,
+                        )),
+                        color: mainBlue,
+                        width: widthSize(28),
+                        height: heightSize(14),
+                      ),
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        child: Center(
+                            child: Text(
+                          "about us",
+                          textAlign: TextAlign.center,
+                        )),
+                        color: mainBlue,
+                        width: widthSize(28),
+                        height: heightSize(14),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
@@ -100,31 +215,3 @@ class MasterPageState extends State<MasterPage> {
     );
   }
 }
-
-//------------------------------------------------//
-/*
-            Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Container(
-                      color: Colors.green,
-                      width: 170,
-                      height: 170,
-                    ),
-                    Container(
-                      color: Colors.green,
-                      width: 170,
-                      height: 170,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 35,
-                ),
-                searchBar(),
-              ],
-            ),
-            */
-//------------------------------------------------//

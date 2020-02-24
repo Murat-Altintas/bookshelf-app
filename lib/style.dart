@@ -16,6 +16,8 @@ class SizeConfig {
   }
 }
 
+
+
 var mainBlue = Colors.blue;
 var mainGrey = Colors.blueGrey;
 
