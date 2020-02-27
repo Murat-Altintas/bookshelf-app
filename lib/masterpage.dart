@@ -27,14 +27,15 @@ class MasterPageState extends State<MasterPage> {
               width: widthSize(75),
               child: TextField(
                 decoration: InputDecoration(
+
                   contentPadding: EdgeInsets.only(left: 20, top: 3),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: mainBlue, width: 2),
+                    borderSide: BorderSide(color: Colors.purple, width: 2),
                     borderRadius: BorderRadius.all(Radius.circular(60)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                    borderSide: BorderSide(color: Colors.blue, width: 1),
+                    borderSide: BorderSide(color: Colors.purple, width: 1),
                   ),
                   hintText: "Search your book...",
                   hintStyle: search,
@@ -42,7 +43,7 @@ class MasterPageState extends State<MasterPage> {
               ),
             ),
             RawMaterialButton(
-              splashColor: Colors.purple,
+              splashColor: Colors.yellow,
               onPressed: () {},
               elevation: 20,
               child: Icon(
@@ -55,30 +56,28 @@ class MasterPageState extends State<MasterPage> {
                 width: SizeConfig.blockSizeVertical * 7,
               ),
               shape: CircleBorder(),
-              fillColor: mainBlue,
+              fillColor: Colors.purple,
             ),
           ],
         );
     var bgGradient = Container(
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Text(
-          "My Bookshelf", style: TextStyle(fontSize: 25),
-        ),
+
       ),
       height: heightSize(100),
       width: widthSize(100),
       decoration: BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
               stops: [
             0.1,
             1
           ],
               colors: [
-            Colors.lightBlueAccent.shade100,
-            Colors.indigoAccent.shade100
+            Colors.pink.shade300,
+            Colors.yellow.shade300
           ])),
     );
     return Scaffold(
@@ -96,7 +95,7 @@ class MasterPageState extends State<MasterPage> {
               alignment: Alignment(1, 1.05),
               child: Container(
                 width: SizeConfig.screenWidth,
-                height: SizeConfig.blockSizeVertical * 45,
+                height: heightSize(50),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.rectangle,
@@ -110,7 +109,7 @@ class MasterPageState extends State<MasterPage> {
             Column(
               children: <Widget>[
                 SizedBox(
-                  height: heightSize(55),
+                  height: heightSize(50),
                 ),
                 searchBar(),
                 SizedBox(
@@ -121,41 +120,44 @@ class MasterPageState extends State<MasterPage> {
                   children: <Widget>[
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Container(
-                        child: Center(
-                            child: Text(
-                          "my bookshelf",
-                          textAlign: TextAlign.center,
-                        )),
-                        color: mainBlue,
-                        width: widthSize(28),
-                        height: heightSize(14),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            width: widthSize(28),
+                            height: heightSize(14),
+                            child:
+                                Image.asset("assets/images/my_bookshelf.png"),
+                          ),
+                          Text("my bookshelf"),
+                        ],
                       ),
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Container(
-                        child: Center(
-                            child: Text(
-                          "my favorites",
-                          textAlign: TextAlign.center,
-                        )),
-                        color: mainBlue,
-                        width: widthSize(28),
-                        height: heightSize(14),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            width: widthSize(28),
+                            height: heightSize(14),
+                            child:
+                            Image.asset("assets/images/my_favorites.png"),
+                          ),
+                          Text("my favorites"),
+                        ],
                       ),
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Container(
-                        child: Center(
-                            child: Text(
-                          "acquisitions",
-                          textAlign: TextAlign.center,
-                        )),
-                        color: mainBlue,
-                        width: widthSize(28),
-                        height: heightSize(14),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            width: widthSize(28),
+                            height: heightSize(14),
+                            child:
+                            Image.asset("assets/images/my_acquisitions.png"),
+                          ),
+                          Text("my acquisitions"),
+                        ],
                       ),
                     ),
                   ],
@@ -168,41 +170,44 @@ class MasterPageState extends State<MasterPage> {
                   children: <Widget>[
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Container(
-                        child: Center(
-                            child: Text(
-                          "my notes",
-                          textAlign: TextAlign.center,
-                        )),
-                        color: mainBlue,
-                        width: widthSize(28),
-                        height: heightSize(14),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            width: widthSize(28),
+                            height: heightSize(14),
+                            child:
+                            Image.asset("assets/images/my_notes.png"),
+                          ),
+                          Text("my notes"),
+                        ],
                       ),
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Container(
-                        child: Center(
-                            child: Text(
-                          "user panel",
-                          textAlign: TextAlign.center,
-                        )),
-                        color: mainBlue,
-                        width: widthSize(28),
-                        height: heightSize(14),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            width: widthSize(28),
+                            height: heightSize(14),
+                            child:
+                            Image.asset("assets/images/my_userpanel.png"),
+                          ),
+                          Text("my user panel"),
+                        ],
                       ),
                     ),
                     ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Container(
-                        child: Center(
-                            child: Text(
-                          "about us",
-                          textAlign: TextAlign.center,
-                        )),
-                        color: mainBlue,
-                        width: widthSize(28),
-                        height: heightSize(14),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            width: widthSize(28),
+                            height: heightSize(14),
+                            child:
+                            Image.asset("assets/images/about_us.png"),
+                          ),
+                          Text("about us"),
+                        ],
                       ),
                     ),
                   ],

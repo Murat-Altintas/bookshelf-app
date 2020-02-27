@@ -30,7 +30,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       //backgroundColor: Colors.lightBlueAccent.shade100,
-      body: LoginPage2(),
+      body: MasterPage(),
     );
   }
 }
