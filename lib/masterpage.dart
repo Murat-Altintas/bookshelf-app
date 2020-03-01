@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'ResaultPage.dart';
 import 'style.dart';
 
 class MasterPage extends StatefulWidget {
@@ -27,7 +28,6 @@ class MasterPageState extends State<MasterPage> {
               width: widthSize(75),
               child: TextField(
                 decoration: InputDecoration(
-
                   contentPadding: EdgeInsets.only(left: 20, top: 3),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.purple, width: 2),
@@ -63,7 +63,6 @@ class MasterPageState extends State<MasterPage> {
     var bgGradient = Container(
       child: Padding(
         padding: const EdgeInsets.all(20),
-
       ),
       height: heightSize(100),
       width: widthSize(100),
@@ -71,14 +70,8 @@ class MasterPageState extends State<MasterPage> {
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              stops: [
-            0.1,
-            1
-          ],
-              colors: [
-            Colors.pink.shade300,
-            Colors.yellow.shade300
-          ])),
+              stops: [0.1, 1],
+              colors: [Colors.purple.shade300, Colors.pink.shade300])),
     );
     return Scaffold(
       body: SafeArea(
@@ -106,7 +99,7 @@ class MasterPageState extends State<MasterPage> {
                 ),
               ),
             ),
-            Column(
+            ListView(
               children: <Widget>[
                 SizedBox(
                   height: heightSize(50),
@@ -118,18 +111,24 @@ class MasterPageState extends State<MasterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            width: widthSize(28),
-                            height: heightSize(14),
-                            child:
-                                Image.asset("assets/images/my_bookshelf.png"),
-                          ),
-                          Text("my bookshelf"),
-                        ],
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => ResaultPage()));
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              width: widthSize(28),
+                              height: heightSize(14),
+                              child:
+                                  Image.asset("assets/images/my_bookshelf.png"),
+                            ),
+                            Text("my bookshelf"),
+                          ],
+                        ),
                       ),
                     ),
                     ClipRRect(
@@ -140,7 +139,7 @@ class MasterPageState extends State<MasterPage> {
                             width: widthSize(28),
                             height: heightSize(14),
                             child:
-                            Image.asset("assets/images/my_favorites.png"),
+                                Image.asset("assets/images/my_favorites.png"),
                           ),
                           Text("my favorites"),
                         ],
@@ -153,8 +152,8 @@ class MasterPageState extends State<MasterPage> {
                           SizedBox(
                             width: widthSize(28),
                             height: heightSize(14),
-                            child:
-                            Image.asset("assets/images/my_acquisitions.png"),
+                            child: Image.asset(
+                                "assets/images/my_acquisitions.png"),
                           ),
                           Text("my acquisitions"),
                         ],
@@ -162,6 +161,7 @@ class MasterPageState extends State<MasterPage> {
                     ),
                   ],
                 ),
+
                 SizedBox(
                   height: heightSize(2),
                 ),
@@ -175,8 +175,7 @@ class MasterPageState extends State<MasterPage> {
                           SizedBox(
                             width: widthSize(28),
                             height: heightSize(14),
-                            child:
-                            Image.asset("assets/images/my_notes.png"),
+                            child: Image.asset("assets/images/my_notes.png"),
                           ),
                           Text("my notes"),
                         ],
@@ -190,7 +189,7 @@ class MasterPageState extends State<MasterPage> {
                             width: widthSize(28),
                             height: heightSize(14),
                             child:
-                            Image.asset("assets/images/my_userpanel.png"),
+                                Image.asset("assets/images/my_userpanel.png"),
                           ),
                           Text("my user panel"),
                         ],
@@ -203,8 +202,7 @@ class MasterPageState extends State<MasterPage> {
                           SizedBox(
                             width: widthSize(28),
                             height: heightSize(14),
-                            child:
-                            Image.asset("assets/images/about_us.png"),
+                            child: Image.asset("assets/images/about_us.png"),
                           ),
                           Text("about us"),
                         ],

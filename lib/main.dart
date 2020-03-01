@@ -1,5 +1,6 @@
 import 'package:grade_point_avarage/masterpage.dart';
 
+import 'ResaultPage.dart';
 import 'loginpage.dart';
 import 'loginpage2.dart';
 import 'style.dart';
