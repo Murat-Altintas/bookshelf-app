@@ -21,45 +21,6 @@ class MasterPageState extends State<MasterPage> {
 
   @override
   Widget build(BuildContext context) {
-    Widget searchBar() => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Container(
-              width: widthSize(75),
-              child: TextField(
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(left: 20, top: 3),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple, width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(60)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                    borderSide: BorderSide(color: Colors.purple, width: 1),
-                  ),
-                  hintText: "Search your book...",
-                  hintStyle: search,
-                ),
-              ),
-            ),
-            RawMaterialButton(
-              splashColor: Colors.yellow,
-              onPressed: () {},
-              elevation: 20,
-              child: Icon(
-                Icons.search,
-                size: iconSize,
-                color: Colors.white,
-              ),
-              constraints: BoxConstraints.tightFor(
-                height: SizeConfig.blockSizeVertical * 7,
-                width: SizeConfig.blockSizeVertical * 7,
-              ),
-              shape: CircleBorder(),
-              fillColor: Colors.purple,
-            ),
-          ],
-        );
     var bgGradient = Container(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -73,6 +34,38 @@ class MasterPageState extends State<MasterPage> {
               stops: [0.1, 1],
               colors: [Colors.purple.shade300, Colors.pink.shade300])),
     );
+    var welcomeText = Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: widthSize(5),
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        text: "Welcome",
+                        style: TextStyle(
+                          fontSize: heightSize(4),
+                          color: Colors.purple,
+                          fontFamily: 'MainFont',
+                          fontWeight: FontWeight.w700,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: ' to your bookshelf...',
+                            style: TextStyle(
+                              fontSize: heightSize(4),
+                              color: Colors.purple,
+                              fontFamily: 'MainFont',
+                              fontWeight: FontWeight.w300,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: heightSize(5),
+                    ),
+                  ],
+                );
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -104,7 +97,7 @@ class MasterPageState extends State<MasterPage> {
                 SizedBox(
                   height: heightSize(50),
                 ),
-                searchBar(),
+                welcomeText,
                 SizedBox(
                   height: heightSize(2),
                 ),
@@ -114,7 +107,9 @@ class MasterPageState extends State<MasterPage> {
                     InkWell(
                       onTap: () {
                         Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => ResaultPage()));
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResaultPage()));
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -124,9 +119,9 @@ class MasterPageState extends State<MasterPage> {
                               width: widthSize(28),
                               height: heightSize(14),
                               child:
-                                  Image.asset("assets/images/my_bookshelf.png"),
+                                  Image.asset("assets/images/my_userpanel.png"),
                             ),
-                            Text("my bookshelf"),
+                            Text("search book"),
                           ],
                         ),
                       ),
@@ -139,9 +134,9 @@ class MasterPageState extends State<MasterPage> {
                             width: widthSize(28),
                             height: heightSize(14),
                             child:
-                                Image.asset("assets/images/my_favorites.png"),
+                                Image.asset("assets/images/my_bookshelf.png"),
                           ),
-                          Text("my favorites"),
+                          Text("my bookshelf"),
                         ],
                       ),
                     ),
@@ -161,7 +156,6 @@ class MasterPageState extends State<MasterPage> {
                     ),
                   ],
                 ),
-
                 SizedBox(
                   height: heightSize(2),
                 ),
@@ -175,9 +169,9 @@ class MasterPageState extends State<MasterPage> {
                           SizedBox(
                             width: widthSize(28),
                             height: heightSize(14),
-                            child: Image.asset("assets/images/my_notes.png"),
+                            child: Image.asset("assets/images/my_favorites.png"),
                           ),
-                          Text("my notes"),
+                          Text("my favorites"),
                         ],
                       ),
                     ),
@@ -189,9 +183,9 @@ class MasterPageState extends State<MasterPage> {
                             width: widthSize(28),
                             height: heightSize(14),
                             child:
-                                Image.asset("assets/images/my_userpanel.png"),
+                                Image.asset("assets/images/my_notes.png"),
                           ),
-                          Text("my user panel"),
+                          Text("my notes"),
                         ],
                       ),
                     ),
