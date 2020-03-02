@@ -89,15 +89,15 @@ class _LoginPage2State extends State<LoginPage2> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Positioned(
-        left: 0,
-        right: 0,
-        top: -20,
-        child: Image.asset("assets/images/splash.png"),
+        left: widthSize(5),
+        right: widthSize(5),
+        top: heightSize(8),
+        child: Image.asset("assets/images/loginPage.png"),
       ),
       Positioned(
-        bottom: 30,
-        left: 0,
-        right: 0,
+        bottom: heightSize(13),
+        left: widthSize(0),
+        right: widthSize(0),
         child: SafeArea(
           child: Column(
             children: <Widget>[
@@ -106,35 +106,35 @@ class _LoginPage2State extends State<LoginPage2> {
                 style: title,
               ),
               SizedBox(
-                height: 10,
+                height: heightSize(4),
               ),
               userNameField,
               SizedBox(
-                height: 10,
+                height: heightSize(2),
               ),
               passwordField,
               SizedBox(
-                height: 10,
+                height: heightSize(2),
               ),
               Text(
                 "Forgot Password?",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: heightSize(2.5),
                   fontFamily: 'MainFont',
                   color: mainBlue,
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: heightSize(4),
               ),
               loginButton(),
               SizedBox(
-                height: 10,
+                height: heightSize(2),
               ),
               Text(
                 "CREATE ACCOUNT",
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: heightSize(2.5),
                   fontFamily: 'MainFont',
                   color: mainBlue,
                 ),
@@ -149,9 +149,9 @@ class _LoginPage2State extends State<LoginPage2> {
           child: Align(
               alignment: Alignment.bottomLeft,
               child: Image.asset(
-                "assets/images/coffee.png",
-                width: 110,
-                height: 110,
+                "assets/images/loginCoffee.png",
+                width: widthSize(30),
+                height: widthSize(30),
               )),
         ),
       ),

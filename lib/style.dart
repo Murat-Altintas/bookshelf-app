@@ -57,5 +57,5 @@ var search = TextStyle(
   fontFamily: 'MainFont',
   fontWeight: FontWeight.w500,
   fontSize: 17,
-  color: mainGrey,
+  color: Colors.white,
 );

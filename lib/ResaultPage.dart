@@ -19,21 +19,62 @@ class _ResaultPageState extends State<ResaultPage> {
 
   @override
   Widget build(BuildContext context) {
+    var titleText = RichText(
+      text: TextSpan(
+        text: "What ",
+        style: TextStyle(
+          fontSize: heightSize(6),
+          color: Colors.white,
+          fontFamily: 'MainFont',
+          fontWeight: FontWeight.w700,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: 'would \n',
+            style: TextStyle(
+              fontSize: heightSize(6),
+              color: Colors.white,
+              fontFamily: 'MainFont',
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          TextSpan(
+            text: 'you like to \n',
+            style: TextStyle(
+              fontSize: heightSize(6),
+              color: Colors.white,
+              fontFamily: 'MainFont',
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+          TextSpan(
+            text: 'learn today?',
+            style: TextStyle(
+              height: heightSize(0.22),
+              fontSize: heightSize(6),
+              color: Colors.white,
+              fontFamily: 'MainFont',
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ],
+      ),
+    );
     searchBar() => Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              width: widthSize(75),
+              width: widthSize(77),
               child: TextField(
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 20, top: 3),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.purple, width: 2),
+                    borderSide: BorderSide(color: Colors.yellow, width: 2),
                     borderRadius: BorderRadius.all(Radius.circular(60)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                    borderSide: BorderSide(color: Colors.purple, width: 1),
+                    borderSide: BorderSide(color: Colors.yellow, width: 1),
                   ),
                   hintText: "Search your book...",
                   hintStyle: search,
@@ -57,15 +98,14 @@ class _ResaultPageState extends State<ResaultPage> {
               colors: [Colors.purple.shade300, Colors.pink.shade300])),
     );
     return Scaffold(
-
       body: Stack(
         children: <Widget>[
           bgGradient,
           Positioned(
-            top: heightSize(30),
+            top: heightSize(42),
             child: Container(
               width: SizeConfig.screenWidth,
-              height: heightSize(60),
+              height: heightSize(70),
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.rectangle,
@@ -77,21 +117,18 @@ class _ResaultPageState extends State<ResaultPage> {
             ),
           ),
           Positioned(
-            left: widthSize(10),
             top: heightSize(7),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text("What would you like/Nto learn today?"),
-                SizedBox(
-                  height: heightSize(20),
-                  child: Image.asset("assets/images/resaultPage.png"),
-                ),
-              ],
-            ),
+            left: widthSize(12),
+            child: titleText,
           ),
           Positioned(
-            top: heightSize(5),
+            top: heightSize(4),
+            left: widthSize(54),
+            height: heightSize(26),
+            child: Image.asset("assets/images/resaultPage.png"),
+          ),
+          Positioned(
+            top: heightSize(32),
             left: widthSize(12),
             child: searchBar(),
           ),
