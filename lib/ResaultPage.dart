@@ -132,6 +132,11 @@ class _ResaultPageState extends State<ResaultPage> {
             left: widthSize(12),
             child: searchBar(),
           ),
+          Column(
+            children: <Widget>[
+
+            ],
+          ),
         ],
       ),
     );

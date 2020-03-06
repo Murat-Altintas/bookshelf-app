@@ -70,10 +70,10 @@ class MasterPageState extends State<MasterPage> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          bgGradient,
+          // bgGradient,
           Positioned(
-            top: heightSize(2),
-            left: widthSize(10),
+            top: heightSize(8),
+            left: widthSize(3),
             child: SizedBox(
               height: heightSize(37),
               child: Image.asset("assets/images/topsearch.png"),
@@ -85,7 +85,7 @@ class MasterPageState extends State<MasterPage> {
               width: SizeConfig.screenWidth,
               height: heightSize(70),
               decoration: BoxDecoration(
-                color: Colors.white,
+                //color: Colors.purple.shade100,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
@@ -97,7 +97,7 @@ class MasterPageState extends State<MasterPage> {
           Column(
             children: <Widget>[
               SizedBox(
-                height: heightSize(50),
+                height: heightSize(47),
               ),
               welcomeText,
               SizedBox(
@@ -121,89 +121,20 @@ class MasterPageState extends State<MasterPage> {
                             width: widthSize(28),
                             height: heightSize(14),
                             child:
-                                Image.asset("assets/images/my_userpanel.png"),
+                                Image.asset("assets/images/my_bookshelf2.png"),
                           ),
                           Text("search book"),
                         ],
                       ),
                     ),
                   ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          width: widthSize(28),
-                          height: heightSize(14),
-                          child: Image.asset("assets/images/my_bookshelf.png"),
-                        ),
-                        Text("my bookshelf"),
-                      ],
-                    ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          width: widthSize(28),
-                          height: heightSize(14),
-                          child:
-                              Image.asset("assets/images/my_acquisitions.png"),
-                        ),
-                        Text("my acquisitions"),
-                      ],
-                    ),
-                  ),
+
                 ],
               ),
               SizedBox(
                 height: heightSize(2),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          width: widthSize(28),
-                          height: heightSize(14),
-                          child: Image.asset("assets/images/my_favorites.png"),
-                        ),
-                        Text("my favorites"),
-                      ],
-                    ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          width: widthSize(28),
-                          height: heightSize(14),
-                          child: Image.asset("assets/images/my_notes.png"),
-                        ),
-                        Text("my notes"),
-                      ],
-                    ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          width: widthSize(28),
-                          height: heightSize(14),
-                          child: Image.asset("assets/images/about_us.png"),
-                        ),
-                        Text("about us"),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+
             ],
           ),
         ],
