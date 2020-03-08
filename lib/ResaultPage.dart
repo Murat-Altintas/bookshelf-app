@@ -6,6 +6,7 @@ class ResaultPage extends StatefulWidget {
   _ResaultPageState createState() => _ResaultPageState();
 }
 
+
 class _ResaultPageState extends State<ResaultPage> {
   double heightSize(double value) {
     value /= 100;

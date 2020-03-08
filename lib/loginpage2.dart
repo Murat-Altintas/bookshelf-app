@@ -76,6 +76,7 @@ class _LoginPage2State extends State<LoginPage2> {
     ),
   );
 
+
   double heightSize(double value){
     value /=100;
     return MediaQuery.of(context).size.height *value;
