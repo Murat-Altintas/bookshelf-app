@@ -19,16 +19,6 @@ class MasterPageState extends State<MasterPage> {
     return MediaQuery.of(context).size.width * value;
   }
 
-//------------------------------------------------------------------------//
-
-  List<String> items = [
-    "Item 1",
-    "Item 2",
-    "Item 3",
-    "Item 4",
-  ];
-
-//------------------------------------------------------------------------//
   @override
   Widget build(BuildContext context) {
     var bgGradient = Container(
@@ -89,10 +79,19 @@ class MasterPageState extends State<MasterPage> {
       ),
     );
 
+    var mainIcon = TextStyle(
+      fontSize: heightSize(2.5),
+      color: Colors.white,
+      fontFamily: 'MainFont',
+      fontWeight: FontWeight.w700,
+    );
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: <Widget>[
+            SizedBox(
+              height: heightSize(3),
+            ),
             Center(
               child: SizedBox(
                 height: heightSize(37),
@@ -125,7 +124,7 @@ class MasterPageState extends State<MasterPage> {
             Expanded(
               child: ListView(
                 shrinkWrap: true,
-                padding: EdgeInsets.all(40),
+                padding: EdgeInsets.all(35),
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   InkWell(
@@ -146,15 +145,11 @@ class MasterPageState extends State<MasterPage> {
                           children: <Widget>[
                             SizedBox(
                               height: heightSize(20),
-                              child:
-                                  Image.asset("assets/images/my_search.png"),
+                              child: Image.asset("assets/images/my_search.png"),
                             ),
                             Text(
                               "MY SEARCH",
-                              style: TextStyle(
-                                fontSize: heightSize(2.5),
-                                color: Colors.white,
-                              ),
+                              style: mainIcon,
                             ),
                           ],
                         ),
@@ -187,10 +182,7 @@ class MasterPageState extends State<MasterPage> {
                             ),
                             Text(
                               "MY BOOKSHELF",
-                              style: TextStyle(
-                                fontSize: heightSize(2.5),
-                                color: Colors.white,
-                              ),
+                              style: mainIcon,
                             ),
                           ],
                         ),
@@ -223,10 +215,7 @@ class MasterPageState extends State<MasterPage> {
                             ),
                             Text(
                               "MY FAVORITES",
-                              style: TextStyle(
-                                fontSize: heightSize(2.5),
-                                color: Colors.white,
-                              ),
+                              style: mainIcon,
                             ),
                           ],
                         ),
@@ -259,10 +248,7 @@ class MasterPageState extends State<MasterPage> {
                             ),
                             Text(
                               "MY ACQUISITIONS",
-                              style: TextStyle(
-                                fontSize: heightSize(2.5),
-                                color: Colors.white,
-                              ),
+                              style: mainIcon,
                             ),
                           ],
                         ),
@@ -294,10 +280,7 @@ class MasterPageState extends State<MasterPage> {
                             ),
                             Text(
                               "MY NOTES",
-                              style: TextStyle(
-                                fontSize: heightSize(2.5),
-                                color: Colors.white,
-                              ),
+                              style: mainIcon,
                             ),
                           ],
                         ),
@@ -325,14 +308,12 @@ class MasterPageState extends State<MasterPage> {
                           children: <Widget>[
                             SizedBox(
                               height: heightSize(20),
-                              child: Image.asset("assets/images/my_options.png"),
+                              child:
+                                  Image.asset("assets/images/my_options.png"),
                             ),
                             Text(
                               "MY OPTIONS",
-                              style: TextStyle(
-                                fontSize: heightSize(2.5),
-                                color: Colors.white,
-                              ),
+                              style: mainIcon,
                             ),
                           ],
                         ),
