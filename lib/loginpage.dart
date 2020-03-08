@@ -25,7 +25,7 @@ class LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.all(Radius.circular(60.0)),
           borderSide: BorderSide(color: Colors.blue, width: 2),
         ),
-        hintText: "USERNAME",
+        hintText: "UserName2",
         hintStyle: username,
       ),
     ),

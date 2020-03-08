@@ -19,6 +19,16 @@ class MasterPageState extends State<MasterPage> {
     return MediaQuery.of(context).size.width * value;
   }
 
+//------------------------------------------------------------------------//
+
+  List<String> items = [
+    "Item 1",
+    "Item 2",
+    "Item 3",
+    "Item 4",
+  ];
+
+//------------------------------------------------------------------------//
   @override
   Widget build(BuildContext context) {
     var bgGradient = Container(
@@ -56,55 +66,67 @@ class MasterPageState extends State<MasterPage> {
         ],
       ),
     );
-    var welcomeText = Row(
-      children: <Widget>[
-        SizedBox(
-          width: widthSize(5),
+    var user = RichText(
+      text: TextSpan(
+        text: "Hello",
+        style: TextStyle(
+          fontSize: heightSize(4),
+          color: Colors.purple,
+          fontFamily: 'MainFont',
+          fontWeight: FontWeight.w700,
         ),
-        welcome,
-        SizedBox(
-          height: heightSize(5),
-        ),
-      ],
+        children: <TextSpan>[
+          TextSpan(
+            text: ' Murat Altintas',
+            style: TextStyle(
+              fontSize: heightSize(4),
+              color: Colors.purple,
+              fontFamily: 'MainFont',
+              fontWeight: FontWeight.w300,
+            ),
+          )
+        ],
+      ),
     );
+
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          // bgGradient,
-          Positioned(
-            top: heightSize(8),
-            left: widthSize(3),
-            child: SizedBox(
-              height: heightSize(37),
-              child: Image.asset("assets/images/topsearch.png"),
-            ),
-          ),
-          Positioned(
-            top: heightSize(42),
-            child: Container(
-              width: SizeConfig.screenWidth,
-              height: heightSize(70),
-              decoration: BoxDecoration(
-                //color: Colors.purple.shade100,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Center(
+              child: SizedBox(
+                height: heightSize(37),
+                child: Image.asset("assets/images/topsearch.png"),
               ),
             ),
-          ),
-          Column(
-            children: <Widget>[
-              SizedBox(
-                height: heightSize(47),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: heightSize(3),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      welcome,
+                    ],
+                  ),
+                  SizedBox(
+                    height: heightSize(1.5),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      user,
+                    ],
+                  ),
+                ],
               ),
-              welcomeText,
-              SizedBox(
-                height: heightSize(2),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ),
+            Expanded(
+              child: ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.all(40),
+                scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   InkWell(
                     onTap: () {
@@ -114,30 +136,214 @@ class MasterPageState extends State<MasterPage> {
                               builder: (context) => ResaultPage()));
                     },
                     child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            width: widthSize(28),
-                            height: heightSize(14),
-                            child:
-                                Image.asset("assets/images/my_bookshelf2.png"),
-                          ),
-                          Text("search book"),
-                        ],
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      child: Container(
+                        color: Colors.lightBlueAccent,
+                        width: widthSize(40),
+                        height: heightSize(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            SizedBox(
+                              height: heightSize(20),
+                              child:
+                                  Image.asset("assets/images/my_search.png"),
+                            ),
+                            Text(
+                              "MY SEARCH",
+                              style: TextStyle(
+                                fontSize: heightSize(2.5),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-
+                  SizedBox(
+                    width: widthSize(5),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResaultPage()));
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      child: Container(
+                        color: Colors.purple,
+                        width: widthSize(40),
+                        height: heightSize(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            SizedBox(
+                              height: heightSize(20),
+                              child:
+                                  Image.asset("assets/images/my_bookshelf.png"),
+                            ),
+                            Text(
+                              "MY BOOKSHELF",
+                              style: TextStyle(
+                                fontSize: heightSize(2.5),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: widthSize(5),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResaultPage()));
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      child: Container(
+                        color: Colors.pinkAccent,
+                        width: widthSize(40),
+                        height: heightSize(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            SizedBox(
+                              height: heightSize(20),
+                              child:
+                                  Image.asset("assets/images/my_favorites.png"),
+                            ),
+                            Text(
+                              "MY FAVORITES",
+                              style: TextStyle(
+                                fontSize: heightSize(2.5),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: widthSize(5),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResaultPage()));
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      child: Container(
+                        color: Colors.orangeAccent,
+                        width: widthSize(40),
+                        height: heightSize(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            SizedBox(
+                              height: heightSize(20),
+                              child: Image.asset(
+                                  "assets/images/my_acquisitions.png"),
+                            ),
+                            Text(
+                              "MY ACQUISITIONS",
+                              style: TextStyle(
+                                fontSize: heightSize(2.5),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: widthSize(5),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResaultPage()));
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      child: Container(
+                        color: Colors.redAccent,
+                        width: widthSize(40),
+                        height: heightSize(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            SizedBox(
+                              height: heightSize(20),
+                              child: Image.asset("assets/images/my_notes.png"),
+                            ),
+                            Text(
+                              "MY NOTES",
+                              style: TextStyle(
+                                fontSize: heightSize(2.5),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: widthSize(5),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResaultPage()));
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      child: Container(
+                        color: Colors.deepPurpleAccent,
+                        width: widthSize(40),
+                        height: heightSize(20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            SizedBox(
+                              height: heightSize(20),
+                              child: Image.asset("assets/images/my_options.png"),
+                            ),
+                            Text(
+                              "MY OPTIONS",
+                              style: TextStyle(
+                                fontSize: heightSize(2.5),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(
-                height: heightSize(2),
-              ),
-
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -145,5 +351,34 @@ class MasterPageState extends State<MasterPage> {
 
 /*
 
-
+InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ResaultPage()));
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                child: Container(
+                  color: Colors.purple,
+                  width: widthSize(40),
+                  height: heightSize(30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      SizedBox(
+                        height: heightSize(20),
+                        child: Image.asset("assets/images/my_bookshelf.png"),
+                      ),
+                      Text(
+                        "My Bookshelf",
+                        style: TextStyle(
+                          fontSize: heightSize(2.5),
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
  */

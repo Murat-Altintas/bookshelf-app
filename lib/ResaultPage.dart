@@ -134,7 +134,6 @@ class _ResaultPageState extends State<ResaultPage> {
           ),
           Column(
             children: <Widget>[
-
             ],
           ),
         ],
