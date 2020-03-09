@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
     SizeConfig().init(context);
     return Scaffold(
       //backgroundColor: Colors.lightBlueAccent.shade100,
-      body: MasterPage(),
+      body: ResaultPage(),
     );
   }
 }
