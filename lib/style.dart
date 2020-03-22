@@ -55,8 +55,9 @@ var knowledge = TextStyle(
 );
 
 var search = TextStyle(
+
   fontFamily: 'MainFont',
-  fontWeight: FontWeight.w500,
+  fontWeight: FontWeight.w300,
   fontSize: 17,
-  color: Colors.white,
+  color: Colors.lightBlue,
 );

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'OptionsPage.dart';
 import 'ResaultPage.dart';
 import 'style.dart';
 
@@ -296,7 +297,7 @@ class MasterPageState extends State<MasterPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ResaultPage()));
+                              builder: (context) => OptionsPage()));
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
