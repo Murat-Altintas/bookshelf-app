@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'model/book.dart';
 import 'style.dart';
@@ -70,7 +71,7 @@ class _ResaultPageState extends State<ResaultPage> {
           TextSpan(
             text: 'learn today?',
             style: TextStyle(
-              height: heightSize(0.22),
+              height: heightSize(0.15),
               fontSize: heightSize(6),
               color: Colors.lightBlue,
               fontFamily: 'MainFont',
@@ -118,7 +119,7 @@ class _ResaultPageState extends State<ResaultPage> {
         child: Column(
           children: <Widget>[
             Container(
-              height: heightSize(35),
+              height: heightSize(32),
               child: Stack(
                 children: <Widget>[
                   Positioned(
@@ -138,10 +139,10 @@ class _ResaultPageState extends State<ResaultPage> {
             ),
             searchBar(),
             SizedBox(
-                //height: heightSize(2),
-                ),
+              height: heightSize(2),
+            ),
             Container(
-              height: heightSize(50),
+              height: heightSize(52),
               child: GridView.count(
                 crossAxisCount: 2,
                 mainAxisSpacing: 20,
@@ -150,18 +151,74 @@ class _ResaultPageState extends State<ResaultPage> {
                   if (allBook != null)
                     for (int i = 0; i < allBook.items.length; i++)
                       FittedBox(
-
-                        child: Column(
-                          children: <Widget>[
-                            allBook.items[i].volumeInfo.imageLinks != null
-                                ? Image.network(
-                                    "${allBook.items[i].volumeInfo.imageLinks.thumbnail}")
-                                : SizedBox(),
-                            Text("${allBook.items[i].volumeInfo.title}"),
-                            Text(
-                                "${allBook.items[i].volumeInfo.authors == null ? null : allBook.items[i].volumeInfo.authors.first}"),
-                            Text("${allBook.items[i].volumeInfo.publisher}"),
-                          ],
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            width: widthSize(65),
+                            color: Colors.blueGrey.shade50,
+                            child: Column(
+                              children: <Widget>[
+                                allBook.items[i].volumeInfo.imageLinks
+                                            .thumbnail !=
+                                        null
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.indigo.withOpacity(0.5),
+                                              spreadRadius: 3,
+                                              blurRadius: 5,
+                                              offset: Offset(4.0, 4.0),
+                                            ),
+                                          ],
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                                          child: Image.network(
+                                              "${allBook.items[i].volumeInfo.imageLinks.thumbnail}"),
+                                        ),
+                                      )
+                                    : null,
+                                SizedBox(
+                                  height: heightSize(1),
+                                ),
+                                Text(
+                                  "${allBook.items[i].volumeInfo.title.toUpperCase()}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.lightBlue,
+                                    fontSize: heightSize(2.5),
+                                    fontFamily: 'MainFont',
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                Text(
+                                  "${allBook.items[i].volumeInfo.authors == null ? null : allBook.items[i].volumeInfo.authors.first.toUpperCase()}",
+                                  style: TextStyle(
+                                    fontSize: heightSize(2),
+                                    color: Colors.purple,
+                                    fontFamily: 'MainFont',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: heightSize(1),
+                                ),
+                                Text(
+                                  "${allBook.items[i].volumeInfo.publisher.toUpperCase()}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: heightSize(2),
+                                    fontFamily: 'MainFont',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                 ],
