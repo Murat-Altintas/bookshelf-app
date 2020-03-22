@@ -113,7 +113,9 @@ class _ResaultPageState extends State<ResaultPage> {
                   child: searchBar(),
                 ),
                 Column(
-                  children: <Widget>[],
+                  children: <Widget>[
+
+                  ],
                 ),
               ],
             ),
