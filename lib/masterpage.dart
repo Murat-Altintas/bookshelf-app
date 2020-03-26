@@ -39,7 +39,7 @@ class MasterPageState extends State<MasterPage> {
       text: TextSpan(
         text: "Welcome",
         style: TextStyle(
-          fontSize: heightSize(4),
+          fontSize: heightSize(3),
           color: Colors.purple,
           fontFamily: 'MainFont',
           fontWeight: FontWeight.w700,
@@ -48,12 +48,12 @@ class MasterPageState extends State<MasterPage> {
           TextSpan(
             text: ' to your bookshelf...',
             style: TextStyle(
-              fontSize: heightSize(4),
+              fontSize: heightSize(3),
               color: Colors.purple,
               fontFamily: 'MainFont',
               fontWeight: FontWeight.w300,
             ),
-          )
+          ),
         ],
       ),
     );
@@ -61,16 +61,16 @@ class MasterPageState extends State<MasterPage> {
       text: TextSpan(
         text: "Hello",
         style: TextStyle(
-          fontSize: heightSize(4),
+          fontSize: heightSize(5),
           color: Colors.purple,
           fontFamily: 'MainFont',
           fontWeight: FontWeight.w700,
         ),
         children: <TextSpan>[
           TextSpan(
-            text: ' Murat Altintas',
+            text: ' Mr. Altintas',
             style: TextStyle(
-              fontSize: heightSize(4),
+              fontSize: heightSize(5),
               color: Colors.purple,
               fontFamily: 'MainFont',
               fontWeight: FontWeight.w300,
@@ -90,12 +90,10 @@ class MasterPageState extends State<MasterPage> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            SizedBox(
-              height: heightSize(3),
-            ),
             Center(
-              child: SizedBox(
-                height: heightSize(37),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                height: heightSize(35),
                 child: Image.asset("assets/images/topsearch.png"),
               ),
             ),
@@ -111,9 +109,6 @@ class MasterPageState extends State<MasterPage> {
                       welcome,
                     ],
                   ),
-                  SizedBox(
-                    height: heightSize(1.5),
-                  ),
                   Row(
                     children: <Widget>[
                       user,
@@ -122,11 +117,14 @@ class MasterPageState extends State<MasterPage> {
                 ],
               ),
             ),
-
-            Expanded(
+            SizedBox(
+              height: heightSize(2),
+            ),
+            Container(
+              padding: EdgeInsets.all(21),
+              width: double.infinity,
+              height: heightSize(40),
               child: ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.all(35),
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   InkWell(
@@ -140,12 +138,12 @@ class MasterPageState extends State<MasterPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Container(
                         color: Colors.lightBlueAccent,
-                        width: widthSize(40),
+                        width: widthSize(45),
                         height: heightSize(20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            SizedBox(
+                            Container(
                               height: heightSize(20),
                               child: Image.asset("assets/images/my_search.png"),
                             ),
@@ -172,7 +170,7 @@ class MasterPageState extends State<MasterPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Container(
                         color: Colors.purple,
-                        width: widthSize(40),
+                        width: widthSize(45),
                         height: heightSize(20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -205,7 +203,7 @@ class MasterPageState extends State<MasterPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Container(
                         color: Colors.pinkAccent,
-                        width: widthSize(40),
+                        width: widthSize(45),
                         height: heightSize(20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -238,7 +236,7 @@ class MasterPageState extends State<MasterPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Container(
                         color: Colors.orangeAccent,
-                        width: widthSize(40),
+                        width: widthSize(45),
                         height: heightSize(20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -271,7 +269,7 @@ class MasterPageState extends State<MasterPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Container(
                         color: Colors.redAccent,
-                        width: widthSize(40),
+                        width: widthSize(45),
                         height: heightSize(20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -303,7 +301,7 @@ class MasterPageState extends State<MasterPage> {
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       child: Container(
                         color: Colors.deepPurpleAccent,
-                        width: widthSize(40),
+                        width: widthSize(45),
                         height: heightSize(20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -343,7 +341,7 @@ InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 child: Container(
                   color: Colors.purple,
-                  width: widthSize(40),
+                  width: widthSize(45),
                   height: heightSize(30),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,

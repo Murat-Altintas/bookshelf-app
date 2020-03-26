@@ -16,6 +16,21 @@ class SizeConfig {
   }
 }
 
+class styles extends StatefulWidget {
+  @override
+  _stylesState createState() => _stylesState();
+}
+
+
+
+
+
+class _stylesState extends State<styles> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[],);
+  }
+}
 
 
 var mainBlue = Colors.blue;

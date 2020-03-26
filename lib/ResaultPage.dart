@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grade_point_avarage/masterpage.dart';
 import 'model/book.dart';
 import 'style.dart';
 
@@ -14,16 +15,13 @@ class _ResaultPageState extends State<ResaultPage> {
 
   var bookName = TextEditingController();
 
-  void getData(String bookName) async {
+  getData(String bookName) async {
     var dio = Dio();
     var response = await dio
         .get("https://www.googleapis.com/books/v1/volumes?q=$bookName");
 
     Map data = await response.data;
-    print(data);
-
     allBook = Book.fromJson(data);
-
     setState(() {});
   }
 
@@ -37,14 +35,14 @@ class _ResaultPageState extends State<ResaultPage> {
     value /= 100;
     return MediaQuery.of(context).size.width * value;
   }
-
+  //------------------------------------------------------------//
   @override
   Widget build(BuildContext context) {
     var titleText = RichText(
       text: TextSpan(
         text: "What ",
         style: TextStyle(
-          fontSize: heightSize(6),
+          fontSize: heightSize(4),
           color: Colors.lightBlue,
           fontFamily: 'MainFont',
           fontWeight: FontWeight.w700,
@@ -53,7 +51,7 @@ class _ResaultPageState extends State<ResaultPage> {
           TextSpan(
             text: 'would \n',
             style: TextStyle(
-              fontSize: heightSize(6),
+              fontSize: heightSize(4),
               color: Colors.lightBlue,
               fontFamily: 'MainFont',
               fontWeight: FontWeight.w300,
@@ -62,7 +60,7 @@ class _ResaultPageState extends State<ResaultPage> {
           TextSpan(
             text: 'you like to \n',
             style: TextStyle(
-              fontSize: heightSize(6),
+              fontSize: heightSize(4),
               color: Colors.lightBlue,
               fontFamily: 'MainFont',
               fontWeight: FontWeight.w300,
@@ -72,7 +70,7 @@ class _ResaultPageState extends State<ResaultPage> {
             text: 'learn today?',
             style: TextStyle(
               height: heightSize(0.15),
-              fontSize: heightSize(6),
+              fontSize: heightSize(4),
               color: Colors.lightBlue,
               fontFamily: 'MainFont',
               fontWeight: FontWeight.w300,
@@ -84,9 +82,19 @@ class _ResaultPageState extends State<ResaultPage> {
     searchBar() => Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              iconSize: heightSize(5),
+              color: Colors.purple,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MasterPage()));
+              },
+            ),
             Container(
-              width: widthSize(75),
+              width: widthSize(65),
               child: TextField(
+                expands: false,
                 controller: bookName,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(left: 20, top: 3),
@@ -101,6 +109,10 @@ class _ResaultPageState extends State<ResaultPage> {
                   hintText: "Search your favorite book...",
                   hintStyle: search,
                 ),
+                onSubmitted: (s) async {
+                  //return allBook.items;
+                  // print(allBook[0].items);
+                },
               ),
             ),
             IconButton(
@@ -114,24 +126,27 @@ class _ResaultPageState extends State<ResaultPage> {
             ),
           ],
         );
+
     return Scaffold(
+
+      resizeToAvoidBottomPadding: false,
       body: SafeArea(
         child: Column(
           children: <Widget>[
             Container(
-              height: heightSize(32),
+              height: heightSize(28),
               child: Stack(
                 children: <Widget>[
                   Positioned(
                     top: heightSize(9),
-                    left: widthSize(5),
+                    left: widthSize(8),
                     child: titleText,
                   ),
                   Positioned(
-                    left: widthSize(50),
+                    left: widthSize(43),
                     top: heightSize(2),
                     child: Container(
-                        height: heightSize(30),
+                        height: heightSize(25),
                         child: Image.asset("assets/images/resaultPage.png")),
                   ),
                 ],
@@ -142,51 +157,37 @@ class _ResaultPageState extends State<ResaultPage> {
               height: heightSize(2),
             ),
             Container(
-              height: heightSize(52),
+              height: heightSize(55),
               child: GridView.count(
                 crossAxisCount: 2,
                 mainAxisSpacing: 20,
-                shrinkWrap: true,
                 children: <Widget>[
-                  if (allBook != null)
+                    if(allBook != null)
                     for (int i = 0; i < allBook.items.length; i++)
                       FittedBox(
                         child: ClipRRect(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           child: Container(
-                            padding: EdgeInsets.all(10),
-                            width: widthSize(65),
-                            color: Colors.blueGrey.shade50,
+                            padding: EdgeInsets.all(20),
+                            width: widthSize(60),
+                            color: Colors.blueGrey.shade100,
                             child: Column(
                               children: <Widget>[
                                 allBook.items[i].volumeInfo.imageLinks
-                                            .thumbnail !=
+                                            .thumbnail ==
                                         null
-                                    ? Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.indigo.withOpacity(0.5),
-                                              spreadRadius: 3,
-                                              blurRadius: 5,
-                                              offset: Offset(4.0, 4.0),
-                                            ),
-                                          ],
+                                    ? null
+                                    : Container(
+                                        child: Image.network(
+                                          "${allBook.items[i].volumeInfo.imageLinks.thumbnail}",
                                         ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                                          child: Image.network(
-                                              "${allBook.items[i].volumeInfo.imageLinks.thumbnail}"),
-                                        ),
-                                      )
-                                    : null,
+                                      ),
                                 SizedBox(
                                   height: heightSize(1),
                                 ),
                                 Text(
                                   "${allBook.items[i].volumeInfo.title.toUpperCase()}",
+                                  overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.lightBlue,
@@ -196,7 +197,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                   ),
                                 ),
                                 Text(
-                                  "${allBook.items[i].volumeInfo.authors == null ? null : allBook.items[i].volumeInfo.authors.first.toUpperCase()}",
+                                  "${allBook.items[i].volumeInfo.authors == null ? null : allBook.items[i].volumeInfo.authors.first}",
                                   style: TextStyle(
                                     fontSize: heightSize(2),
                                     color: Colors.purple,
@@ -208,7 +209,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                   height: heightSize(1),
                                 ),
                                 Text(
-                                  "${allBook.items[i].volumeInfo.publisher.toUpperCase()}",
+                                  "${allBook.items[i].volumeInfo.publisher}",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: heightSize(2),
