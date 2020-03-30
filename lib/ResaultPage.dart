@@ -128,7 +128,6 @@ class _ResaultPageState extends State<ResaultPage> {
         );
 
     return Scaffold(
-
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
         child: Column(
@@ -201,6 +200,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                   style: TextStyle(
                                     fontSize: heightSize(2),
                                     color: Colors.purple,
+                                    
                                     fontFamily: 'MainFont',
                                     fontWeight: FontWeight.w500,
                                   ),

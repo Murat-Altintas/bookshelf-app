@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "131758234581",
+    "firebase_url": "https://books-8c409.firebaseio.com",
+    "project_id": "books-8c409",
+    "storage_bucket": "books-8c409.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131758234581:android:ef39b3dc836c69db373b5c",
+        "android_client_info": {
+          "package_name": "com.example.grade_point_avarage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "131758234581-e131osndkc62kmlovlu6kugvbcgsbs9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeuRjZyyktpR_b4locpObPwoitY2ZfF0Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "131758234581-e131osndkc62kmlovlu6kugvbcgsbs9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
