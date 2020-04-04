@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:grade_point_avarage/masterpage.dart';
+import 'package:grade_point_avarage/MasterPage.dart';
 import 'model/book.dart';
 import 'style.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ResaultPage extends StatefulWidget {
   @override
@@ -11,6 +13,9 @@ class ResaultPage extends StatefulWidget {
 }
 
 class _ResaultPageState extends State<ResaultPage> {
+  final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   Book allBook;
 
   var bookName = TextEditingController();
@@ -35,6 +40,7 @@ class _ResaultPageState extends State<ResaultPage> {
     value /= 100;
     return MediaQuery.of(context).size.width * value;
   }
+
   //------------------------------------------------------------//
   @override
   Widget build(BuildContext context) {
@@ -79,53 +85,72 @@ class _ResaultPageState extends State<ResaultPage> {
         ],
       ),
     );
+    void _veriEkle() {
+      Map<String, dynamic> emreEkle = Map();
+      emreEkle["ad"] = "emre";
+      emreEkle["lisansMezunu"] = true;
+
+      Map<String, dynamic> muratEkle = Map();
+      muratEkle["ad"] = "murat";
+      muratEkle["önlisansMezunu"] = true;
+      _firestore
+          .collection("users")
+          .document("emre_altunbilek")
+          .setData(emreEkle)
+          .then((v) => debugPrint("emre eklendi"));
+
+      _firestore
+          .collection("users")
+          .document("hasan_yilmaz")
+          .setData(muratEkle).whenComplete(() => debugPrint("murat eklendi"));
+    }
+
     searchBar() => Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.arrow_back),
-              iconSize: heightSize(5),
-              color: Colors.purple,
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MasterPage()));
-              },
-            ),
-            Container(
-              width: widthSize(65),
-              child: TextField(
-                expands: false,
-                controller: bookName,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(left: 20, top: 3),
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.lightBlue, width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(60)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(60.0)),
-                    borderSide: BorderSide(color: Colors.lightBlue, width: 1),
-                  ),
-                  hintText: "Search your favorite book...",
-                  hintStyle: search,
-                ),
-                onSubmitted: (s) async {
-                  //return allBook.items;
-                  // print(allBook[0].items);
-                },
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.arrow_back),
+          iconSize: heightSize(5),
+          color: Colors.purple,
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MasterPage()));
+          },
+        ),
+        Container(
+          width: widthSize(65),
+          child: TextField(
+            expands: false,
+            controller: bookName,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(left: 20, top: 3),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.lightBlue, width: 2),
+                borderRadius: BorderRadius.all(Radius.circular(60)),
               ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(60.0)),
+                borderSide: BorderSide(color: Colors.lightBlue, width: 1),
+              ),
+              hintText: "Search your favorite book...",
+              hintStyle: search,
             ),
-            IconButton(
-              icon: Icon(Icons.search),
-              iconSize: heightSize(5),
-              color: Colors.purple,
-              onPressed: () async {
-                getData(bookName.text);
-                // print(allBook[0].items);
-              },
-            ),
-          ],
-        );
+            onSubmitted: (s) async {
+              //return allBook.items;
+              // print(allBook[0].items);
+            },
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.search),
+          iconSize: heightSize(5),
+          color: Colors.purple,
+          onPressed: () async {
+            //_emailveSifreLogin();
+          },
+        ),
+      ],
+    );
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -151,7 +176,19 @@ class _ResaultPageState extends State<ResaultPage> {
                 ],
               ),
             ),
-            searchBar(),
+            //searchBar(),
+            Container(
+              height: 50,
+              width: 50,
+              child: IconButton(
+                icon: Icon(Icons.search),
+                iconSize: heightSize(5),
+                color: Colors.purple,
+                onPressed: () {
+                  _veriEkle();
+                },
+              ),
+            ),
             SizedBox(
               height: heightSize(2),
             ),
@@ -161,7 +198,7 @@ class _ResaultPageState extends State<ResaultPage> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 20,
                 children: <Widget>[
-                    if(allBook != null)
+                  if (allBook != null)
                     for (int i = 0; i < allBook.items.length; i++)
                       FittedBox(
                         child: ClipRRect(
@@ -173,14 +210,14 @@ class _ResaultPageState extends State<ResaultPage> {
                             child: Column(
                               children: <Widget>[
                                 allBook.items[i].volumeInfo.imageLinks
-                                            .thumbnail ==
-                                        null
+                                    .thumbnail ==
+                                    null
                                     ? null
                                     : Container(
-                                        child: Image.network(
-                                          "${allBook.items[i].volumeInfo.imageLinks.thumbnail}",
-                                        ),
-                                      ),
+                                  child: Image.network(
+                                    "${allBook.items[i].volumeInfo.imageLinks.thumbnail}",
+                                  ),
+                                ),
                                 SizedBox(
                                   height: heightSize(1),
                                 ),
@@ -200,7 +237,6 @@ class _ResaultPageState extends State<ResaultPage> {
                                   style: TextStyle(
                                     fontSize: heightSize(2),
                                     color: Colors.purple,
-                                    
                                     fontFamily: 'MainFont',
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -229,5 +265,18 @@ class _ResaultPageState extends State<ResaultPage> {
         ),
       ),
     );
+  }
+
+  void _emailveSifreLogin() async {
+    String sifre = "123456";
+
+    var firebaseUser = await _auth
+        .createUserWithEmailAndPassword(email: bookName.text, password: sifre)
+        .catchError((e) => debugPrint("hata:" + e.toString()));
+
+    if (firebaseUser != null) {
+      debugPrint(
+          "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email}");
+    }
   }
 }

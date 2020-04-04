@@ -1,8 +1,8 @@
-import 'package:grade_point_avarage/masterpage.dart';
-
+import 'package:grade_point_avarage/BookRequest.dart';
+import 'package:grade_point_avarage/MasterPage.dart';
 import 'ResaultPage.dart';
-import 'loginpage.dart';
-import 'loginpage2.dart';
+import 'LoginPage.dart';
+import 'LoginPage.dart';
 import 'style.dart';
 import 'package:flutter/material.dart';
 

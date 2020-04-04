@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/style.dart';
+import 'MasterPage.dart';
 
-import 'masterpage.dart';
-
-class LoginPage2 extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _LoginPage2State createState() => _LoginPage2State();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPage2State extends State<LoginPage2> {
+class _LoginPageState extends State<LoginPage> {
   var userNameField = Container(
     width: 300,
     height: 40,

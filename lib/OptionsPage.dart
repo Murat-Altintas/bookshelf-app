@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'masterpage.dart';
+import 'MasterPage.dart';
 
 class OptionsPage extends StatefulWidget {
   @override
