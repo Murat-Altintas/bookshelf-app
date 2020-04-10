@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/style.dart';
 import 'MasterPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
+var mailText = TextEditingController();
+var passwordText = TextEditingController();
+
 class _LoginPageState extends State<LoginPage> {
   var userNameField = Container(
     width: 300,
     height: 40,
     child: TextField(
+      controller: mailText,
       textInputAction: TextInputAction.next,
       textAlign: TextAlign.center,
       autofocus: false,
@@ -34,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     width: 300,
     height: 40,
     child: TextField(
+      controller: passwordText,
       textInputAction: TextInputAction.go,
       keyboardType: TextInputType.number,
       obscureText: true,
@@ -57,8 +63,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget loginButton() => InkWell(
     onTap: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MasterPage()));
+      //_loginOptions;
     },
     child: ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(60)),
@@ -75,14 +80,34 @@ class _LoginPageState extends State<LoginPage> {
     ),
   );
 
-
-  double heightSize(double value){
-    value /=100;
-    return MediaQuery.of(context).size.height *value;
+  double heightSize(double value) {
+    value /= 100;
+    return MediaQuery
+        .of(context)
+        .size
+        .height * value;
   }
-  double widthSize(double value){
-    value /=100;
-    return MediaQuery.of(context).size.width* value;
+
+  double widthSize(double value) {
+    value /= 100;
+    return MediaQuery
+        .of(context)
+        .size
+        .width * value;
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _loginOptions() async {
+    var firebaseUser = await _auth
+        .createUserWithEmailAndPassword(
+        email: mailText.text, password: passwordText.text)
+        .catchError((e) => debugPrint("hata:" + e.toString()));
+
+    if (firebaseUser != null) {
+      debugPrint(
+          "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email}");
+    }
   }
 
   @override
