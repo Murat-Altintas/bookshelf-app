@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,8 +21,7 @@ class _ResaultPageState extends State<ResaultPage> {
 
   getData(String bookName) async {
     var dio = Dio();
-    var response = await dio
-        .get("https://www.googleapis.com/books/v1/volumes?q=$bookName");
+    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName");
 
     Map data = await response.data;
     allBook = Book.fromJson(data);
@@ -48,7 +46,7 @@ class _ResaultPageState extends State<ResaultPage> {
       text: TextSpan(
         text: "What ",
         style: TextStyle(
-          fontSize: heightSize(4),
+          fontSize: heightSize(5),
           color: Colors.lightBlue,
           fontFamily: 'MainFont',
           fontWeight: FontWeight.w700,
@@ -57,7 +55,7 @@ class _ResaultPageState extends State<ResaultPage> {
           TextSpan(
             text: 'would \n',
             style: TextStyle(
-              fontSize: heightSize(4),
+              fontSize: heightSize(5),
               color: Colors.lightBlue,
               fontFamily: 'MainFont',
               fontWeight: FontWeight.w300,
@@ -66,7 +64,7 @@ class _ResaultPageState extends State<ResaultPage> {
           TextSpan(
             text: 'you like to \n',
             style: TextStyle(
-              fontSize: heightSize(4),
+              fontSize: heightSize(5),
               color: Colors.lightBlue,
               fontFamily: 'MainFont',
               fontWeight: FontWeight.w300,
@@ -76,7 +74,7 @@ class _ResaultPageState extends State<ResaultPage> {
             text: 'learn today?',
             style: TextStyle(
               height: heightSize(0.15),
-              fontSize: heightSize(4),
+              fontSize: heightSize(5),
               color: Colors.lightBlue,
               fontFamily: 'MainFont',
               fontWeight: FontWeight.w300,
@@ -85,87 +83,51 @@ class _ResaultPageState extends State<ResaultPage> {
         ],
       ),
     );
-    void _veriEkle() {
-      Map<String, dynamic> emreEkle = Map();
-      emreEkle["ad"] = "emre updated";
-      emreEkle["lisansMezunu2"] = true;
-      emreEkle["lisansMezunu4"] = true;
-      emreEkle["okul"] = "ege";
-      _firestore
-          .collection("users")
-          .document("emre_altunbilek")
-          .setData(emreEkle, merge: true)
-          .then((v) => debugPrint("emre eklendi"));
-
-      Map<String, dynamic> muratEkle = Map();
-      muratEkle["ad"] = "murat";
-      muratEkle["önlisansMezunu"] = true;
-
-      _firestore
-          .collection("users")
-          .document("hasan_yilmaz")
-          .setData(muratEkle)
-          .whenComplete(() => debugPrint("murat eklendi"));
-
-      _firestore.document("/users/ayse").setData({"ad": "ayse"});
-
-      _firestore.collection("users").add({"ad": "can", "yas": 35});
-
-      String yeniKullaniciID =
-          _firestore
-              .collection("users")
-              .document()
-              .documentID;
-      debugPrint("yeni doc id: $yeniKullaniciID");
-      _firestore.document("users/$yeniKullaniciID").setData({"yas": 30});
-    }
-
     searchBar() => Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        IconButton(
-          icon: Icon(Icons.arrow_back),
-          iconSize: heightSize(5),
-          color: Colors.purple,
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MasterPage()));
-          },
-        ),
-        Container(
-          width: widthSize(65),
-          child: TextField(
-            expands: false,
-            controller: bookName,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(left: 20, top: 3),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.lightBlue, width: 2),
-                borderRadius: BorderRadius.all(Radius.circular(60)),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(60.0)),
-                borderSide: BorderSide(color: Colors.lightBlue, width: 1),
-              ),
-              hintText: "Search your favorite book...",
-              hintStyle: search,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              iconSize: heightSize(5),
+              color: Colors.purple,
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage()));
+              },
             ),
-            onSubmitted: (s) async {
-              getData(bookName.text);
-              // print(allBook[0].items);
-            },
-          ),
-        ),
-        IconButton(
-          icon: Icon(Icons.search),
-          iconSize: heightSize(5),
-          color: Colors.purple,
-          onPressed: () async {
-            getData(bookName.text);
-          },
-        ),
-      ],
-    );
+            Container(
+              width: widthSize(70),
+              child: TextField(
+                expands: false,
+                controller: bookName,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 20, top: 3),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.lightBlue, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(60)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(60.0)),
+                    borderSide: BorderSide(color: Colors.lightBlue, width: 1),
+                  ),
+                  hintText: "Search your favorite book...",
+                  hintStyle: search,
+                ),
+                onSubmitted: (s) async {
+                  getData(bookName.text);
+                  // print(allBook[0].items);
+                },
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              iconSize: heightSize(5),
+              color: Colors.purple,
+              onPressed: () async {
+                getData(bookName.text);
+              },
+            ),
+          ],
+        );
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -177,106 +139,113 @@ class _ResaultPageState extends State<ResaultPage> {
               child: Stack(
                 children: <Widget>[
                   Positioned(
-                    top: heightSize(9),
-                    left: widthSize(8),
+                    top: heightSize(6),
+                    left: widthSize(5),
                     child: titleText,
                   ),
                   Positioned(
-                    left: widthSize(43),
+                    left: widthSize(46),
                     top: heightSize(2),
-                    child: Container(
-                        height: heightSize(25),
-                        child: Image.asset("assets/images/resaultPage.png")),
+                    child: Container(height: heightSize(25), child: Image.asset("assets/images/resaultPage.png")),
                   ),
                 ],
               ),
             ),
             searchBar(),
-            /*
-            Container(
-              height: 50,
-              width: 50,
-              child: IconButton(
-                icon: Icon(Icons.search),
-                iconSize: heightSize(5),
-                color: Colors.purple,
-                onPressed: () {
-                  _veriEkle();
-                },
-              ),
-            ),
-             */
             SizedBox(
               height: heightSize(2),
             ),
             Container(
-              height: heightSize(55),
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 20,
+              height: heightSize(58),
+              child: ListView(
                 children: <Widget>[
                   if (allBook != null)
                     for (int i = 0; i < allBook.items.length; i++)
                       GestureDetector(
-                        onTap: () => _saveSelectedBook(allBook.items[i]),
-                        child: FittedBox(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            child: Container(
-                              padding: EdgeInsets.all(20),
-                              width: widthSize(60),
-                              color: Colors.blueGrey.shade100,
-                              child: Column(
-                                children: <Widget>[
-                                  allBook.items[i].volumeInfo.imageLinks
-                                      .thumbnail ==
-                                      null
-                                      ? null
-                                      : Container(
-                                    child: Image.network(
-                                      "${allBook.items[i].volumeInfo.imageLinks.thumbnail}",
+                        //onTap: () => _saveSelectedBook(allBook.items[i]),
+                        child: Column(
+                          children: <Widget>[
+                            allBook.items.length == 0
+                                ? 'deger yok'
+                                : Container(
+                                    padding: EdgeInsets.only(left: widthSize(5), right: widthSize(5)),
+                                    height: heightSize(20),
+                                    color: Colors.lightGreen[100],
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          //height: 120,
+                                          child: allBook.items[i].volumeInfo.imageLinks.thumbnail == null ? Image.network("http://www.klasiksanatlar.com/img/sayfalar/b/1_1534620012_Ekran-Resmi-2018-08-18-22.25.18.png") : Image.network("${allBook.items[i].volumeInfo.imageLinks.thumbnail}"),
+                                        ),
+                                        SizedBox(
+                                          width: widthSize(3),
+                                        ),
+                                        Container(
+                                          width: widthSize(45),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              Flexible(
+                                                child: Text("${allBook.items[i].volumeInfo.title == null ? "değer yok" : allBook.items[i].volumeInfo.title.toUpperCase()}",
+                                                    //overflow: TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: heightSize(2),
+                                                      color: Colors.lightBlue,
+                                                      fontFamily: 'MainFont',
+                                                      fontWeight: FontWeight.w700,
+                                                    )),
+                                              ),
+                                              Text(
+                                                "${allBook.items[i].volumeInfo.authors == null ? "değer yok" : allBook.items[i].volumeInfo.authors.first}",
+                                                style: TextStyle(
+                                                  fontSize: heightSize(2),
+                                                  color: Colors.purple,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: heightSize(2.5),
+                                              ),
+                                              Text(
+                                                "${allBook.items[i].volumeInfo.publisher == null ? "değer yok" : allBook.items[i].volumeInfo.publisher}",
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          child: Column(
+                                            children: <Widget>[
+                                              IconButton(
+                                                icon: Icon(Icons.favorite_border),
+                                                iconSize: heightSize(4),
+                                                color: Colors.purple,
+                                                onPressed: () async {
+                                                  _saveSelectedBook(allBook.items[i]);
+                                                },
+                                              ),
+                                              SizedBox(
+                                                height: heightSize(5),
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.shopping_basket),
+                                                iconSize: heightSize(4),
+                                                color: Colors.purple,
+                                                onPressed: () async {
+                                                  //getData(bookName.text);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: heightSize(1),
-                                  ),
-                                  Text(
-                                    //"${allBook.items[i].volumeInfo}",
-                                    "${allBook.items[i].volumeInfo.title.toUpperCase()}",
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.lightBlue,
-                                      fontSize: heightSize(2.5),
-                                      fontFamily: 'MainFont',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    "${allBook.items[i].volumeInfo.authors == null ? null : allBook.items[i].volumeInfo.authors.first}",
-                                    style: TextStyle(
-                                      fontSize: heightSize(2),
-                                      color: Colors.purple,
-                                      fontFamily: 'MainFont',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: heightSize(1),
-                                  ),
-                                  Text(
-                                    "${allBook.items[i].volumeInfo.publisher}",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: heightSize(2),
-                                      fontFamily: 'MainFont',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            SizedBox(
+                              height: heightSize(3),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                 ],
@@ -288,15 +257,11 @@ class _ResaultPageState extends State<ResaultPage> {
     );
   }
 
-
   void _saveSelectedBook(selectedBook) {
     Map<String, String> bookMap = Map();
 
     bookMap[selectedBook.id] = selectedBook.volumeInfo.title;
 
-    _firestore
-        .collection("booktest")
-        .document("books")
-        .setData(bookMap, merge: true);
+    _firestore.collection("booktest").document("books").setData(bookMap, merge: true);
   }
 }
