@@ -40,32 +40,11 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 /*
-void main() => runApp(GradePoint());
-
-class GradePoint extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Flutter",
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    return Scaffold(
-      //backgroundColor: Colors.lightBlueAccent.shade100,
-      body: MasterPage(),
-    );
-  }
-}
-*/
+FractionallySizedBox(), // widthFactor: 0,7 vermek mevcut child boyutunun %70'i demek.
+SizedBox(),
+FlexFit(),
+Flex(),
+Flexible(),
+FittedBox(),
+Spacer(),
+ */

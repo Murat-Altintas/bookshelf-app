@@ -20,10 +20,11 @@ class _BookshelfPageState extends State<BookshelfPage> {
 
   var bookName = TextEditingController();
 
-  getData(String bookName) async {
+  getData(String bookName, pageIndex) async {
     var dio = Dio();
     var response = await dio
-        .get("https://www.googleapis.com/books/v1/volumes?q=$bookName");
+        .get("https://www.googleapis.com/books/v1/volumes?maxResults=100&q=$bookName");
+    //https://www.googleapis.com/books/v1/volumes?q=selam&maxResults=40&startIndex=2
 
     Map data = await response.data;
     allBook = Book.fromJson(data);

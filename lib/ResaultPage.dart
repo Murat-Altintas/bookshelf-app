@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'model/book.dart';
 import 'style.dart';
+import 'dart:developer' as dev;
 
 class ResaultPage extends StatefulWidget {
   @override
@@ -128,7 +129,6 @@ class _ResaultPageState extends State<ResaultPage> {
             ),
           ],
         );
-
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
@@ -155,8 +155,8 @@ class _ResaultPageState extends State<ResaultPage> {
             SizedBox(
               height: heightSize(2),
             ),
-            Container(
-              height: heightSize(58),
+            LimitedBox(
+              maxHeight: heightSize(60),
               child: ListView(
                 children: <Widget>[
                   if (allBook != null)
@@ -166,81 +166,85 @@ class _ResaultPageState extends State<ResaultPage> {
                         child: Column(
                           children: <Widget>[
                             allBook.items.length == 0
-                                ? 'deger yok'
+                                ? 'NO DATA'
                                 : Container(
-                                    padding: EdgeInsets.only(left: widthSize(5), right: widthSize(5)),
-                                    height: heightSize(20),
-                                    color: Colors.lightGreen[100],
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black12,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5,
+                                    offset: Offset(0, 5),
+                                  ),
+                                ],
+                              ),
+                              padding: EdgeInsets.only(left: widthSize(5), right: widthSize(5)),
+                              height: heightSize(25),
+                              width: widthSize(90),
+                              child: Row(
+                                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 4,
+                                    child: Container(
+                                      //height: heightSize(30),
+                                      child: allBook.items[i].volumeInfo.imageLinks == null
+                                          ? Text("NO IMAGE :(",
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                          ))
+                                          : Image.network("${allBook.items[i].volumeInfo.imageLinks.thumbnail}"),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: widthSize(3),
+                                  ),
+                                  Expanded(
+                                    flex: 9,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
-                                        Container(
-                                          //height: 120,
-                                          child: allBook.items[i].volumeInfo.imageLinks.thumbnail == null ? Image.network("http://www.klasiksanatlar.com/img/sayfalar/b/1_1534620012_Ekran-Resmi-2018-08-18-22.25.18.png") : Image.network("${allBook.items[i].volumeInfo.imageLinks.thumbnail}"),
+                                        Text("${allBook.items[i].volumeInfo.title == null ? "NO DATA" : allBook.items[i].volumeInfo.title.toUpperCase()}",
+                                            //overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: heightSize(2),
+                                              color: Colors.lightBlue,
+                                              fontFamily: 'MainFont',
+                                              fontWeight: FontWeight.w700,
+                                            )),
+                                        Text(
+                                          "${allBook.items[i].volumeInfo.authors == null ? "NO DATA" : allBook.items[i].volumeInfo.authors.first}",
+                                          style: TextStyle(
+                                            fontSize: heightSize(2),
+                                            color: Colors.purple,
+                                          ),
                                         ),
                                         SizedBox(
-                                          width: widthSize(3),
+                                          height: heightSize(2),
                                         ),
-                                        Container(
-                                          width: widthSize(45),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              Flexible(
-                                                child: Text("${allBook.items[i].volumeInfo.title == null ? "değer yok" : allBook.items[i].volumeInfo.title.toUpperCase()}",
-                                                    //overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                      fontSize: heightSize(2),
-                                                      color: Colors.lightBlue,
-                                                      fontFamily: 'MainFont',
-                                                      fontWeight: FontWeight.w700,
-                                                    )),
-                                              ),
-                                              Text(
-                                                "${allBook.items[i].volumeInfo.authors == null ? "değer yok" : allBook.items[i].volumeInfo.authors.first}",
-                                                style: TextStyle(
-                                                  fontSize: heightSize(2),
-                                                  color: Colors.purple,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: heightSize(2.5),
-                                              ),
-                                              Text(
-                                                "${allBook.items[i].volumeInfo.publisher == null ? "değer yok" : allBook.items[i].volumeInfo.publisher}",
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Column(
-                                            children: <Widget>[
-                                              IconButton(
-                                                icon: Icon(Icons.favorite_border),
-                                                iconSize: heightSize(4),
-                                                color: Colors.purple,
-                                                onPressed: () async {
-                                                  _saveSelectedBook(allBook.items[i]);
-                                                },
-                                              ),
-                                              SizedBox(
-                                                height: heightSize(5),
-                                              ),
-                                              IconButton(
-                                                icon: Icon(Icons.shopping_basket),
-                                                iconSize: heightSize(4),
-                                                color: Colors.purple,
-                                                onPressed: () async {
-                                                  //getData(bookName.text);
-                                                },
-                                              ),
-                                            ],
-                                          ),
+                                        Text(
+                                          "${allBook.items[i].volumeInfo.publisher == null ? "NO DATA" : allBook.items[i].volumeInfo.publisher}",
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ],
                                     ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.favorite_border),
+                                    iconSize: heightSize(4),
+                                    color: Colors.purple,
+                                    onPressed: () async {
+                                      _saveFavoriteBook(allBook.items[i]);
+                                    },
+                                  ),
+                                ],
+                              ),
                                   ),
                             SizedBox(
                               height: heightSize(3),
@@ -257,11 +261,19 @@ class _ResaultPageState extends State<ResaultPage> {
     );
   }
 
-  void _saveSelectedBook(selectedBook) {
-    Map<String, String> bookMap = Map();
+  void _saveFavoriteBook(selectedBook) {
+    Map<String, String> favoriteMap = Map();
 
-    bookMap[selectedBook.id] = selectedBook.volumeInfo.title;
+    favoriteMap[selectedBook.id] = selectedBook.volumeInfo.title;
 
-    _firestore.collection("booktest").document("books").setData(bookMap, merge: true);
+    _firestore.collection("bookrequests").document("favorites").setData(favoriteMap, merge: true);
+  }
+
+  void _saveAcquisitionsBook(selectedBook) {
+    Map<String, String> acquisitionsMap = Map();
+
+    acquisitionsMap[selectedBook.id] = selectedBook.volumeInfo.title;
+
+    _firestore.collection("bookrequests").document("acquisitions").setData(acquisitionsMap, merge: true);
   }
 }
