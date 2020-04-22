@@ -80,7 +80,6 @@ class MasterPageState extends State<MasterPage> {
         ],
       ),
     );
-
     var mainIcon = TextStyle(
       fontSize: heightSize(2.5),
       color: Colors.white,
@@ -165,7 +164,7 @@ class MasterPageState extends State<MasterPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ResaultPage()));
+                              builder: (context) => BookshelfPage()));
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -198,7 +197,7 @@ class MasterPageState extends State<MasterPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BookshelfPage()));
+                              builder: (context) => ResaultPage()));
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),

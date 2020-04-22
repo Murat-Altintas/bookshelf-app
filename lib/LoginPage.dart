@@ -63,7 +63,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget loginButton() => InkWell(
     onTap: () {
-      //_loginOptions;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MasterPage()));
     },
     child: ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(60)),
@@ -116,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
       Positioned(
         left: widthSize(5),
         right: widthSize(5),
-        top: heightSize(8),
+        top: heightSize(4),
         child: Image.asset("assets/images/loginPage.png"),
       ),
       Positioned(
@@ -131,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: title,
               ),
               SizedBox(
-                height: heightSize(4),
+                height: heightSize(2),
               ),
               userNameField,
               SizedBox(

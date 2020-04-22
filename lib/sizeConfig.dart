@@ -1,7 +1,7 @@
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-class SizeConfig {
+class SizeConfiguration {
   static double _screenWidth;
   static double _screenHeight;
   static double _blockWidth = 0;

@@ -1,4 +1,3 @@
-import 'package:grade_point_avarage/BookRequest.dart';
 import 'package:grade_point_avarage/BookshelfPage.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'BookshelfPage2.dart';
@@ -29,7 +28,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    SizeConfig2().init(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
 

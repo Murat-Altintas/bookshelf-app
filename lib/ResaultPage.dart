@@ -7,6 +7,8 @@ import 'package:grade_point_avarage/MasterPage.dart';
 import 'model/book.dart';
 import 'style.dart';
 import 'dart:developer' as dev;
+import 'sizeConfig.dart';
+
 
 class ResaultPage extends StatefulWidget {
   @override
@@ -15,17 +17,25 @@ class ResaultPage extends StatefulWidget {
 
 class _ResaultPageState extends State<ResaultPage> {
   final Firestore _firestore = Firestore.instance;
-
+  ScrollController _scrollController = ScrollController();
   Book allBook;
-
+  int startIndex = 0;
   var bookName = TextEditingController();
+
 
   getData(String bookName) async {
     var dio = Dio();
-    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName");
-
+    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&maxResults=10&startIndex=$startIndex");
+    Book tempBook;
     Map data = await response.data;
-    allBook = Book.fromJson(data);
+    if (allBook == null)
+      allBook = Book.fromJson(data);
+    else {
+      tempBook = Book.fromJson(data);
+      allBook.items += tempBook.items;
+    }
+
+    print(allBook.items.length);
     setState(() {});
   }
 
@@ -41,6 +51,26 @@ class _ResaultPageState extends State<ResaultPage> {
   }
 
   //------------------------------------------------------------//
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        startIndex += 10;
+        getData(bookName.text);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _scrollController.removeListener(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     var titleText = RichText(
@@ -74,7 +104,7 @@ class _ResaultPageState extends State<ResaultPage> {
           TextSpan(
             text: 'learn today?',
             style: TextStyle(
-              height: heightSize(0.15),
+              height: heightSize(0.20),
               fontSize: heightSize(5),
               color: Colors.lightBlue,
               fontFamily: 'MainFont',
@@ -155,9 +185,9 @@ class _ResaultPageState extends State<ResaultPage> {
             SizedBox(
               height: heightSize(2),
             ),
-            LimitedBox(
-              maxHeight: heightSize(60),
+            Expanded(
               child: ListView(
+                controller: _scrollController,
                 children: <Widget>[
                   if (allBook != null)
                     for (int i = 0; i < allBook.items.length; i++)
@@ -192,7 +222,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                   Expanded(
                                     flex: 4,
                                     child: Container(
-                                      //height: heightSize(30),
+                                      height: heightSize(35),
                                       child: allBook.items[i].volumeInfo.imageLinks == null
                                           ? Text("NO IMAGE :(",
                                           style: TextStyle(
@@ -211,7 +241,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
                                         Text("${allBook.items[i].volumeInfo.title == null ? "NO DATA" : allBook.items[i].volumeInfo.title.toUpperCase()}",
-                                            //overflow: TextOverflow.ellipsis,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize: heightSize(2),
                                               color: Colors.lightBlue,
@@ -245,7 +275,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                   ),
                                 ],
                               ),
-                                  ),
+                            ),
                             SizedBox(
                               height: heightSize(3),
                             ),
@@ -266,7 +296,7 @@ class _ResaultPageState extends State<ResaultPage> {
 
     favoriteMap[selectedBook.id] = selectedBook.volumeInfo.title;
 
-    _firestore.collection("bookrequests").document("favorites").setData(favoriteMap, merge: true);
+    _firestore.collection("bookrequest").document("titleList").setData(favoriteMap, merge: true);
   }
 
   void _saveAcquisitionsBook(selectedBook) {

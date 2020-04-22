@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SizeConfig {
+class SizeConfig2 {
   static MediaQueryData _mediaQueryData;
   static double screenWidth;
   static double screenHeight;
@@ -36,8 +36,8 @@ class _stylesState extends State<styles> {
 var mainBlue = Colors.blue;
 var mainGrey = Colors.blueGrey;
 
-var iconSize = SizeConfig.blockSizeVertical * 3.5;
-var titleSize = SizeConfig.blockSizeVertical * 3;
+var iconSize = SizeConfig2.blockSizeVertical * 3.5;
+var titleSize = SizeConfig2.blockSizeVertical * 3;
 var titleColor = Colors.red;
 
 var title = TextStyle(
