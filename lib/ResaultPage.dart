@@ -9,7 +9,6 @@ import 'style.dart';
 import 'dart:developer' as dev;
 import 'sizeConfig.dart';
 
-
 class ResaultPage extends StatefulWidget {
   @override
   _ResaultPageState createState() => _ResaultPageState();
@@ -22,10 +21,9 @@ class _ResaultPageState extends State<ResaultPage> {
   int startIndex = 0;
   var bookName = TextEditingController();
 
-
   getData(String bookName) async {
     var dio = Dio();
-    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&maxResults=10&startIndex=$startIndex");
+    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex");
     Book tempBook;
     Map data = await response.data;
     if (allBook == null)
@@ -192,7 +190,7 @@ class _ResaultPageState extends State<ResaultPage> {
                   if (allBook != null)
                     for (int i = 0; i < allBook.items.length; i++)
                       GestureDetector(
-                        //onTap: () => _saveSelectedBook(allBook.items[i]),
+                        //onTap: () => _saveFavoriteBook(GBooksApi.items[i]),
                         child: Column(
                           children: <Widget>[
                             allBook.items.length == 0
@@ -222,7 +220,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                   Expanded(
                                     flex: 4,
                                     child: Container(
-                                      height: heightSize(35),
+                                      //height: heightSize(35),
                                       child: allBook.items[i].volumeInfo.imageLinks == null
                                           ? Text("NO IMAGE :(",
                                           style: TextStyle(
@@ -267,10 +265,11 @@ class _ResaultPageState extends State<ResaultPage> {
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.favorite_border),
+                                    padding: EdgeInsets.only(left: 20),
                                     iconSize: heightSize(4),
-                                    color: Colors.purple,
+                                    color: Colors.blue,
                                     onPressed: () async {
-                                      _saveFavoriteBook(allBook.items[i]);
+                                      _saveBookTitle(allBook.items[i]);
                                     },
                                   ),
                                 ],
@@ -291,19 +290,38 @@ class _ResaultPageState extends State<ResaultPage> {
     );
   }
 
-  void _saveFavoriteBook(selectedBook) {
-    Map<String, String> favoriteMap = Map();
+  Future<void> _saveBookTitle(selectedBook) async {
+    Map<String, String> idMap = Map();
+    idMap[selectedBook.id] = selectedBook.id;
 
-    favoriteMap[selectedBook.id] = selectedBook.volumeInfo.title;
+    String title = selectedBook.volumeInfo.title == null ? "NO DATA" : selectedBook.volumeInfo.title.toString();
+    String authors = selectedBook.volumeInfo.authors == null ? "NO DATA" : selectedBook.volumeInfo.authors.first.toString();
+    String publisher = selectedBook.volumeInfo.publisher == null ? "NO DATA" : selectedBook.volumeInfo.publisher.toString();
+    String image = selectedBook.volumeInfo.imageLinks == null ? "NO DATA" : selectedBook.volumeInfo.imageLinks.thumbnail.toString();
 
-    _firestore.collection("bookrequest").document("titleList").setData(favoriteMap, merge: true);
-  }
+    Map<String, String> mixMap = {
+      "title": title,
+      "authors": authors,
+      "publisher": publisher,
+      "image": image,
+    };
 
-  void _saveAcquisitionsBook(selectedBook) {
-    Map<String, String> acquisitionsMap = Map();
+    await _firestore.collection("bookrequest").document("$idMap").setData(mixMap, merge: true);
 
-    acquisitionsMap[selectedBook.id] = selectedBook.volumeInfo.title;
+    /*
+    Map<String, String> authorMap = Map();
+    Map<String, String> publisherMap = Map();
+    Map<String, String> imgMap = Map();
 
-    _firestore.collection("bookrequests").document("acquisitions").setData(acquisitionsMap, merge: true);
+    authorMap[selectedBook.id] = selectedBook.volumeInfo.authors.first.toString();
+    _firestore.document("bookrequest/authorList").setData(authorMap, merge: true);
+
+    publisherMap[selectedBook.id] = selectedBook.volumeInfo.publisher.toString();
+    _firestore.document("bookrequest/publisherList").setData(publisherMap, merge: true);
+
+    imgMap[selectedBook.id] = selectedBook.volumeInfo.imageLinks.thumbnail.toString();
+    _firestore.document("bookrequest/imgList").setData(imgMap, merge: true);
+    
+     */
   }
 }

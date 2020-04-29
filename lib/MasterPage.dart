@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grade_point_avarage/BookshelfPage2.dart';
 import 'BookshelfPage.dart';
 import 'OptionsPage.dart';
 import 'ResaultPage.dart';
@@ -29,12 +30,7 @@ class MasterPageState extends State<MasterPage> {
       ),
       height: heightSize(100),
       width: widthSize(100),
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              stops: [0.1, 1],
-              colors: [Colors.purple.shade300, Colors.pink.shade300])),
+      decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, stops: [0.1, 1], colors: [Colors.purple.shade300, Colors.pink.shade300])),
     );
     var welcome = RichText(
       text: TextSpan(
@@ -129,10 +125,7 @@ class MasterPageState extends State<MasterPage> {
                 children: <Widget>[
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ResaultPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -161,10 +154,7 @@ class MasterPageState extends State<MasterPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BookshelfPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => BookshelfPage2()));
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -177,8 +167,7 @@ class MasterPageState extends State<MasterPage> {
                           children: <Widget>[
                             SizedBox(
                               height: heightSize(20),
-                              child:
-                                  Image.asset("assets/images/my_bookshelf.png"),
+                              child: Image.asset("assets/images/my_bookshelf.png"),
                             ),
                             Text(
                               "MY BOOKSHELF",
@@ -194,10 +183,7 @@ class MasterPageState extends State<MasterPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ResaultPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => BookshelfPage2()));
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -210,8 +196,7 @@ class MasterPageState extends State<MasterPage> {
                           children: <Widget>[
                             SizedBox(
                               height: heightSize(20),
-                              child:
-                                  Image.asset("assets/images/my_favorites.png"),
+                              child: Image.asset("assets/images/my_favorites.png"),
                             ),
                             Text(
                               "MY FAVORITES",
@@ -227,10 +212,7 @@ class MasterPageState extends State<MasterPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ResaultPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -243,73 +225,7 @@ class MasterPageState extends State<MasterPage> {
                           children: <Widget>[
                             SizedBox(
                               height: heightSize(20),
-                              child: Image.asset(
-                                  "assets/images/my_acquisitions.png"),
-                            ),
-                            Text(
-                              "MY ACQUISITIONS",
-                              style: mainIcon,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: widthSize(5),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ResaultPage()));
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: Container(
-                        color: Colors.redAccent,
-                        width: widthSize(45),
-                        height: heightSize(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            SizedBox(
-                              height: heightSize(20),
-                              child: Image.asset("assets/images/my_notes.png"),
-                            ),
-                            Text(
-                              "MY NOTES",
-                              style: mainIcon,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: widthSize(5),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OptionsPage()));
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: Container(
-                        color: Colors.deepPurpleAccent,
-                        width: widthSize(45),
-                        height: heightSize(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            SizedBox(
-                              height: heightSize(20),
-                              child:
-                                  Image.asset("assets/images/my_options.png"),
+                              child: Image.asset("assets/images/my_options.png"),
                             ),
                             Text(
                               "MY OPTIONS",
@@ -329,37 +245,3 @@ class MasterPageState extends State<MasterPage> {
     );
   }
 }
-
-/*
-
-InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ResaultPage()));
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                child: Container(
-                  color: Colors.purple,
-                  width: widthSize(45),
-                  height: heightSize(30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      SizedBox(
-                        height: heightSize(20),
-                        child: Image.asset("assets/images/my_bookshelf.png"),
-                      ),
-                      Text(
-                        "My Bookshelf",
-                        style: TextStyle(
-                          fontSize: heightSize(2.5),
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
- */

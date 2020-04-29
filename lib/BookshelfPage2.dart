@@ -89,10 +89,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                         child: Text("An error occured!"),
                       );
                     } else {
-                      List<dynamic> titleList = dataSnapShot.data.values.toList(); // benimkine benziyor işte map i liste çevirmiş
-                      List<dynamic> authorsList = dataSnapShot.data.values.toList(); // benimkine benziyor işte map i liste çevirmiş
-                      List<dynamic> publisherList = dataSnapShot.data.values.toList(); // benimkine benziyor işte map i liste çevirmiş
-                      List<dynamic> imgList = dataSnapShot.data.values.toList(); // benimkine benziyor işte map i liste çevirmiş
+                      List<String> titleList = dataSnapShot.data.documents.toList(); // benimkine benziyor işte map i liste çevirmiş
                       return Expanded(
                         child: ListView.builder(
                             itemCount: titleList.length,
@@ -125,7 +122,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                           flex: 4,
                                           child: Container(
                                             height: heightSize(35),
-                                            child: null, //titleList[index],
+                                            //child: imgList[index],  //imgList is here
                                           ),
                                         ),
                                         SizedBox(
@@ -137,7 +134,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: <Widget>[
-                                              Text(titleList[index],
+                                              Text(titleList[index], //titleList is here
                                                   overflow: TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     fontSize: heightSize(2),
@@ -146,7 +143,8 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                                     fontWeight: FontWeight.w700,
                                                   )),
                                               Text(
-                                                authorsList[index],
+                                                ("test"),
+                                                // authorsList[index],  //authorsList is here
                                                 style: TextStyle(
                                                   fontSize: heightSize(2),
                                                   color: Colors.purple,
@@ -156,7 +154,8 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                                 height: heightSize(2),
                                               ),
                                               Text(
-                                                publisherList[index],
+                                                ("test"),
+                                                // publisherList[index],  //publisherList is here
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ],
@@ -183,8 +182,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
     );
   }
 
-  Future<Map<String, dynamic>> bookFill() async {
+  Future<Map<dynamic, dynamic>> bookFill() async {
     final DocumentSnapshot documentSnapshot = await firestore.document("bookrequest/titleList").get();
-    return documentSnapshot.data;
   }
 }

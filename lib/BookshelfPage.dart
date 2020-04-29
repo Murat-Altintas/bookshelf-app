@@ -22,8 +22,8 @@ class _BookshelfPageState extends State<BookshelfPage> {
 
   getData(String bookName, pageIndex) async {
     var dio = Dio();
-    var response = await dio
-        .get("https://www.googleapis.com/books/v1/volumes?maxResults=100&q=$bookName");
+    var response = await dio.get(
+        "https://www.googleapis.com/books/v1/volumes?maxResults=100&q=$bookName");
     //https://www.googleapis.com/books/v1/volumes?q=selam&maxResults=40&startIndex=2
 
     Map data = await response.data;
@@ -41,12 +41,10 @@ class _BookshelfPageState extends State<BookshelfPage> {
     value /= 100;
     return MediaQuery.of(context).size.width * value;
   }
-
   //------------------------------------------------------------//
 
   @override
   Widget build(BuildContext context) {
-    var bookData = firestore.collection("booktest").document("books").get();
     var titleText = RichText(
       text: TextSpan(
         text: "My ",
@@ -93,41 +91,137 @@ class _BookshelfPageState extends State<BookshelfPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: FutureBuilder(
-                  future: getBooks(), //future döndüren metod
-                  builder: (context,
-                      AsyncSnapshot<Map<String, dynamic>> dataSnapShot) { // gelen verinin türünü belirtmezsen length seçemezsin
-                    if (dataSnapShot.connectionState == ConnectionState.done) {
-                      List<String> books = [];
-                      dataSnapShot.data.forEach((a, b) { // gelen map tipindeki veriyi liste tipine dönüştürüyoruz çünkü list view de liste index şeklinde veri işlenir
-                        books.add(b); //burada verileri books listesine attık
-                      });
-                      return ListView.builder(
-                          itemCount: books.length,// bunu
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(books[index]), // burda
-                            );
-                          });
-                    } else {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  },
-                ),
-              ),
+
+
               Container(
-                width: 30,
-                height: 30,
-                child: IconButton(
-                  icon: Icon(Icons.search),
-                  iconSize: heightSize(5),
-                  color: Colors.purple,
-                  onPressed: () async {
-                    readTest();
-                  },
+                child: Expanded(
+                  child: FutureBuilder(
+                    future: getBooks(), //future döndüren metod
+                    builder: (context,
+                        AsyncSnapshot<List<Map<String, dynamic>>>
+                        dataSnapShot) {
+                      // gelen verinin türünü belirtmezsen length seçemezsin
+                      if (dataSnapShot.connectionState ==
+                          ConnectionState.done) {
+                        print('the data is:');
+                        print(jsonEncode(dataSnapShot.data));
+                        List<String> titleList = [];
+                        List<String> imgList = [];
+                        List<String> authorsList = [];
+                        List<String> publisherList = [];
+                        // gelen map tipindeki veriyi liste tipine dönüştürüyoruz çünkü ListView'de "listeismi.[index]" şeklinde veri işlenir.
+                        dataSnapShot.data.forEach((a) {
+                          a.forEach((x, y) {
+                            if (x == "image") imgList.add(y);
+                            if (x == "title") titleList.add(y);
+                            if (x == "authors") authorsList.add(y);
+                            if (x == "publisher") publisherList.add(y);
+                          });
+                        });
+                        return ListView.builder(
+                          itemCount: titleList.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      color: Colors.black12,
+                                      width: 2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 5,
+                                        offset: Offset(0, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  padding: EdgeInsets.only(
+                                      left: widthSize(5), right: widthSize(5)),
+                                  height: heightSize(25),
+                                  width: widthSize(90),
+                                  child: Row(
+                                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 4,
+                                        child: Container(
+                                          height: heightSize(35),
+                                          child: Image.network(
+                                              imgList[index]), //imgList is here
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: widthSize(3),
+                                      ),
+                                      Expanded(
+                                        flex: 9,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            Text(
+                                                titleList[
+                                                index], //titleList is here        //titleList is here//titleList is here//titleList is here//titleList is here//titleList is here
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: heightSize(2),
+                                                  color: Colors.lightBlue,
+                                                  fontFamily: 'MainFont',
+                                                  fontWeight: FontWeight.w700,
+                                                )),
+                                            Text(
+                                              authorsList[
+                                              index], //authorsList is here
+                                              style: TextStyle(
+                                                fontSize: heightSize(2),
+                                                color: Colors.purple,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: heightSize(2),
+                                            ),
+                                            Text(
+                                              //fena mı çok can yakıcı :D oldu heralde şimdilik oldu knk eline sağlık da bunun
+                                              // daha kolay bi yolu yordamı var mıdır acaba ya böyle çok uğraştın sanki?
+                                              //bilmiyom vardır belki hm tmm knk çok teşekkür ederim zor olayları hallettik
+                                              //sırada daha zor olaylar var :D :d
+                                              //bu  hafta kendi projeme bakmaya baslıcam , tasarımda danısırım sana ona göre
+                                              // knk ayıpsn ya tasrım senin civcivin olsun :D :D
+                                              // ya şimdi malum bu favorileri yazdırdık eyvallah da bunu tabi kullanıcıya has yapmak lazım
+                                              // onla uğraşcam ben ama sen nezamna tasarıma başlayalım dersen bn kendi projemi bırakır ona başlarım
+                                              //sıkıntı yok yani anladım, benim 2-3 haftaya okul da bitcek onun için tezi yetiştirmem lazım
+                                              // tmm knk seni rahatsız etmem bitene kadar enazından :D tmm tmm anlaştık hadi bana müsaade
+                                              // çok teşekkür ederim Allah razı olsn knk görüşürz eline sağlık cümlemizden görüşürz
+                                              publisherList[
+                                              index], //publisherList is here
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: heightSize(3),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
                 ),
               ),
             ],
@@ -137,76 +231,30 @@ class _BookshelfPageState extends State<BookshelfPage> {
     );
   }
 
-  void _saveSelectedBook(selectedBook) {
-    Map<String, String> bookMap = Map();
-
-    bookMap[selectedBook.id] = selectedBook.volumeInfo.title;
-
-    firestore
-        .collection("booktest")
-        .document("books")
-        .setData(bookMap, merge: true);
-  }
-
-  Future<Map<String, dynamic>> getBooks() async {
-    final Firestore ref = Firestore.instance; // referans
+  Future<List<Map<String, dynamic>>> getBooks() async {
     try {
-      return await ref
-          .collection("booktest")
-          .document("books")
-          .get()
-          .then((data) { //get() ile documentsnapshot geliyor bu bizim verimiz değil aslında , verimiz içerisinde
-        return data.data;// snapshot içindeki verimizi return ediyoruz
+      List<Map<String, dynamic>> idMap = [];
+      await firestore
+          .collection("bookrequest")
+          .getDocuments()
+          .then((QuerySnapshot snapshot) {
+        snapshot.documents.forEach((f) {
+          idMap.add(f.data);
+          print('this is the data:::: ${f.data}');
+        });
       });
+      return idMap;
     } catch (e) {
       print(e);
       return null;
     }
-  }
 
-  readTest() async {
-    //tek bir dökümanın okunması
-    DocumentSnapshot documentSnapshot =
-        await firestore.document("booktest/books").get();
-    debugPrint("Döküman id:" + documentSnapshot.documentID);
-    debugPrint("Döküman var mı:" + documentSnapshot.exists.toString());
-    debugPrint("Döküman string:" + documentSnapshot.toString());
-    debugPrint("bekleyen yazma var mı:" +
-        documentSnapshot.metadata.hasPendingWrites.toString());
-    debugPrint("cacheden mi geldi:" +
-        documentSnapshot.metadata.isFromCache.toString());
-    debugPrint("cacheden mi geldi:" +
-        documentSnapshot.data["5uRIb3emLY8C"].toString());
-    documentSnapshot.data.forEach((key, deger) {
-      debugPrint("key: $key deger: $deger");
+    /*
+    //get() ile documentsnapshot geliyor bu bizim verimiz değil aslında, verimiz içerisinde
+
+    return await firestore.collection("bookrequest").document("documentName").get().then((data) {
+      return data.data; // snapshot içindeki verimizi return ediyoruz
     });
-
-    firestore.collection("booktest").getDocuments().then((querySnapshots) {
-      debugPrint("Booktest colldeki eleman sayısı:" +
-          querySnapshots.documents.length.toString());
-
-      for (int i = 0; i < querySnapshots.documents.length; i++) {
-        debugPrint("Document uzunluğu: " +
-            querySnapshots.documents[i].data.toString());
-      }
-
-      //anlık değişikliklerin dinlenmesi
-      DocumentReference ref =
-          firestore.collection("booktest").document("books");
-      ref.snapshots().listen((degisenVeri) {
-        debugPrint("anlık :" + degisenVeri.data.toString());
-      });
-
-      firestore.collection("booktest").snapshots().listen((snap) {
-        debugPrint(snap.documents.length.toString());
-      });
-    });
-  }
-
-  Future bookFill() async {
-    DocumentReference ref = firestore.collection("booktest").document("books");
-
-    return ref;
+     */
   }
 }
-//5DgAAQBAJ ilk kitap ID'si
