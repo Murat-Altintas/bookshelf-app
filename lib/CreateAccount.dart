@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:grade_point_avarage/CreateAccount.dart';
 import 'package:grade_point_avarage/LoginPage.dart';
 import 'package:grade_point_avarage/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'MasterPage.dart';
 
-class LoginPage extends StatefulWidget {
+class CreateAccount extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _CreateAccountState createState() => _CreateAccountState();
 }
 
 var mailText = TextEditingController();
 var passwordText = TextEditingController();
 
-class _LoginPageState extends State<LoginPage> {
-  
-  Widget loginButton() => InkWell(
+class _CreateAccountState extends State<CreateAccount> {
+  Widget createButton() => InkWell(
         onTap: () {
-          _loginAccount();
+          _createAccount();
+          /*
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MasterPage()));
+     */
         },
         child: ClipRRect(
           borderRadius: BorderRadius.all(
@@ -29,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
             color: mainBlue,
             height: heightSize(7),
             child: Text(
-              "LOGIN",
+              "CREATE ACCOUNT",
               style: login,
             ),
           ),
@@ -38,8 +42,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget createAccount() => InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
-
+          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(60)),
@@ -48,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
             color: mainBlue,
             height: heightSize(7),
             child: Text(
-              "CREATE ACCOUNT",
+              "LOGIN",
               style: login,
             ),
           ),
@@ -67,11 +70,15 @@ class _LoginPageState extends State<LoginPage> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void _loginAccount() async {
-    var firebaseUser = await _auth.signInWithEmailAndPassword(email: mailText.text, password: passwordText.text).then((value) =>
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage()))
-    );
-
+  void _createAccount() async {
+    var firebaseUser = await _auth.createUserWithEmailAndPassword(email: mailText.text, password: passwordText.text).then(
+          (value) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LoginPage(),
+            ),
+          ),
+        );
 
     if (firebaseUser != null) {
       debugPrint("Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email}");
@@ -88,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: [
               Container(
-                child: Image.asset("assets/images/loginPage.png"),
+                child: Image.asset("assets/images/createAccount.png"),
               ),
               SizedBox(
                 height: heightSize(3),
@@ -98,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: heightSize(5),
               ),
-              loginButton(),
+              createButton(),
               SizedBox(
                 height: heightSize(5),
               ),

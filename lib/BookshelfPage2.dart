@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,8 @@ class BookshelfPage2 extends StatefulWidget {
 }
 
 class _BookshelfPage2State extends State<BookshelfPage2> {
-  final Firestore firestore = Firestore.instance;
+  final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //------------------------------------------------------------//
   double heightSize(double value) {
@@ -182,7 +184,25 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
     );
   }
 
-  Future<Map<dynamic, dynamic>> bookFill() async {
-    final DocumentSnapshot documentSnapshot = await firestore.document("bookrequest/titleList").get();
+  Future<List<Map<String, dynamic>>> bookFill() async {
+
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
+    try {
+      List<Map<String, dynamic>> idMap = [];
+      await _firestore
+          .collection("$uid")
+          .getDocuments()
+          .then((QuerySnapshot snapshot) {
+        snapshot.documents.forEach((f) {
+          idMap.add(f.data);
+          print('this is the data:::: ${f.data}');
+        });
+      });
+      return idMap;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 }

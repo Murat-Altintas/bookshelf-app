@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
@@ -16,6 +17,8 @@ class ResaultPage extends StatefulWidget {
 
 class _ResaultPageState extends State<ResaultPage> {
   final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   ScrollController _scrollController = ScrollController();
   Book allBook;
   int startIndex = 0;
@@ -293,6 +296,9 @@ class _ResaultPageState extends State<ResaultPage> {
   Future<void> _saveBookTitle(selectedBook) async {
     Map<String, String> idMap = Map();
     idMap[selectedBook.id] = selectedBook.id;
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
+
 
     String title = selectedBook.volumeInfo.title == null ? "NO DATA" : selectedBook.volumeInfo.title.toString();
     String authors = selectedBook.volumeInfo.authors == null ? "NO DATA" : selectedBook.volumeInfo.authors.first.toString();
@@ -306,7 +312,7 @@ class _ResaultPageState extends State<ResaultPage> {
       "image": image,
     };
 
-    await _firestore.collection("bookrequest").document("$idMap").setData(mixMap, merge: true);
+    await _firestore.collection(uid).document("$idMap").setData(mixMap, merge: true);
 
     /*
     Map<String, String> authorMap = Map();

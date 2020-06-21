@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
@@ -14,7 +15,9 @@ class BookshelfPage extends StatefulWidget {
 }
 
 class _BookshelfPageState extends State<BookshelfPage> {
-  final Firestore firestore = Firestore.instance;
+
+  final Firestore _firestore = Firestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Book allBook;
 
@@ -232,10 +235,13 @@ class _BookshelfPageState extends State<BookshelfPage> {
   }
 
   Future<List<Map<String, dynamic>>> getBooks() async {
+
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
     try {
       List<Map<String, dynamic>> idMap = [];
-      await firestore
-          .collection("bookrequest")
+      await _firestore
+          .collection("$uid")
           .getDocuments()
           .then((QuerySnapshot snapshot) {
         snapshot.documents.forEach((f) {
