@@ -94,8 +94,6 @@ class _BookshelfPageState extends State<BookshelfPage> {
                   ],
                 ),
               ),
-
-
               Container(
                 child: Expanded(
                   child: FutureBuilder(

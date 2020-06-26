@@ -91,7 +91,8 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                         child: Text("An error occured!"),
                       );
                     } else {
-                      List<String> titleList = dataSnapShot.data.documents.toList(); // benimkine benziyor işte map i liste çevirmiş
+                     var titleList = dataSnapShot.data;                                   
+                     // List<String> titleList = dataSnapShot.data.documents.toList(); // benimkine benziyor işte map i liste çevirmiş
                       return Expanded(
                         child: ListView.builder(
                             itemCount: titleList.length,
@@ -136,7 +137,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                             children: <Widget>[
-                                              Text(titleList[index], //titleList is here
+                                              Text(titleList[index]["title"], //titleList is here
                                                   overflow: TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                     fontSize: heightSize(2),
@@ -196,7 +197,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
           .then((QuerySnapshot snapshot) {
         snapshot.documents.forEach((f) {
           idMap.add(f.data);
-          print('this is the data:::: ${f.data}');
+         // print('this is the data:::: ${f.data}');
         });
       });
       return idMap;

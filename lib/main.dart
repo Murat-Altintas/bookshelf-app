@@ -31,9 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
     SizeConfig2().init(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-
       //backgroundColor: Colors.lightBlueAccent.shade100,
-      body: BookshelfPage2(),
+      body: LoginPage(),
     );
   }
 }
