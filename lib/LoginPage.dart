@@ -13,9 +13,9 @@ class LoginPage extends StatefulWidget {
 
 var mailText = TextEditingController();
 var passwordText = TextEditingController();
+var _formKey = GlobalKey<FormState>();
 
 class _LoginPageState extends State<LoginPage> {
-  
   Widget loginButton() => InkWell(
         onTap: () {
           _loginAccount();
@@ -39,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget createAccount() => InkWell(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
-
         },
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(60)),
@@ -68,10 +67,13 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _loginAccount() async {
-    var firebaseUser = await _auth.signInWithEmailAndPassword(email: mailText.text, password: passwordText.text).then((value) =>
-        Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage()))
-    );
+    setState(() {
+      if(_formKey.currentState.validate()) {
 
+      }
+    });
+
+    var firebaseUser = await _auth.signInWithEmailAndPassword(email: mailText.text, password: passwordText.text).then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
 
     if (firebaseUser != null) {
       debugPrint("Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email}");
@@ -82,39 +84,42 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Container(
-                child: Image.asset("assets/images/loginPage.png"),
-              ),
-              SizedBox(
-                height: heightSize(3),
-              ),
-              userNameField(),
-              passwordField(),
-              SizedBox(
-                height: heightSize(5),
-              ),
-              loginButton(),
-              SizedBox(
-                height: heightSize(5),
-              ),
-              createAccount(),
-              Expanded(
-                child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Image.asset(
-                      "assets/images/loginCoffee.png",
-                      width: widthSize(30),
-                    )),
-              ),
-              SizedBox(
-                height: heightSize(2),
-              ),
-            ],
+      body: Form(
+        key: _formKey,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Container(
+                  child: Image.asset("assets/images/loginPage.png"),
+                ),
+                SizedBox(
+                  height: heightSize(3),
+                ),
+                userNameField(),
+                passwordField(),
+                SizedBox(
+                  height: heightSize(5),
+                ),
+                loginButton(),
+                SizedBox(
+                  height: heightSize(5),
+                ),
+                createAccount(),
+                Expanded(
+                  child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Image.asset(
+                        "assets/images/loginCoffee.png",
+                        width: widthSize(30),
+                      )),
+                ),
+                SizedBox(
+                  height: heightSize(2),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -123,7 +128,13 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget userNameField() => Container(
         height: heightSize(7),
-        child: TextField(
+        child: TextFormField(
+          validator: (String value) {
+            if (value.isEmpty) {
+              return "Lütfen Mail Girin";
+            }
+            return null;
+          },
           controller: mailText,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.center,
@@ -146,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget passwordField() => Container(
         height: heightSize(7),
-        child: TextField(
+        child: TextFormField(
           controller: passwordText,
           textInputAction: TextInputAction.go,
           obscureText: true,
