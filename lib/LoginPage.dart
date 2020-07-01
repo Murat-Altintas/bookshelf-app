@@ -11,11 +11,13 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-var mailText = TextEditingController();
-var passwordText = TextEditingController();
+var mailText, passwordText = TextEditingController();
 var _formKey = GlobalKey<FormState>();
+String mailValidator;
 
 class _LoginPageState extends State<LoginPage> {
+  bool autoControl = false;
+
   Widget loginButton() => InkWell(
         onTap: () {
           _loginAccount();
@@ -38,7 +40,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget createAccount() => InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CreateAccount()));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(60)),
@@ -67,16 +70,19 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _loginAccount() async {
-    setState(() {
-      if(_formKey.currentState.validate()) {
+    if (!_formKey.currentState.validate()) {
+      autoControl = true;
+    }
 
-      }
-    });
-
-    var firebaseUser = await _auth.signInWithEmailAndPassword(email: mailText.text, password: passwordText.text).then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
+    var firebaseUser = await _auth
+        .signInWithEmailAndPassword(
+            email: mailText.text, password: passwordText.text)
+        .then((value) => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MasterPage())));
 
     if (firebaseUser != null) {
-      debugPrint("Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email}");
+      debugPrint(
+          "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email}");
     }
   }
 
@@ -86,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomPadding: false,
       body: Form(
         key: _formKey,
+        autovalidate: autoControl,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -129,11 +136,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget userNameField() => Container(
         height: heightSize(7),
         child: TextFormField(
-          validator: (String value) {
-            if (value.isEmpty) {
-              return "Lütfen Mail Girin";
-            }
-            return null;
+          validator: (String mailValidator) {
+            if (mailValidator != null) {
+              return "Mail adresinizi yanlış girdiniz";
+            } else
+              return null;
           },
           controller: mailText,
           textInputAction: TextInputAction.next,
@@ -159,6 +166,12 @@ class _LoginPageState extends State<LoginPage> {
         height: heightSize(7),
         child: TextFormField(
           controller: passwordText,
+          validator: (String mailValidator) {
+            if (mailValidator != null) {
+              return "Şifrenizi yanlış girdiniz";
+            } else
+              return null;
+          },
           textInputAction: TextInputAction.go,
           obscureText: true,
           textAlign: TextAlign.center,
