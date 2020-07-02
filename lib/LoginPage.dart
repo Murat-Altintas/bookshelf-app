@@ -18,6 +18,125 @@ String mailValidator;
 class _LoginPageState extends State<LoginPage> {
   bool autoControl = false;
 
+  double heightSize(double value) {
+    value /= 100;
+    return MediaQuery.of(context).size.height * value;
+  }
+
+  double widthSize(double value) {
+    value /= 100;
+    return MediaQuery.of(context).size.width * value;
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _loginAccount() async {
+    if (!_formKey.currentState.validate()) {
+      autoControl = true;
+    }
+    var firebaseUser = await _auth
+        .signInWithEmailAndPassword(
+            email: mailText.text, password: passwordText.text)
+        .then((value) => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MasterPage())));
+
+    if (firebaseUser != null) {
+      debugPrint(
+          "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email}");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: Form(
+        key: _formKey,
+        autovalidate: autoControl,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: LayoutBuilder(builder: (context, constraints) {
+              return constraints.maxWidth < 400
+                  ? Column(
+                      children: [
+                        Container(
+                          height: heightSize(30),
+                          child: Image.asset("assets/images/loginPage.png"),
+                        ),
+                        SizedBox(
+                          height: heightSize(3),
+                        ),
+                        userNameFieldLittle(),
+                        SizedBox(
+                          height: heightSize(3),
+                        ),
+                        passwordFieldLittle(),
+                        SizedBox(
+                          height: heightSize(5),
+                        ),
+                        loginButtonLittle(),
+                        SizedBox(
+                          height: heightSize(5),
+                        ),
+                        createAccountLittle(),
+                        coffeeImageLittle(),
+                        SizedBox(
+                          height: heightSize(2),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: <Widget>[
+                        Container(
+                          height: heightSize(30),
+                          child: Image.asset("assets/images/loginPage.png"),
+                        ),
+                        SizedBox(
+                          height: heightSize(3),
+                        ),
+                        userNameField(),
+                        SizedBox(
+                          height: heightSize(3),
+                        ),
+                        passwordField(),
+                        SizedBox(
+                          height: heightSize(5),
+                        ),
+                        loginButtonLittle(),
+                        SizedBox(
+                          height: heightSize(5),
+                        ),
+                        createAccountLittle(),
+                        coffeeImage(),
+                        SizedBox(height: heightSize(2)),
+                      ],
+                    );
+            }),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget coffeeImage() => Expanded(
+        child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Image.asset(
+              "assets/images/loginCoffee.png",
+              width: widthSize(30),
+            )),
+      );
+
+  Widget coffeeImageLittle() => Expanded(
+        child: Align(
+            alignment: Alignment.bottomLeft,
+            child: Image.asset(
+              "assets/images/loginCoffee.png",
+              width: widthSize(25),
+            )),
+      );
+
   Widget loginButton() => InkWell(
         onTap: () {
           _loginAccount();
@@ -33,6 +152,26 @@ class _LoginPageState extends State<LoginPage> {
             child: Text(
               "LOGIN",
               style: login,
+            ),
+          ),
+        ),
+      );
+
+  Widget loginButtonLittle() => InkWell(
+        onTap: () {
+          _loginAccount();
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(
+            Radius.circular(60),
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            color: mainBlue,
+            height: heightSize(7),
+            child: Text(
+              "LOGIN",
+              style: loginLittle,
             ),
           ),
         ),
@@ -57,84 +196,27 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
 
-  double heightSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.height * value;
-  }
-
-  double widthSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.width * value;
-  }
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  void _loginAccount() async {
-    if (!_formKey.currentState.validate()) {
-      autoControl = true;
-    }
-
-    var firebaseUser = await _auth
-        .signInWithEmailAndPassword(
-            email: mailText.text, password: passwordText.text)
-        .then((value) => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MasterPage())));
-
-    if (firebaseUser != null) {
-      debugPrint(
-          "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email}");
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Form(
-        key: _formKey,
-        autovalidate: autoControl,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Container(
-                  child: Image.asset("assets/images/loginPage.png"),
-                ),
-                SizedBox(
-                  height: heightSize(3),
-                ),
-                userNameField(),
-                passwordField(),
-                SizedBox(
-                  height: heightSize(5),
-                ),
-                loginButton(),
-                SizedBox(
-                  height: heightSize(5),
-                ),
-                createAccount(),
-                Expanded(
-                  child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Image.asset(
-                        "assets/images/loginCoffee.png",
-                        width: widthSize(30),
-                      )),
-                ),
-                SizedBox(
-                  height: heightSize(2),
-                ),
-              ],
-            ),
-          ),
+  Widget createAccountLittle() => InkWell(
+    onTap: () {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => CreateAccount()));
+    },
+    child: ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(60)),
+      child: Container(
+        alignment: Alignment.center,
+        color: mainBlue,
+        height: heightSize(7),
+        child: Text(
+          "CREATE ACCOUNT",
+          style: loginLittle,
         ),
       ),
-    );
-  }
+    ),
+  );
 
   Widget userNameField() => Container(
-        height: heightSize(7),
+        height: heightSize(10),
         child: TextFormField(
           validator: (String mailValidator) {
             if (mailValidator != null) {
@@ -162,8 +244,37 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
 
+  Widget userNameFieldLittle() => Container(
+        height: heightSize(10),
+        child: TextFormField(
+          validator: (String mailValidator) {
+            if (mailValidator != null) {
+              return "Mail adresinizi yanlış girdiniz";
+            } else
+              return null;
+          },
+          controller: mailText,
+          textInputAction: TextInputAction.next,
+          textAlign: TextAlign.center,
+          autofocus: false,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.all(3),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.green, width: 2),
+              borderRadius: BorderRadius.all(Radius.circular(60)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(60.0)),
+              borderSide: BorderSide(color: Colors.blue, width: 2),
+            ),
+            hintText: "USERNAME",
+            hintStyle: usernameLittle,
+          ),
+        ),
+      );
+
   Widget passwordField() => Container(
-        height: heightSize(7),
+        height: heightSize(10),
         child: TextFormField(
           controller: passwordText,
           validator: (String mailValidator) {
@@ -188,6 +299,36 @@ class _LoginPageState extends State<LoginPage> {
             ),
             hintText: "PASSWORD",
             hintStyle: username,
+          ),
+        ),
+      );
+
+  Widget passwordFieldLittle() => Container(
+        height: heightSize(10),
+        child: TextFormField(
+          controller: passwordText,
+          validator: (String mailValidator) {
+            if (mailValidator != null) {
+              return "Şifrenizi yanlış girdiniz";
+            } else
+              return null;
+          },
+          textInputAction: TextInputAction.go,
+          obscureText: true,
+          textAlign: TextAlign.center,
+          autofocus: false,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(top: 3),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.green, width: 2),
+              borderRadius: BorderRadius.all(Radius.circular(60)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(60.0)),
+              borderSide: BorderSide(color: Colors.blue, width: 2),
+            ),
+            hintText: "PASSWORD",
+            hintStyle: usernameLittle,
           ),
         ),
       );

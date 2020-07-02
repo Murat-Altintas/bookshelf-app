@@ -54,11 +54,25 @@ var username = TextStyle(
   color: mainBlue,
 );
 
+var usernameLittle = TextStyle(
+  fontFamily: 'MainFont',
+  fontWeight: FontWeight.w500,
+  fontSize: SizeConfig2.blockSizeHorizontal * 5,
+  color: mainBlue,
+);
+
 
 var login = TextStyle(
   fontFamily: 'MainFont',
   fontWeight: FontWeight.w500,
   fontSize: 20,
+  color: Colors.white,
+);
+
+var loginLittle = TextStyle(
+  fontFamily: 'MainFont',
+  fontWeight: FontWeight.w500,
+  fontSize: SizeConfig2.blockSizeHorizontal * 5,
   color: Colors.white,
 );
 
