@@ -13,7 +13,6 @@ class LoginPage extends StatefulWidget {
 
 var mailText, passwordText = TextEditingController();
 var _formKey = GlobalKey<FormState>();
-String mailValidator;
 
 class _LoginPageState extends State<LoginPage> {
   bool autoControl = false;
@@ -107,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: heightSize(5),
                         ),
-                        createAccountLittle(),
+                        createAccount(),
                         coffeeImage(),
                         SizedBox(height: heightSize(2)),
                       ],
@@ -178,10 +177,10 @@ class _LoginPageState extends State<LoginPage> {
       );
 
   Widget createAccount() => InkWell(
-        onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CreateAccount()));
-        },
+    onTap: () {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => CreateAccount()));
+    },
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(60)),
           child: Container(

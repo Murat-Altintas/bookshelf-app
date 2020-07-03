@@ -12,6 +12,7 @@ class CreateAccount extends StatefulWidget {
 
 var mailText = TextEditingController();
 var passwordText = TextEditingController();
+var _formKey = GlobalKey<FormState>();
 
 class _CreateAccountState extends State<CreateAccount> {
   Widget createButton() => InkWell(
@@ -41,9 +42,10 @@ class _CreateAccountState extends State<CreateAccount> {
       );
 
   Widget createAccount() => InkWell(
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-        },
+    onTap: () {
+      Navigator.pop(context,
+          MaterialPageRoute(builder: (context) => LoginPage()));
+    },
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(60)),
           child: Container(
@@ -89,39 +91,42 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Container(
-                child: Image.asset("assets/images/createAccount.png"),
-              ),
-              SizedBox(
-                height: heightSize(3),
-              ),
-              userNameField(),
-              passwordField(),
-              SizedBox(
-                height: heightSize(5),
-              ),
-              createButton(),
-              SizedBox(
-                height: heightSize(5),
-              ),
-              createAccount(),
-              Expanded(
-                child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Image.asset(
-                      "assets/images/loginCoffee.png",
-                      width: widthSize(30),
-                    )),
-              ),
-              SizedBox(
-                height: heightSize(2),
-              ),
-            ],
+      body: Form(
+        key: _formKey,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Container(
+                  child: Image.asset("assets/images/createAccount.png"),
+                ),
+                SizedBox(
+                  height: heightSize(3),
+                ),
+                userNameField(),
+                passwordField(),
+                SizedBox(
+                  height: heightSize(5),
+                ),
+                createButton(),
+                SizedBox(
+                  height: heightSize(5),
+                ),
+                createAccount(),
+                Expanded(
+                  child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Image.asset(
+                        "assets/images/loginCoffee.png",
+                        width: widthSize(30),
+                      )),
+                ),
+                SizedBox(
+                  height: heightSize(2),
+                ),
+              ],
+            ),
           ),
         ),
       ),
