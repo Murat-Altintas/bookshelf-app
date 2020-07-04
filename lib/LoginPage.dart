@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/CreateAccount.dart';
 import 'package:grade_point_avarage/LoginPage.dart';
+import 'package:grade_point_avarage/View/TextFields.dart';
 import 'package:grade_point_avarage/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -11,7 +12,8 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-var mailText, passwordText = TextEditingController();
+var mailText = TextEditingController();
+var passwordText = TextEditingController();
 var _formKey = GlobalKey<FormState>();
 
 class _LoginPageState extends State<LoginPage> {
@@ -27,21 +29,13 @@ class _LoginPageState extends State<LoginPage> {
     return MediaQuery.of(context).size.width * value;
   }
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _loginAccount() async {
-    if (!_formKey.currentState.validate()) {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    if(_formKey.currentState.validate()) {
       autoControl = true;
-    }
-    var firebaseUser = await _auth
-        .signInWithEmailAndPassword(
-            email: mailText.text, password: passwordText.text)
-        .then((value) => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MasterPage())));
-
-    if (firebaseUser != null) {
-      debugPrint(
-          "Uid ${firebaseUser.user.uid} mail : ${firebaseUser.user.email}");
+    }else {
+      var firebaseUser = await _auth.signInWithEmailAndPassword(email: mailText.text, password: passwordText.text).then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
     }
   }
 
@@ -59,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
               return constraints.maxWidth < 400
                   ? Column(
                       children: [
+
                         Container(
                           height: heightSize(30),
                           child: Image.asset("assets/images/loginPage.png"),
@@ -66,7 +61,16 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: heightSize(3),
                         ),
-                        userNameFieldLittle(),
+                        //userNameFieldLittle(),
+                        TextFields(
+                          validator: (String mailValidator) {
+                            if (mailValidator != null) {
+                              return "Mail adresinizi yanlış girdiniz";
+                            } else
+                              return null;
+                          },
+                          controller: mailText,
+                        ),
                         passwordFieldLittle(),
                         SizedBox(
                           height: heightSize(5),
@@ -174,10 +178,9 @@ class _LoginPageState extends State<LoginPage> {
       );
 
   Widget createAccount() => InkWell(
-    onTap: () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => CreateAccount()));
-    },
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
+        },
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(60)),
           child: Container(
@@ -193,23 +196,22 @@ class _LoginPageState extends State<LoginPage> {
       );
 
   Widget createAccountLittle() => InkWell(
-    onTap: () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => CreateAccount()));
-    },
-    child: ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(60)),
-      child: Container(
-        alignment: Alignment.center,
-        color: mainBlue,
-        height: heightSize(7),
-        child: Text(
-          "CREATE ACCOUNT",
-          style: loginLittle,
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(60)),
+          child: Container(
+            alignment: Alignment.center,
+            color: mainBlue,
+            height: heightSize(7),
+            child: Text(
+              "CREATE ACCOUNT",
+              style: loginLittle,
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   Widget userNameField() => Container(
         height: heightSize(10),

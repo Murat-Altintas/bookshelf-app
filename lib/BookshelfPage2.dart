@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'MasterPage.dart';
 import 'model/book.dart';
 
 class BookshelfPage2 extends StatefulWidget {
@@ -63,17 +64,21 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
             children: <Widget>[
               Container(
                 height: heightSize(35),
-                child: Stack(
+                child: Column(
                   children: <Widget>[
-                    Positioned(
-                      top: heightSize(27),
-                      child: titleText,
+                    Container(
+                      height: heightSize(25),
+                      child: Image.asset("assets/images/bookshelfPage.png"),
                     ),
-                    Positioned(
-                      child: Container(
-                        height: heightSize(25),
-                        child: Image.asset("assets/images/bookshelfPage.png"),
-                      ),
+                    Row(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.arrow_back_ios, color: Colors.blue,),
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage()));
+                            }),
+                        titleText,
+                      ],
                     ),
                   ],
                 ),
@@ -91,8 +96,8 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                         child: Text("An error occured!"),
                       );
                     } else {
-                     var titleList = dataSnapShot.data;                                   
-                     // List<String> titleList = dataSnapShot.data.documents.toList(); // benimkine benziyor işte map i liste çevirmiş
+                      var titleList = dataSnapShot.data;
+                      // List<String> titleList = dataSnapShot.data.documents.toList(); // benimkine benziyor işte map i liste çevirmiş
                       return Expanded(
                         child: ListView.builder(
                             itemCount: titleList.length,
@@ -186,18 +191,14 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
   }
 
   Future<List<Map<String, dynamic>>> bookFill() async {
-
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
     try {
       List<Map<String, dynamic>> idMap = [];
-      await _firestore
-          .collection("$uid")
-          .getDocuments()
-          .then((QuerySnapshot snapshot) {
+      await _firestore.collection("$uid").getDocuments().then((QuerySnapshot snapshot) {
         snapshot.documents.forEach((f) {
           idMap.add(f.data);
-         // print('this is the data:::: ${f.data}');
+          // print('this is the data:::: ${f.data}');
         });
       });
       return idMap;
