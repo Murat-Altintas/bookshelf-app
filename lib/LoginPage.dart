@@ -1,9 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/CreateAccount.dart';
-import 'package:grade_point_avarage/LoginPage.dart';
 import 'package:grade_point_avarage/View/TextFields.dart';
 import 'package:grade_point_avarage/style.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'MasterPage.dart';
 
@@ -29,14 +28,23 @@ class _LoginPageState extends State<LoginPage> {
     return MediaQuery.of(context).size.width * value;
   }
 
-
   void _loginAccount() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    if(_formKey.currentState.validate()) {
-      autoControl = true;
-    }else {
-      var firebaseUser = await _auth.signInWithEmailAndPassword(email: mailText.text, password: passwordText.text).then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
-    }
+    var firebaseUser = await _auth
+        .signInWithEmailAndPassword(
+//            email: mailText.text, password: passwordText.text)
+            email: 'test@test.com',
+            password: '123123')
+        .then((value) => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MasterPage())));
+
+//
+//    final FirebaseAuth _auth = FirebaseAuth.instance;
+//    if(_formKey.currentState.validate()) {
+//      autoControl = true;
+//    }else {
+//      var firebaseUser = await _auth.signInWithEmailAndPassword(email: mailText.text, password: passwordText.text).then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
+//    }
   }
 
   @override
@@ -53,7 +61,6 @@ class _LoginPageState extends State<LoginPage> {
               return constraints.maxWidth < 400
                   ? Column(
                       children: [
-
                         Container(
                           height: heightSize(30),
                           child: Image.asset("assets/images/loginPage.png"),
@@ -179,7 +186,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget createAccount() => InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CreateAccount()));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(60)),
@@ -197,7 +205,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget createAccountLittle() => InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CreateAccount()));
         },
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(60)),
