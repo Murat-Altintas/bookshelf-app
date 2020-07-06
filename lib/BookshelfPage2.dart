@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'MasterPage.dart';
 import 'model/firebaseBook.dart';
 
@@ -104,7 +102,6 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                       );
                     } else {
                       final titleList = dataSnapShot.data;
-                      // List<String> titleList = dataSnapShot.data.documents.toList(); // benimkine benziyor işte map i liste çevirmiş
                       return Expanded(
                         child: ListView.builder(
                             itemCount: titleList.length,
@@ -161,8 +158,6 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                                 MainAxisAlignment.spaceEvenly,
                                             children: <Widget>[
                                               Text(
-//                                                  titleList[index][
-//                                                      "title"],
                                                   model.title,
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -175,8 +170,6 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                               // always test the code.
                                               Text(
                                                 model.authors,
-//                                                ("test"),
-                                                // authorsList[index],  //authorsList is here
                                                 style: TextStyle(
                                                   fontSize: heightSize(2),
                                                   color: Colors.purple,
@@ -187,8 +180,6 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                               ),
                                               Text(
                                                 model.publisher,
-//                                                ("test"),
-                                                // publisherList[index],  //publisherList is here
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ],
@@ -217,10 +208,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
 
   Future<List<FirebaseBook>> getBooks() async {
     final FirebaseUser user = await _auth.currentUser();
-    return (await _firestore.collection(user.uid).getDocuments())
-        .documents
-        .map((doc) => FirebaseBook.fromJson(doc.data))
-        .toList();
+    return (await _firestore.collection(user.uid).getDocuments()).documents.map((doc) => FirebaseBook.fromJson(doc.data)).toList();
   }
 
   Future<List<Map<String, dynamic>>> bookFill() async {

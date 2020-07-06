@@ -32,9 +32,7 @@ class _LoginPageState extends State<LoginPage> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     var firebaseUser = await _auth
         .signInWithEmailAndPassword(
-//            email: mailText.text, password: passwordText.text)
-            email: 'test@test.com',
-            password: '123123')
+   email: mailText.text, password: passwordText.text)
         .then((value) => Navigator.push(
             context, MaterialPageRoute(builder: (context) => MasterPage())));
 
@@ -52,8 +50,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Form(
-        key: _formKey,
-        autovalidate: autoControl,
+       // key: _formKey,
+        //autovalidate: autoControl,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -69,15 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: heightSize(3),
                         ),
                         //userNameFieldLittle(),
-                        TextFields(
-                          validator: (String mailValidator) {
-                            if (mailValidator != null) {
-                              return "Mail adresinizi yanlış girdiniz";
-                            } else
-                              return null;
-                          },
-                          controller: mailText,
-                        ),
+                        userNameField(),
                         passwordFieldLittle(),
                         SizedBox(
                           height: heightSize(5),
@@ -225,12 +215,15 @@ class _LoginPageState extends State<LoginPage> {
   Widget userNameField() => Container(
         height: heightSize(10),
         child: TextFormField(
+          /*
           validator: (String mailValidator) {
             if (mailValidator != null) {
               return "Mail adresinizi yanlış girdiniz";
             } else
               return null;
           },
+
+           */
           controller: mailText,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.center,
@@ -254,12 +247,15 @@ class _LoginPageState extends State<LoginPage> {
   Widget userNameFieldLittle() => Container(
         height: heightSize(10),
         child: TextFormField(
+          /*
           validator: (String mailValidator) {
             if (mailValidator != null) {
               return "Mail adresinizi yanlış girdiniz";
             } else
               return null;
           },
+
+           */
           controller: mailText,
           textInputAction: TextInputAction.next,
           textAlign: TextAlign.center,
