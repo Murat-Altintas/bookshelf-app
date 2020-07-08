@@ -4,6 +4,7 @@ import 'package:grade_point_avarage/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'MasterPage.dart';
+import 'View/TextFields.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -60,11 +61,37 @@ class _CreateAccountState extends State<CreateAccount> {
                         SizedBox(
                           height: heightSize(3),
                         ),
-                        userNameFieldLittle(),
-                        passwordFieldLittle(),
-                        createButtonLittle(),
+                        TextFields(
+                          controller: mailText,
+                          hintText: "USERNAME",
+                          textStyle: textfieldStyle,
+                          validator: (String mailValidator) {
+                            if (mailValidator != null) {
+                              return "Mail adresinizi yanlış girdiniz!";
+                            } else
+                              return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: heightSize(3),
+                        ),
+                        TextFields(
+                          controller: passwordText,
+                          hintText: "PASSWORD",
+                          textStyle: textfieldStyle,
+                          validator: (String passwordValidator) {
+                            if (passwordValidator != null) {
+                              return "Şirenizi yanlış girdiniz!";
+                            } else
+                              return null;
+                          },
+                        ),
                         SizedBox(
                           height: heightSize(5),
+                        ),
+                        createButtonLittle(),
+                        SizedBox(
+                          height: heightSize(2),
                         ),
                         goToLoginPageLittle(),
                         SizedBox(
@@ -85,17 +112,37 @@ class _CreateAccountState extends State<CreateAccount> {
                         SizedBox(
                           height: heightSize(3),
                         ),
-                        userNameField(),
+                        TextFields(
+                          controller: mailText,
+                          hintText: "USERNAME",
+                          textStyle: textfieldStyle,
+                          validator: (String mailValidator) {
+                            if (mailValidator != null) {
+                              return "Mail adresinizi yanlış girdiniz!";
+                            } else
+                              return null;
+                          },
+                        ),
                         SizedBox(
                           height: heightSize(3),
                         ),
-                        passwordField(),
+                        TextFields(
+                          controller: passwordText,
+                          hintText: "PASSWORD",
+                          textStyle: textfieldStyle,
+                          validator: (String passwordValidator) {
+                            if (passwordValidator != null) {
+                              return "Şirenizi yanlış girdiniz!";
+                            } else
+                              return null;
+                          },
+                        ),
                         SizedBox(
                           height: heightSize(5),
                         ),
                         goToLoginPage(),
                         SizedBox(
-                          height: heightSize(5),
+                          height: heightSize(2),
                         ),
                         createButton(),
                         coffeeImage(),
@@ -197,123 +244,7 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       );
 
-  Widget userNameField() => Container(
-        height: heightSize(10),
-        child: TextFormField(
-          validator: (String mailValidator) {
-            if (mailValidator != null) {
-              return "Mail adresinizi yanlış girdiniz";
-            } else
-              return null;
-          },
-          controller: mailText,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.center,
-          autofocus: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(3),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(60)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(60.0)),
-              borderSide: BorderSide(color: Colors.blue, width: 2),
-            ),
-            hintText: "USERNAME",
-            hintStyle: username,
-          ),
-        ),
-      );
 
-  Widget userNameFieldLittle() => Container(
-        height: heightSize(10),
-        child: TextFormField(
-          validator: (String mailValidator) {
-            if (mailValidator != null) {
-              return "Mail adresinizi yanlış girdiniz";
-            } else
-              return null;
-          },
-          controller: mailText,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.center,
-          autofocus: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(3),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(60)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(60.0)),
-              borderSide: BorderSide(color: Colors.blue, width: 2),
-            ),
-            hintText: "USERNAME",
-            hintStyle: usernameLittle,
-          ),
-        ),
-      );
-
-  Widget passwordField() => Container(
-        height: heightSize(10),
-        child: TextFormField(
-          controller: passwordText,
-          validator: (String mailValidator) {
-            if (mailValidator != null) {
-              return "Şifrenizi yanlış girdiniz";
-            } else
-              return null;
-          },
-          textInputAction: TextInputAction.go,
-          obscureText: true,
-          textAlign: TextAlign.center,
-          autofocus: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 3),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(60)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(60.0)),
-              borderSide: BorderSide(color: Colors.blue, width: 2),
-            ),
-            hintText: "PASSWORD",
-            hintStyle: username,
-          ),
-        ),
-      );
-
-  Widget passwordFieldLittle() => Container(
-        height: heightSize(10),
-        child: TextFormField(
-          controller: passwordText,
-          validator: (String mailValidator) {
-            if (mailValidator != null) {
-              return "Şifrenizi yanlış girdiniz";
-            } else
-              return null;
-          },
-          textInputAction: TextInputAction.go,
-          obscureText: true,
-          textAlign: TextAlign.center,
-          autofocus: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 3),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(60)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(60.0)),
-              borderSide: BorderSide(color: Colors.blue, width: 2),
-            ),
-            hintText: "PASSWORD",
-            hintStyle: usernameLittle,
-          ),
-        ),
-      );
 
   Widget coffeeImage() => Expanded(
         child: Align(

@@ -47,19 +47,13 @@ var title = TextStyle(
   color: mainBlue,
 );
 
-var username = TextStyle(
-  fontFamily: 'MainFont',
-  fontWeight: FontWeight.w500,
-  fontSize: 20,
-  color: mainBlue,
-);
-
-var usernameLittle = TextStyle(
+var textfieldStyle = TextStyle(
   fontFamily: 'MainFont',
   fontWeight: FontWeight.w500,
   fontSize: SizeConfig2.blockSizeHorizontal * 5,
   color: mainBlue,
 );
+
 
 
 var login = TextStyle(

@@ -5,30 +5,22 @@ import '../style.dart';
 class TextFields extends StatefulWidget {
   final controller;
   final validator;
-
-  const TextFields({Key key, this.controller, this.validator}) : super(key: key);
+  final String hintText;
+  final textStyle;
+  const TextFields({Key key, this.controller, this.validator, this.hintText, this.textStyle}) : super(key: key);
 
   @override
   _TextFieldsState createState() => _TextFieldsState();
 }
 
 class _TextFieldsState extends State<TextFields> {
-  var mailText = TextEditingController();
-  var passwordText = TextEditingController();
-
-
   @override
   Widget build(BuildContext context) {
+
     return Container(
-      //height: heightSize(10),
       child: TextFormField(
-        validator: (String mailValidator) {
-          if (mailValidator != null) {
-            return "Mail adresinizi yanlış girdiniz";
-          } else
-            return null;
-        },
-        controller: mailText,
+        validator: widget.validator,
+        controller: widget.controller,
         textInputAction: TextInputAction.next,
         textAlign: TextAlign.center,
         autofocus: false,
@@ -42,7 +34,8 @@ class _TextFieldsState extends State<TextFields> {
             borderRadius: BorderRadius.all(Radius.circular(60.0)),
             borderSide: BorderSide(color: Colors.blue, width: 2),
           ),
-          hintStyle: username,
+          hintStyle: widget.textStyle,
+          hintText: widget.hintText,
         ),
       ),
     );

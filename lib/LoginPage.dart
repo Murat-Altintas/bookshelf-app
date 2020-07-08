@@ -29,20 +29,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _loginAccount() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    var firebaseUser = await _auth
-        .signInWithEmailAndPassword(
-   email: mailText.text, password: passwordText.text)
-        .then((value) => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MasterPage())));
-
-//
-//    final FirebaseAuth _auth = FirebaseAuth.instance;
-//    if(_formKey.currentState.validate()) {
-//      autoControl = true;
-//    }else {
-//      var firebaseUser = await _auth.signInWithEmailAndPassword(email: mailText.text, password: passwordText.text).then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
-//    }
+    final _auth = FirebaseAuth.instance;
+    if (_formKey.currentState.validate()) {
+      autoControl = true;
+    } else {
+      var firebaseUser = await _auth
+          .signInWithEmailAndPassword(
+              email: mailText.text, password: passwordText.text)
+          .then((value) => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MasterPage())));
+    }
   }
 
   @override
@@ -50,8 +46,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Form(
-       // key: _formKey,
-        //autovalidate: autoControl,
+        key: _formKey,
+        autovalidate: autoControl,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -66,9 +62,31 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: heightSize(3),
                         ),
-                        //userNameFieldLittle(),
-                        userNameField(),
-                        passwordFieldLittle(),
+                        TextFields(
+                          controller: mailText,
+                          hintText: "USERNAME",
+                          textStyle: textfieldStyle,
+                          validator: (String mailValidator) {
+                            if (mailValidator != null) {
+                              return "Mail adresinizi yanlış girdiniz!";
+                            } else
+                              return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: heightSize(3),
+                        ),
+                        TextFields(
+                          controller: passwordText,
+                          hintText: "PASSWORD",
+                          textStyle: textfieldStyle,
+                          validator: (String passwordValidator) {
+                            if (passwordValidator != null) {
+                              return "Şirenizi yanlış girdiniz!";
+                            } else
+                              return null;
+                          },
+                        ),
                         SizedBox(
                           height: heightSize(5),
                         ),
@@ -92,11 +110,31 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: heightSize(3),
                         ),
-                        userNameField(),
-                        SizedBox(
-                          height: heightSize(3),
+                        TextFields(
+                          controller: mailText,
+                          hintText: "USERNAME",
+                          textStyle: textfieldStyle,
+                          validator: (String mailValidator) {
+                            if (mailValidator != null) {
+                              return "Mail adresinizi yanlış girdiniz";
+                            } else
+                              return null;
+                          },
                         ),
-                        passwordField(),
+                        SizedBox(
+                          height: heightSize(5),
+                        ),
+                        TextFields(
+                          controller: mailText,
+                          hintText: "PASSWORD",
+                          textStyle: textfieldStyle,
+                          validator: (String passwordValidator) {
+                            if (passwordValidator != null) {
+                              return "Şirenizi yanlış girdiniz";
+                            } else
+                              return null;
+                          },
+                        ),
                         SizedBox(
                           height: heightSize(5),
                         ),
@@ -208,130 +246,6 @@ class _LoginPageState extends State<LoginPage> {
               "CREATE ACCOUNT",
               style: loginLittle,
             ),
-          ),
-        ),
-      );
-
-  Widget userNameField() => Container(
-        height: heightSize(10),
-        child: TextFormField(
-          /*
-          validator: (String mailValidator) {
-            if (mailValidator != null) {
-              return "Mail adresinizi yanlış girdiniz";
-            } else
-              return null;
-          },
-
-           */
-          controller: mailText,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.center,
-          autofocus: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(3),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(60)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(60.0)),
-              borderSide: BorderSide(color: Colors.blue, width: 2),
-            ),
-            hintText: "USERNAME",
-            hintStyle: username,
-          ),
-        ),
-      );
-
-  Widget userNameFieldLittle() => Container(
-        height: heightSize(10),
-        child: TextFormField(
-          /*
-          validator: (String mailValidator) {
-            if (mailValidator != null) {
-              return "Mail adresinizi yanlış girdiniz";
-            } else
-              return null;
-          },
-
-           */
-          controller: mailText,
-          textInputAction: TextInputAction.next,
-          textAlign: TextAlign.center,
-          autofocus: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(3),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(60)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(60.0)),
-              borderSide: BorderSide(color: Colors.blue, width: 2),
-            ),
-            hintText: "USERNAME",
-            hintStyle: usernameLittle,
-          ),
-        ),
-      );
-
-  Widget passwordField() => Container(
-        height: heightSize(10),
-        child: TextFormField(
-          controller: passwordText,
-          validator: (String mailValidator) {
-            if (mailValidator != null) {
-              return "Şifrenizi yanlış girdiniz";
-            } else
-              return null;
-          },
-          textInputAction: TextInputAction.go,
-          obscureText: true,
-          textAlign: TextAlign.center,
-          autofocus: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 3),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(60)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(60.0)),
-              borderSide: BorderSide(color: Colors.blue, width: 2),
-            ),
-            hintText: "PASSWORD",
-            hintStyle: username,
-          ),
-        ),
-      );
-
-  Widget passwordFieldLittle() => Container(
-        height: heightSize(10),
-        child: TextFormField(
-          controller: passwordText,
-          validator: (String mailValidator) {
-            if (mailValidator != null) {
-              return "Şifrenizi yanlış girdiniz";
-            } else
-              return null;
-          },
-          textInputAction: TextInputAction.go,
-          obscureText: true,
-          textAlign: TextAlign.center,
-          autofocus: false,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 3),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.green, width: 2),
-              borderRadius: BorderRadius.all(Radius.circular(60)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(60.0)),
-              borderSide: BorderSide(color: Colors.blue, width: 2),
-            ),
-            hintText: "PASSWORD",
-            hintStyle: usernameLittle,
           ),
         ),
       );
