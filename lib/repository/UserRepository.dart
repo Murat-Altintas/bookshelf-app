@@ -1,36 +1,60 @@
-import "package:firebase_auth/firebase_auth.dart";
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class UserRepository {
-  FirebaseAuth firebaseAuth;
+enum UserDurumu {Idle, OturumAcilmamis, OturumAciliyor, OturumAcik}
 
-  UserRepository() {
-    this.firebaseAuth = FirebaseAuth.instance;
+class UserRepository with ChangeNotifier{
+
+  FirebaseAuth _auth;
+  FirebaseUser _user;
+  UserDurumu _durum = UserDurumu.Idle;
+
+  FirebaseUser get user => _user;
+
+  set user(FirebaseUser value) {
+    _user = value;
   }
 
-  Future<FirebaseUser> createUser(String email, String password) async {
+  UserDurumu get durum => _durum;
+
+  set durum(UserDurumu value) {
+    _durum = value;
+  }
+
+  Future<bool> signIn(String email, String sifre) async {
     try {
-      var resault = await firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      return resault.user;
-    } on PlatformException catch (e) {
-      throw Exception(e.toString());
+      _durum = UserDurumu.OturumAciliyor;
+      notifyListeners();
+      _auth.signInWithEmailAndPassword(email: email, password: sifre);
+      return true;
+    }catch (e) {
+      _durum = UserDurumu.OturumAcilmamis;
+      notifyListeners();
+      return false;
     }
   }
 
-  Future<FirebaseUser> signInUser(String email, String password) async {
-    var resault = await firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
-    return resault.user;
+  Future signOut() async{
+    _auth.signOut();
+    _durum = UserDurumu.OturumAcilmamis;
+    notifyListeners();
+    return Future.delayed(Duration.zero);
   }
 
-  Future<void> signOut() async {
-    await firebaseAuth.signOut();
+  UserRepository() {
+    _auth = FirebaseAuth.instance;
+    _auth.onAuthStateChanged.listen(_onAuthStateChanged);
   }
 
-  Future<bool> isSignedIn() async {
-    var currentUser = await firebaseAuth.currentUser();
-    return currentUser != null;
+  Future<void> _onAuthStateChanged (FirebaseUser user) async {
+    if (user == null) {
+      _durum = UserDurumu.OturumAcilmamis;
+    }else {
+      _user = user;
+      _durum = UserDurumu.OturumAcik;
+    }
+
+    notifyListeners();
   }
 
 
