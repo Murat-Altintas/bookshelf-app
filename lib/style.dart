@@ -21,10 +21,6 @@ class styles extends StatefulWidget {
   _stylesState createState() => _stylesState();
 }
 
-
-
-
-
 class _stylesState extends State<styles> {
   @override
   Widget build(BuildContext context) {

@@ -185,12 +185,6 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget createButtonLittle() => InkWell(
         onTap: () {
           _createAccount();
-          /*
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MasterPage()));
-     */
         },
         child: ClipRRect(
           borderRadius: BorderRadius.all(

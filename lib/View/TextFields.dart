@@ -7,7 +7,9 @@ class TextFields extends StatefulWidget {
   final validator;
   final String hintText;
   final textStyle;
-  const TextFields({Key key, this.controller, this.validator, this.hintText, this.textStyle}) : super(key: key);
+  final suffixIcon;
+  final obscureText;
+  const TextFields({Key key, this.controller, this.validator, this.hintText, this.textStyle, this.suffixIcon, this.obscureText}) : super(key: key);
 
   @override
   _TextFieldsState createState() => _TextFieldsState();
@@ -16,15 +18,18 @@ class TextFields extends StatefulWidget {
 class _TextFieldsState extends State<TextFields> {
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: TextFormField(
+        obscureText: widget.obscureText,
+
+
         validator: widget.validator,
         controller: widget.controller,
         textInputAction: TextInputAction.next,
         textAlign: TextAlign.center,
         autofocus: false,
         decoration: InputDecoration(
+          suffixIcon: widget.suffixIcon,
           contentPadding: EdgeInsets.all(3),
           border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.green, width: 2),
@@ -36,6 +41,8 @@ class _TextFieldsState extends State<TextFields> {
           ),
           hintStyle: widget.textStyle,
           hintText: widget.hintText,
+
+
         ),
       ),
     );

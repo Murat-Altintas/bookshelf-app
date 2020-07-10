@@ -1,12 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grade_point_avarage/CreateAccount.dart';
+import 'package:grade_point_avarage/MasterPage.dart';
+import 'package:grade_point_avarage/View/LoginButton.dart';
 import 'package:grade_point_avarage/View/TextFields.dart';
+import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'package:grade_point_avarage/style.dart';
-
-import 'MasterPage.dart';
+import 'View/CreateAccountButton.dart';
 
 class LoginPage extends StatefulWidget {
+  final formKey;
+  final bool autoControl;
+
+  const LoginPage({Key key, this.formKey, this.autoControl}) : super(key: key);
+
+  get widget => formKey;
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -14,6 +21,7 @@ class LoginPage extends StatefulWidget {
 var mailText = TextEditingController();
 var passwordText = TextEditingController();
 var _formKey = GlobalKey<FormState>();
+bool obscureText = true;
 
 class _LoginPageState extends State<LoginPage> {
   bool autoControl = false;
@@ -26,19 +34,6 @@ class _LoginPageState extends State<LoginPage> {
   double widthSize(double value) {
     value /= 100;
     return MediaQuery.of(context).size.width * value;
-  }
-
-  void _loginAccount() async {
-    final _auth = FirebaseAuth.instance;
-    if (_formKey.currentState.validate()) {
-      autoControl = true;
-    } else {
-      var firebaseUser = await _auth
-          .signInWithEmailAndPassword(
-              email: mailText.text, password: passwordText.text)
-          .then((value) => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MasterPage())));
-    }
   }
 
   @override
@@ -63,11 +58,12 @@ class _LoginPageState extends State<LoginPage> {
                           height: heightSize(3),
                         ),
                         TextFields(
+                          obscureText: false,
                           controller: mailText,
                           hintText: "USERNAME",
                           textStyle: textfieldStyle,
                           validator: (String mailValidator) {
-                            if (mailValidator != null) {
+                            if (mailValidator == null) {
                               return "Mail adresinizi yanlış girdiniz!";
                             } else
                               return null;
@@ -77,11 +73,15 @@ class _LoginPageState extends State<LoginPage> {
                           height: heightSize(3),
                         ),
                         TextFields(
+                          obscureText: obscureText,
+                          suffixIcon: IconButton(
+                              icon: Icon(Icons.remove_red_eye),
+                              onPressed: _showPassword),
                           controller: passwordText,
                           hintText: "PASSWORD",
                           textStyle: textfieldStyle,
                           validator: (String passwordValidator) {
-                            if (passwordValidator != null) {
+                            if (passwordValidator == null) {
                               return "Şirenizi yanlış girdiniz!";
                             } else
                               return null;
@@ -90,11 +90,14 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: heightSize(5),
                         ),
-                        loginButtonLittle(),
+                        loginButton(),
                         SizedBox(
                           height: heightSize(5),
                         ),
-                        createAccountLittle(),
+                        CreateAccountButton(
+                          height: heightSize(7),
+                          textStyle: loginLittle,
+                        ),
                         coffeeImageLittle(),
                         SizedBox(
                           height: heightSize(2),
@@ -111,11 +114,12 @@ class _LoginPageState extends State<LoginPage> {
                           height: heightSize(3),
                         ),
                         TextFields(
+                          obscureText: false,
                           controller: mailText,
                           hintText: "USERNAME",
                           textStyle: textfieldStyle,
                           validator: (String mailValidator) {
-                            if (mailValidator != null) {
+                            if (mailValidator == null) {
                               return "Mail adresinizi yanlış girdiniz";
                             } else
                               return null;
@@ -125,11 +129,15 @@ class _LoginPageState extends State<LoginPage> {
                           height: heightSize(5),
                         ),
                         TextFields(
-                          controller: mailText,
+                          obscureText: false,
+                          suffixIcon: IconButton(
+                              icon: Icon(Icons.remove_red_eye),
+                              onPressed: _showPassword),
+                          controller: passwordText,
                           hintText: "PASSWORD",
                           textStyle: textfieldStyle,
                           validator: (String passwordValidator) {
-                            if (passwordValidator != null) {
+                            if (passwordValidator == null) {
                               return "Şirenizi yanlış girdiniz";
                             } else
                               return null;
@@ -142,7 +150,10 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(
                           height: heightSize(5),
                         ),
-                        createAccount(),
+                        CreateAccountButton(
+                          height: heightSize(7),
+                          textStyle: login,
+                        ),
                         coffeeImage(),
                         SizedBox(height: heightSize(2)),
                       ],
@@ -174,7 +185,14 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget loginButton() => InkWell(
         onTap: () {
-          _loginAccount();
+          if (_formKey.currentState.validate()) {
+            autoControl = true;
+          } else {
+            UserRepository()
+                .signIn(mailText.toString(), passwordText.toString())
+                .then((value) => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MasterPage())));
+          }
         },
         child: ClipRRect(
           borderRadius: BorderRadius.all(
@@ -193,9 +211,16 @@ class _LoginPageState extends State<LoginPage> {
       );
 
   Widget loginButtonLittle() => InkWell(
-        onTap: () {
-          _loginAccount();
-        },
+    onTap: () {
+      if (!_formKey.currentState.validate()) {
+        autoControl = true;
+      } else {
+        UserRepository()
+            .signIn(mailText.toString(), passwordText.toString())
+            .then((value) => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => MasterPage())));
+      }
+    },
         child: ClipRRect(
           borderRadius: BorderRadius.all(
             Radius.circular(60),
@@ -212,41 +237,9 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
 
-  Widget createAccount() => InkWell(
-        onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CreateAccount()));
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(60)),
-          child: Container(
-            alignment: Alignment.center,
-            color: mainBlue,
-            height: heightSize(7),
-            child: Text(
-              "CREATE ACCOUNT",
-              style: login,
-            ),
-          ),
-        ),
-      );
-
-  Widget createAccountLittle() => InkWell(
-        onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CreateAccount()));
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(60)),
-          child: Container(
-            alignment: Alignment.center,
-            color: mainBlue,
-            height: heightSize(7),
-            child: Text(
-              "CREATE ACCOUNT",
-              style: loginLittle,
-            ),
-          ),
-        ),
-      );
+  void _showPassword() {
+    setState(() {
+      obscureText = !obscureText;
+    });
+  }
 }
