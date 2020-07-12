@@ -79,8 +79,8 @@ class _CreateAccountState extends State<CreateAccount> {
                           controller: passwordText,
                           hintText: "PASSWORD",
                           textStyle: textfieldStyle,
-                          validator: (String passwordValidator) {
-                            if (passwordValidator != null) {
+                          validator: (String passValidator) {
+                            if (passValidator != null) {
                               return "Şirenizi yanlış girdiniz!";
                             } else
                               return null;
@@ -116,8 +116,8 @@ class _CreateAccountState extends State<CreateAccount> {
                           controller: mailText,
                           hintText: "USERNAME",
                           textStyle: textfieldStyle,
-                          validator: (String mailValidator) {
-                            if (mailValidator != null) {
+                          validator: (String mailVali) {
+                            if (mailVali != null) {
                               return "Mail adresinizi yanlış girdiniz!";
                             } else
                               return null;

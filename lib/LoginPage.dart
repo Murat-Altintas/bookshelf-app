@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   var formKey = GlobalKey<FormState>();
   bool obscureText = true;
 
+
   double heightSize(double value) {
     value /= 100;
     return MediaQuery.of(context).size.height * value;
@@ -58,11 +59,8 @@ class _LoginPageState extends State<LoginPage> {
                             controller: mailText,
                             hintText: "USERNAME",
                             textStyle: textfieldStyle,
-                            validator: (String mailValidator) {
-                              if (mailValidator == null) {
-                                return "Mail adresinizi yanlış girdiniz!";
-                              } else
-                                return null;
+                            validator: (String mailControl) {
+                              TextFields.mailControl(mailControl);
                             },
                           ),
                           SizedBox(
@@ -76,11 +74,8 @@ class _LoginPageState extends State<LoginPage> {
                             controller: passwordText,
                             hintText: "PASSWORD",
                             textStyle: textfieldStyle,
-                            validator: (String passwordValidator) {
-                              if (passwordValidator == null) {
-                                return "Şirenizi yanlış girdiniz!";
-                              } else
-                                return null;
+                            validator: (String passwordControl) {
+                              TextFields.passwordControl(passwordControl);
                             },
                           ),
                           SizedBox(
@@ -109,16 +104,15 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             height: heightSize(3),
                           ),
+
+                          /*
                           TextFields(
                             obscureText: false,
                             controller: mailText,
                             hintText: "USERNAME",
                             textStyle: textfieldStyle,
-                            validator: (String mailValidator) {
-                              if (mailValidator == null) {
-                                return "Mail adresinizi yanlış girdiniz";
-                              } else
-                                return null;
+                            validator: (String value) {
+                              TextFields.mailControl;
                             },
                           ),
                           SizedBox(
@@ -139,6 +133,10 @@ class _LoginPageState extends State<LoginPage> {
                                 return null;
                             },
                           ),
+
+
+
+                           */
                           SizedBox(
                             height: heightSize(5),
                           ),
@@ -184,13 +182,19 @@ class _LoginPageState extends State<LoginPage> {
         onTap: () {
           if (formKey.currentState.validate()) {
             setState(() {
-              autoControl = true;
+              debugPrint("formkey çalıştı");
+
             });
           } else {
+            debugPrint("çalışmadı");
+
+            /*
             FirebaseAuth _auth;
             _auth.signInWithEmailAndPassword(
                 email: mailText.toString(), password: passwordText.toString());
+           */
           }
+
 
           /*
               UserRepository().signIn(mailText.toString(), passwordText.toString()).then(
