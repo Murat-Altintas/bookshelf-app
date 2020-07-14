@@ -20,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   var formKey = GlobalKey<FormState>();
   bool obscureText = true;
 
-
   double heightSize(double value) {
     value /= 100;
     return MediaQuery.of(context).size.height * value;
@@ -39,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
         resizeToAvoidBottomPadding: false,
         body: Form(
           key: formKey,
-          autovalidate: autoControl,
+          autovalidate: false,
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -56,27 +55,27 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           TextFields(
                             obscureText: false,
-                            controller: mailText,
-                            hintText: "USERNAME",
-                            textStyle: textfieldStyle,
-                            validator: (String mailControl) {
-                              TextFields.mailControl(mailControl);
+                            validator: (String value) {
+                              TextFields.mailControl(value);
                             },
+                            controller: mailText,
+                            hintText: "MAIL",
+                            textStyle: textfieldStyle,
                           ),
                           SizedBox(
                             height: heightSize(3),
                           ),
                           TextFields(
                             obscureText: obscureText,
+                            validator: (String value) {
+                              TextFields.passwordControl(value);
+                            },
                             suffixIcon: IconButton(
                                 icon: Icon(Icons.remove_red_eye),
                                 onPressed: _showPassword),
                             controller: passwordText,
                             hintText: "PASSWORD",
                             textStyle: textfieldStyle,
-                            validator: (String passwordControl) {
-                              TextFields.passwordControl(passwordControl);
-                            },
                           ),
                           SizedBox(
                             height: heightSize(5),
@@ -87,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           CreateAccountButton(
                             height: heightSize(7),
-                            textStyle: loginLittle,
+                            textStyle: login,
                           ),
                           coffeeImageLittle(),
                           SizedBox(
@@ -181,20 +180,19 @@ class _LoginPageState extends State<LoginPage> {
   Widget loginButton() => InkWell(
         onTap: () {
           if (formKey.currentState.validate()) {
-            setState(() {
-              debugPrint("formkey çalıştı");
+            autoControl = true;
 
-            });
+            print("hello");
           } else {
-            debugPrint("çalışmadı");
-
+            setState(() {
+              autoControl = true;
+            });
             /*
             FirebaseAuth _auth;
             _auth.signInWithEmailAndPassword(
                 email: mailText.toString(), password: passwordText.toString());
            */
           }
-
 
           /*
               UserRepository().signIn(mailText.toString(), passwordText.toString()).then(

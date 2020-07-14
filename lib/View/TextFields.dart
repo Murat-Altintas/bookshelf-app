@@ -9,8 +9,9 @@ class TextFields extends StatefulWidget {
   final textStyle;
   final suffixIcon;
   final obscureText;
+  final error;
 
-  const TextFields({Key key, this.controller, this.validator, this.hintText, this.textStyle, this.suffixIcon, this.obscureText}) : super(key: key);
+  const TextFields({Key key, this.controller, this.validator, this.hintText, this.textStyle, this.suffixIcon, this.obscureText, this.error}) : super(key: key);
 
 
   static String mailControl(String value) {
@@ -52,7 +53,9 @@ class _TextFieldsState extends State<TextFields> {
       textAlign: TextAlign.center,
       autofocus: false,
       decoration: InputDecoration(
+
         suffixIcon: widget.suffixIcon,
+        errorText: widget.error,
         contentPadding: EdgeInsets.all(3),
         border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.green, width: 2),
@@ -64,7 +67,8 @@ class _TextFieldsState extends State<TextFields> {
         ),
         hintStyle: widget.textStyle,
         hintText: widget.hintText,
-      ),
+      )
+       ,
     );
 
   }

@@ -46,7 +46,7 @@ var title = TextStyle(
 var textfieldStyle = TextStyle(
   fontFamily: 'MainFont',
   fontWeight: FontWeight.w500,
-  fontSize: SizeConfig2.blockSizeHorizontal * 5,
+  fontSize: 20,
   color: mainBlue,
 );
 

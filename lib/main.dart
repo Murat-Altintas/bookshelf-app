@@ -25,7 +25,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    SizeConfig2().init(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       //backgroundColor: Colors.lightBlueAccent.shade100,
