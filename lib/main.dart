@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/CreateAccount.dart';
+import 'package:grade_point_avarage/ResaultPage.dart';
 
 import 'LoginPage.dart';
 import 'style.dart';
@@ -28,7 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       //backgroundColor: Colors.lightBlueAccent.shade100,
-      body: LoginPage(),
+      body: ResaultPage(),
 //      body: BookshelfPage2(),
     );
   }
