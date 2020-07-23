@@ -29,16 +29,15 @@ class _LoginPageState extends State<LoginPage> {
     return MediaQuery.of(context).size.width * value;
   }
 
-
   void _loginAccount() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
-    if(_formKey.currentState.validate()) {
+    if (_formKey.currentState.validate()) {
       autoControl = true;
-    }else {
+    } else {
       var firebaseUser = await _auth.signInWithEmailAndPassword(email: mailText.text, password: passwordText.text).then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
     }
   }
-
+String xtysdf = "testse";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,10 +49,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LayoutBuilder(builder: (context, constraints) {
-              return constraints.maxWidth < 400
+              return constraints.maxWidth > 400
                   ? Column(
                       children: [
-
                         Container(
                           height: heightSize(30),
                           child: Image.asset("assets/images/loginPage.png"),
@@ -62,15 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: heightSize(3),
                         ),
                         //userNameFieldLittle(),
-                        TextFields(
-                          validator: (String mailValidator) {
-                            if (mailValidator != null) {
-                              return "Mail adresinizi yanlış girdiniz";
-                            } else
-                              return null;
-                          },
-                          controller: mailText,
-                        ),
+
                         passwordFieldLittle(),
                         SizedBox(
                           height: heightSize(5),
@@ -98,6 +88,9 @@ class _LoginPageState extends State<LoginPage> {
                         userNameField(),
                         SizedBox(
                           height: heightSize(3),
+                        ),
+                        TextFields(
+                          testText: "test",
                         ),
                         passwordField(),
                         SizedBox(
