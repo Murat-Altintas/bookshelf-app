@@ -21,10 +21,6 @@ class styles extends StatefulWidget {
   _stylesState createState() => _stylesState();
 }
 
-
-
-
-
 class _stylesState extends State<styles> {
   @override
   Widget build(BuildContext context) {
@@ -47,19 +43,13 @@ var title = TextStyle(
   color: mainBlue,
 );
 
-var username = TextStyle(
+var textfieldStyle = TextStyle(
   fontFamily: 'MainFont',
   fontWeight: FontWeight.w500,
   fontSize: 20,
   color: mainBlue,
 );
 
-var usernameLittle = TextStyle(
-  fontFamily: 'MainFont',
-  fontWeight: FontWeight.w500,
-  fontSize: SizeConfig2.blockSizeHorizontal * 5,
-  color: mainBlue,
-);
 
 
 var login = TextStyle(

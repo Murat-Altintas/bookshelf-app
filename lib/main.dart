@@ -1,11 +1,9 @@
-import 'package:grade_point_avarage/BookshelfPage.dart';
+import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/CreateAccount.dart';
-import 'package:grade_point_avarage/MasterPage.dart';
-import 'BookshelfPage2.dart';
-import 'ResaultPage.dart';
+import 'package:grade_point_avarage/ResaultPage.dart';
+
 import 'LoginPage.dart';
 import 'style.dart';
-import 'package:flutter/material.dart';
 
 void main() => runApp(GradePoint());
 
@@ -28,11 +26,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    SizeConfig2().init(context);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       //backgroundColor: Colors.lightBlueAccent.shade100,
-      body: LoginPage(),
+      body: ResaultPage(),
+//      body: BookshelfPage2(),
     );
   }
 }
@@ -46,7 +44,6 @@ Flexible(),
 FittedBox(),
 Spacer(),
  */
-
 
 /*
 readTest() async {
@@ -81,7 +78,6 @@ readTest() async {
     });
   }
  */
-
 
 /*
 Container(
@@ -186,7 +182,6 @@ Container(
                 ),
               ),
  */
-
 
 /*
 var title = CommonStyledTitle(

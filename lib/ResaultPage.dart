@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:ui';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,7 +28,8 @@ class _ResaultPageState extends State<ResaultPage> {
 
   getData(String bookName) async {
     var dio = Dio();
-    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex");
+    var response = await dio.get(
+        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex");
     Book tempBook;
     Map data = await response.data;
     if (allBook == null)
@@ -43,12 +46,18 @@ class _ResaultPageState extends State<ResaultPage> {
   //------------------------------------------------------------//
   double heightSize(double value) {
     value /= 100;
-    return MediaQuery.of(context).size.height * value;
+    return MediaQuery
+        .of(context)
+        .size
+        .height * value;
   }
 
   double widthSize(double value) {
     value /= 100;
-    return MediaQuery.of(context).size.width * value;
+    return MediaQuery
+        .of(context)
+        .size
+        .width * value;
   }
 
   //------------------------------------------------------------//
@@ -115,7 +124,8 @@ class _ResaultPageState extends State<ResaultPage> {
         ],
       ),
     );
-    searchBar() => Row(
+    searchBar() =>
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             IconButton(
@@ -177,7 +187,9 @@ class _ResaultPageState extends State<ResaultPage> {
                   Positioned(
                     left: widthSize(46),
                     top: heightSize(2),
-                    child: Container(height: heightSize(25), child: Image.asset("assets/images/resaultPage.png")),
+                    child: Container(
+                        height: heightSize(25),
+                        child: Image.asset("assets/images/resaultPage.png")),
                   ),
                 ],
               ),
@@ -187,105 +199,65 @@ class _ResaultPageState extends State<ResaultPage> {
               height: heightSize(2),
             ),
             Expanded(
-              child: ListView(
-                controller: _scrollController,
-                children: <Widget>[
-                  if (allBook != null)
-                    for (int i = 0; i < allBook.items.length; i++)
-                      GestureDetector(
-                        //onTap: () => _saveFavoriteBook(GBooksApi.items[i]),
-                        child: Column(
-                          children: <Widget>[
-                            allBook.items.length == 0
-                                ? 'NO DATA'
-                                : Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Colors.black12,
-                                  width: 2,
+                child: Column(
+                  children: <Widget>[
+                    CarouselSlider.builder(
+                      options: CarouselOptions(
+                          aspectRatio: 16 / 9,
+                          viewportFraction: 0.8,
+                          enableInfiniteScroll: true,
+                          autoPlay: true,
+                          autoPlayInterval: Duration(seconds: 3),
+                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          autoPlayCurve: Curves.easeOutQuart,
+                          enlargeCenterPage: true,
+                          height: heightSize(55)),
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.black12,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 5,
+                                  offset: Offset(0, 5),
                                 ),
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 5,
-                                    offset: Offset(0, 5),
-                                  ),
-                                ],
-                              ),
-                              padding: EdgeInsets.only(left: widthSize(5), right: widthSize(5)),
-                              height: heightSize(25),
-                              width: widthSize(90),
-                              child: Row(
-                                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              ],
+                            ),
+                            child: Column(children: <Widget>[
+                              Card(   child: Image.network(
+                                  allBook.items[index].volumeInfo.imageLinks.thumbnail,
+                              height: heightSize(35),
+                                fit: BoxFit.fill,
+                              
+                              ),),
+                              Column(
                                 children: <Widget>[
-                                  Expanded(
-                                    flex: 4,
-                                    child: Container(
-                                      //height: heightSize(35),
-                                      child: allBook.items[i].volumeInfo.imageLinks == null
-                                          ? Text("NO IMAGE :(",
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                          ))
-                                          : Image.network("${allBook.items[i].volumeInfo.imageLinks.thumbnail}"),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: widthSize(3),
-                                  ),
-                                  Expanded(
-                                    flex: 9,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        Text("${allBook.items[i].volumeInfo.title == null ? "NO DATA" : allBook.items[i].volumeInfo.title.toUpperCase()}",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize: heightSize(2),
-                                              color: Colors.lightBlue,
-                                              fontFamily: 'MainFont',
-                                              fontWeight: FontWeight.w700,
-                                            )),
-                                        Text(
-                                          "${allBook.items[i].volumeInfo.authors == null ? "NO DATA" : allBook.items[i].volumeInfo.authors.first}",
-                                          style: TextStyle(
-                                            fontSize: heightSize(2),
-                                            color: Colors.purple,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: heightSize(2),
-                                        ),
-                                        Text(
-                                          "${allBook.items[i].volumeInfo.publisher == null ? "NO DATA" : allBook.items[i].volumeInfo.publisher}",
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.favorite_border),
-                                    padding: EdgeInsets.only(left: 20),
-                                    iconSize: heightSize(4),
-                                    color: Colors.blue,
-                                    onPressed: () async {
-                                      _saveBookTitle(allBook.items[i]);
-                                    },
-                                  ),
+
+                                  Text(allBook.items[index].volumeInfo.title,
+                                    style: TextStyle(fontSize: 16.0),),
+                                  Text(allBook.items[index].volumeInfo.authors.toString(),
+                                    style: TextStyle(fontSize: 16.0),)
                                 ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: heightSize(3),
-                            ),
-                          ],
-                        ),
-                      ),
-                ],
-              ),
+                              )
+                            ],
+                            ));
+                      },
+                      itemCount: allBook.items.length,
+                    )
+
+                  ],
+                )
             ),
           ],
         ),
@@ -299,11 +271,18 @@ class _ResaultPageState extends State<ResaultPage> {
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
 
-
-    String title = selectedBook.volumeInfo.title == null ? "NO DATA" : selectedBook.volumeInfo.title.toString();
-    String authors = selectedBook.volumeInfo.authors == null ? "NO DATA" : selectedBook.volumeInfo.authors.first.toString();
-    String publisher = selectedBook.volumeInfo.publisher == null ? "NO DATA" : selectedBook.volumeInfo.publisher.toString();
-    String image = selectedBook.volumeInfo.imageLinks == null ? "NO DATA" : selectedBook.volumeInfo.imageLinks.thumbnail.toString();
+    String title = selectedBook.volumeInfo.title == null
+        ? "NO DATA"
+        : selectedBook.volumeInfo.title.toString();
+    String authors = selectedBook.volumeInfo.authors == null
+        ? "NO DATA"
+        : selectedBook.volumeInfo.authors.first.toString();
+    String publisher = selectedBook.volumeInfo.publisher == null
+        ? "NO DATA"
+        : selectedBook.volumeInfo.publisher.toString();
+    String image = selectedBook.volumeInfo.imageLinks == null
+        ? "NO DATA"
+        : selectedBook.volumeInfo.imageLinks.thumbnail.toString();
 
     Map<String, String> mixMap = {
       "title": title,
