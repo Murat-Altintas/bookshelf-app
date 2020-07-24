@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
-import 'package:grade_point_avarage/View/TextFields.dart';
+import 'View/ContextExtension.dart';
+import 'View/TextFields.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'package:grade_point_avarage/style.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
         resizeToAvoidBottomPadding: false,
         body: Form(
           key: formKey,
-          autovalidate: false,
+          autovalidate: autoControl,
           child: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -47,17 +48,15 @@ class _LoginPageState extends State<LoginPage> {
                     ? Column(
                         children: [
                           Container(
-                            height: heightSize(30),
+                            height: context.height*.2,
                             child: Image.asset("assets/images/loginPage.png"),
                           ),
                           SizedBox(
                             height: heightSize(3),
                           ),
                           TextFields(
+                            validator: mailControl,
                             obscureText: false,
-                            validator: (String value) {
-                              TextFields.mailControl(value);
-                            },
                             controller: mailText,
                             hintText: "MAIL",
                             textStyle: textfieldStyle,
@@ -66,13 +65,10 @@ class _LoginPageState extends State<LoginPage> {
                             height: heightSize(3),
                           ),
                           TextFields(
+                            validator: passwordControl,
                             obscureText: obscureText,
-                            validator: (String value) {
-                              TextFields.passwordControl(value);
-                            },
                             suffixIcon: IconButton(
-                                icon: Icon(Icons.remove_red_eye),
-                                onPressed: _showPassword),
+                                icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
                             controller: passwordText,
                             hintText: "PASSWORD",
                             textStyle: textfieldStyle,
@@ -177,46 +173,57 @@ class _LoginPageState extends State<LoginPage> {
             )),
       );
 
-  Widget loginButton() => InkWell(
-        onTap: () {
-          if (formKey.currentState.validate()) {
-            autoControl = true;
+  static String mailControl(String value) {
+    String regEx =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = new RegExp(regEx);
+    if (value.length == 0) {
+      return "Email adresi gerekli";
+    } else if (!regExp.hasMatch(value)) {
+      return "Geçersiz mail adresi";
+    } else {
+      return null;
+    }
+  }
 
-            print("hello");
-          } else {
-            setState(() {
-              autoControl = true;
-            });
-            /*
+  static String passwordControl(String value) {
+    if (value.isEmpty) {
+      return "Şifre alanını boş bırakmayınız.";
+    } else if (value.length <= 4 && value.length <= 20) {
+      return "Şifre 5-20 karakter arasında olmalıdır";
+    } else {
+      return null;
+    }
+  }
+
+  Widget loginButton() {
+    return InkWell(
+      onTap: () {
+        UserRepository().signIn(mailText.text, passwordText.text).then((value) =>
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
+
+        /*
             FirebaseAuth _auth;
             _auth.signInWithEmailAndPassword(
                 email: mailText.toString(), password: passwordText.toString());
            */
-          }
-
-          /*
-              UserRepository().signIn(mailText.toString(), passwordText.toString()).then(
-                    (value) =>
-                        Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MasterPage())));
-
-                     */
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(
-            Radius.circular(60),
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            color: mainBlue,
-            height: heightSize(7),
-            child: Text(
-              "LOGIN",
-              style: login,
-            ),
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(
+          Radius.circular(60),
+        ),
+        child: Container(
+          alignment: Alignment.center,
+          color: mainBlue,
+          height: heightSize(7),
+          child: Text(
+            "LOGIN",
+            style: login,
           ),
         ),
-      );
+      ),
+    );
+  }
 
   Widget loginButtonLittle() => InkWell(
         onTap: () {

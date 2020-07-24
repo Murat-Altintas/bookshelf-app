@@ -26,6 +26,8 @@ class _stylesState extends State<styles> {
   Widget build(BuildContext context) {
     return Column(children: <Widget>[],);
   }
+
+
 }
 
 
@@ -46,7 +48,7 @@ var title = TextStyle(
 var textfieldStyle = TextStyle(
   fontFamily: 'MainFont',
   fontWeight: FontWeight.w500,
-  fontSize: 20,
+  fontSize: 10,
   color: mainBlue,
 );
 
