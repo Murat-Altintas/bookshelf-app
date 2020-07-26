@@ -3,7 +3,6 @@ import 'package:grade_point_avarage/CreateAccount.dart';
 import 'package:grade_point_avarage/ResaultPage.dart';
 
 import 'LoginPage.dart';
-import 'style.dart';
 
 void main() => runApp(GradePoint());
 

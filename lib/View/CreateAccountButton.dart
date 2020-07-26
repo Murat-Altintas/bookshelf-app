@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
+import 'package:grade_point_avarage/View/ContextExtension.dart';
 
-import '../style.dart';
 
 class CreateAccountButton extends StatefulWidget {
   final double height;
@@ -23,7 +24,7 @@ class _CreateAccountButtonState extends State<CreateAccountButton> {
         borderRadius: BorderRadius.all(Radius.circular(60)),
         child: Container(
           alignment: Alignment.center,
-          color: mainBlue,
+          color: blueTheme.primaryColor,
           height: widget.height,
           child: Text(
             "CREATE ACCOUNT",

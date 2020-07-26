@@ -4,7 +4,6 @@ import 'package:grade_point_avarage/BookshelfPage2.dart';
 import 'BookshelfPage.dart';
 import 'OptionsPage.dart';
 import 'ResaultPage.dart';
-import 'style.dart';
 
 class MasterPage extends StatefulWidget {
   @override

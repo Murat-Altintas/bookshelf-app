@@ -1,13 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'View/ContextExtension.dart';
 import 'View/TextFields.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';
-import 'package:grade_point_avarage/style.dart';
 import 'package:provider/provider.dart';
 import 'View/CreateAccountButton.dart';
+import 'init/theme/BlueTheme.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,16 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   var passwordText = TextEditingController();
   var formKey = GlobalKey<FormState>();
   bool obscureText = true;
-
-  double heightSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.height * value;
-  }
-
-  double widthSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.width * value;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,21 +36,22 @@ class _LoginPageState extends State<LoginPage> {
                     ? Column(
                         children: [
                           Container(
-                            height: context.height*.2,
+                            height: context.height * 30,
                             child: Image.asset("assets/images/loginPage.png"),
                           ),
                           SizedBox(
-                            height: heightSize(3),
+                            height: context.height * 3,
                           ),
                           TextFields(
                             validator: mailControl,
                             obscureText: false,
                             controller: mailText,
                             hintText: "MAIL",
-                            textStyle: textfieldStyle,
+                            textStyle: blueTheme.textTheme.headline2
+                                .copyWith(fontSize: context.normalText),
                           ),
                           SizedBox(
-                            height: heightSize(3),
+                            height: context.height * 3,
                           ),
                           TextFields(
                             validator: passwordControl,
@@ -71,80 +60,48 @@ class _LoginPageState extends State<LoginPage> {
                                 icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
                             controller: passwordText,
                             hintText: "PASSWORD",
-                            textStyle: textfieldStyle,
+                            textStyle: blueTheme.textTheme.headline2
+                                .copyWith(fontSize: context.normalText),
                           ),
                           SizedBox(
-                            height: heightSize(5),
+                            height: context.height * 3,
                           ),
                           loginButton(),
                           SizedBox(
-                            height: heightSize(5),
+                            height: context.height * 3,
                           ),
                           CreateAccountButton(
-                            height: heightSize(7),
-                            textStyle: login,
+                            height: context.mediumContainer,
                           ),
                           coffeeImageLittle(),
                           SizedBox(
-                            height: heightSize(2),
+                            height: context.height * 3,
                           ),
                         ],
                       )
                     : Column(
                         children: <Widget>[
                           Container(
-                            height: heightSize(30),
+                            height: context.height * 10,
                             child: Image.asset("assets/images/loginPage.png"),
                           ),
                           SizedBox(
-                            height: heightSize(3),
+                            height: context.height * 3,
                           ),
 
-                          /*
-                          TextFields(
-                            obscureText: false,
-                            controller: mailText,
-                            hintText: "USERNAME",
-                            textStyle: textfieldStyle,
-                            validator: (String value) {
-                              TextFields.mailControl;
-                            },
-                          ),
                           SizedBox(
-                            height: heightSize(5),
-                          ),
-                          TextFields(
-                            obscureText: false,
-                            suffixIcon: IconButton(
-                                icon: Icon(Icons.remove_red_eye),
-                                onPressed: _showPassword),
-                            controller: passwordText,
-                            hintText: "PASSWORD",
-                            textStyle: textfieldStyle,
-                            validator: (String passwordValidator) {
-                              if (passwordValidator == null) {
-                                return "Şirenizi yanlış girdiniz";
-                              } else
-                                return null;
-                            },
-                          ),
-
-
-
-                           */
-                          SizedBox(
-                            height: heightSize(5),
+                            height: context.height * 1,
                           ),
                           //loginButtonLittle(),
                           SizedBox(
-                            height: heightSize(5),
+                            height: context.height * 3,
                           ),
                           CreateAccountButton(
-                            height: heightSize(7),
-                            textStyle: login,
                           ),
                           coffeeImage(),
-                          SizedBox(height: heightSize(2)),
+                          SizedBox(
+                            height: context.height * 3,
+                          ),
                         ],
                       );
               }),
@@ -160,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
             alignment: Alignment.bottomLeft,
             child: Image.asset(
               "assets/images/loginCoffee.png",
-              width: widthSize(30),
+              width: context.width * 10,
             )),
       );
 
@@ -169,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
             alignment: Alignment.bottomLeft,
             child: Image.asset(
               "assets/images/loginCoffee.png",
-              width: widthSize(25),
+              width: context.width * 20,
             )),
       );
 
@@ -214,11 +171,12 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Container(
           alignment: Alignment.center,
-          color: mainBlue,
-          height: heightSize(7),
+          color: blueTheme.primaryColor,
+          height: context.lowContainer,
           child: Text(
             "LOGIN",
-            style: login,
+            style: blueTheme.textTheme.headline3
+              .copyWith(fontSize: context.normalText),
           ),
         ),
       ),
@@ -246,11 +204,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
           child: Container(
             alignment: Alignment.center,
-            color: mainBlue,
-            height: heightSize(7),
+            color: blueTheme.primaryColor,
+            height: context.height * 5,
             child: Text(
               "LOGIN",
-              style: loginLittle,
+              style: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
             ),
           ),
         ),

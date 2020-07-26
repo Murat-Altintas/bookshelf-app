@@ -7,10 +7,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
+import 'init/theme/BlueTheme.dart';
 import 'model/book.dart';
-import 'style.dart';
-import 'dart:developer' as dev;
-import 'sizeConfig.dart';
+import 'package:grade_point_avarage/View/ContextExtension.dart';
 
 class ResaultPage extends StatefulWidget {
   @override
@@ -231,7 +230,8 @@ class _ResaultPageState extends State<ResaultPage> {
                   borderSide: BorderSide(color: Colors.lightBlue, width: 1),
                 ),
                 hintText: "Search your favorite book...",
-                hintStyle: search,
+                hintStyle: blueTheme.textTheme.headline2
+                    .copyWith(fontSize: context.normalText),
               ),
               onSubmitted: (s) async {
                 getData(bookName.text);

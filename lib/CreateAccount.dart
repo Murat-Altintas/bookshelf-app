@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/LoginPage.dart';
-import 'package:grade_point_avarage/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'MasterPage.dart';
+import 'package:grade_point_avarage/View/ContextExtension.dart';
 import 'View/TextFields.dart';
+import 'init/theme/BlueTheme.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -64,8 +63,8 @@ class _CreateAccountState extends State<CreateAccount> {
                         TextFields(
                           controller: mailText,
                           hintText: "USERNAME",
-                          textStyle: textfieldStyle,
-                          validator: (String mailValidator) {
+                          textStyle: blueTheme.textTheme.headline2
+                              .copyWith(fontSize: context.normalText),                          validator: (String mailValidator) {
                             if (mailValidator != null) {
                               return "Mail adresinizi yanlış girdiniz!";
                             } else
@@ -78,8 +77,9 @@ class _CreateAccountState extends State<CreateAccount> {
                         TextFields(
                           controller: passwordText,
                           hintText: "PASSWORD",
-                          textStyle: textfieldStyle,
-                          validator: (String passValidator) {
+
+                          textStyle: blueTheme.textTheme.headline2
+                              .copyWith(fontSize: context.normalText),                          validator: (String passValidator) {
                             if (passValidator != null) {
                               return "Şirenizi yanlış girdiniz!";
                             } else
@@ -115,7 +115,8 @@ class _CreateAccountState extends State<CreateAccount> {
                         TextFields(
                           controller: mailText,
                           hintText: "USERNAME",
-                          textStyle: textfieldStyle,
+                          textStyle: blueTheme.textTheme.headline2
+                              .copyWith(fontSize: context.normalText),
                           validator: (String mailVali) {
                             if (mailVali != null) {
                               return "Mail adresinizi yanlış girdiniz!";
@@ -129,7 +130,8 @@ class _CreateAccountState extends State<CreateAccount> {
                         TextFields(
                           controller: passwordText,
                           hintText: "PASSWORD",
-                          textStyle: textfieldStyle,
+                          textStyle: blueTheme.textTheme.headline2
+                              .copyWith(fontSize: context.normalText),
                           validator: (String passwordValidator) {
                             if (passwordValidator != null) {
                               return "Şirenizi yanlış girdiniz!";
@@ -172,11 +174,12 @@ class _CreateAccountState extends State<CreateAccount> {
           ),
           child: Container(
             alignment: Alignment.center,
-            color: mainBlue,
+            color: blueTheme.primaryColor,
             height: heightSize(7),
             child: Text(
               "CREATE ACCOUNT",
-              style: login,
+              style: blueTheme.textTheme.headline2
+                  .copyWith(fontSize: context.normalText),
             ),
           ),
         ),
@@ -192,11 +195,12 @@ class _CreateAccountState extends State<CreateAccount> {
           ),
           child: Container(
             alignment: Alignment.center,
-            color: mainBlue,
+            color: blueTheme.primaryColor,
             height: heightSize(7),
             child: Text(
               "CREATE ACCOUNT",
-              style: loginLittle,
+              style: blueTheme.textTheme.headline2
+                  .copyWith(fontSize: context.normalText),
             ),
           ),
         ),
@@ -210,11 +214,12 @@ class _CreateAccountState extends State<CreateAccount> {
           borderRadius: BorderRadius.all(Radius.circular(60)),
           child: Container(
             alignment: Alignment.center,
-            color: mainBlue,
+            color: blueTheme.primaryColor,
             height: heightSize(7),
             child: Text(
               "LOGIN",
-              style: login,
+              style: blueTheme.textTheme.headline2
+                  .copyWith(fontSize: context.normalText),
             ),
           ),
         ),
@@ -228,11 +233,12 @@ class _CreateAccountState extends State<CreateAccount> {
           borderRadius: BorderRadius.all(Radius.circular(60)),
           child: Container(
             alignment: Alignment.center,
-            color: mainBlue,
+            color: blueTheme.primaryColor,
             height: heightSize(7),
             child: Text(
               "LOGIN",
-              style: loginLittle,
+              style: blueTheme.textTheme.headline2
+                  .copyWith(fontSize: context.normalText),
             ),
           ),
         ),
