@@ -88,7 +88,6 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                 ),
               ),
               FutureBuilder<List<FirebaseBook>>(
-//                future: bookFill(),
                 future: getBooks(),
                 builder: (context, dataSnapShot) {
                   if (dataSnapShot.connectionState == ConnectionState.waiting) {

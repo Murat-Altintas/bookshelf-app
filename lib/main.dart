@@ -3,7 +3,6 @@ import 'package:grade_point_avarage/CreateAccount.dart';
 import 'package:grade_point_avarage/ResaultPage.dart';
 
 import 'LoginPage.dart';
-import 'style.dart';
 
 void main() => runApp(GradePoint());
 
@@ -29,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       //backgroundColor: Colors.lightBlueAccent.shade100,
-      body: ResaultPage(),
+      body: LoginPage(),
 //      body: BookshelfPage2(),
     );
   }

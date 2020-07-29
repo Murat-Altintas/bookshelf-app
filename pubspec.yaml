@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.3.0 <3.0.0"
+  sdk: '>=2.6.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -36,16 +36,15 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
+
 flutter:
   fonts:
-    - family: MainFont
+    - family: ZonaBold
       fonts:
-        - asset:  assets/fonts/Roboto-Thin.ttf
-          weight: 100
-        - asset: assets/fonts/Roboto-Bold.ttf
-          weight: 300
-        - asset: assets/fonts/Roboto-Regular.ttf
-          weight: 200
+        - asset: assets/fonts/ZonaPro-Bold.otf
+    - family: ZonaLight
+      fonts:
+        - asset: assets/fonts/ZonaPro-Thin.otf
 
 
 

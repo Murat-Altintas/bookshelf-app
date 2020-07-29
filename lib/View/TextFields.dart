@@ -1,28 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
-import '../style.dart';
-import 'BaseState.dart';
+import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
 
 class TextFields extends StatefulWidget {
+  final controller;
+  final validator;
+  final String hintText;
+  final textStyle;
+  final suffixIcon;
+  final obscureText;
+  final error;
 
-  final testText;
-
-  const TextFields({Key key, this.testText}) : super(key: key);
+  const TextFields(
+      {Key key,
+      this.controller,
+      this.validator,
+      this.hintText,
+      this.textStyle,
+      this.suffixIcon,
+      this.obscureText,
+      this.error})
+      : super(key: key);
 
   @override
   _TextFieldsState createState() => _TextFieldsState();
 }
 
-class _TextFieldsState extends BaseState<TextFields> {
-  var mailText = TextEditingController();
-  var passwordText = TextEditingController();
-
+class _TextFieldsState extends State<TextFields> {
   @override
   Widget build(BuildContext context) {
-    TextStyle headline2 = TextStyle(fontSize: dynamicHeight(29), fontWeight: FontWeight.w300, letterSpacing: -0.5, color: Colors.green);
-    return Text(
-      widget.testText,
-      style: headline2,
+    return Container(
+      height: context.mediumContainer,
+      child: TextFormField(
+        obscureText: widget.obscureText,
+        validator: widget.validator,
+        controller: widget.controller,
+        textInputAction: TextInputAction.next,
+        textAlign: TextAlign.center,
+        autofocus: false,
+        decoration: InputDecoration(
+          suffixIcon: widget.suffixIcon,
+          errorText: widget.error,
+          border: OutlineInputBorder(
+            borderSide: blueTheme.inputDecorationTheme.errorBorder.,
+            borderRadius: BorderRadius.all(Radius.circular(context.lowContainer)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(context.lowContainer)),
+            borderSide: BorderSide(color: blueTheme.primaryColor, width: 2),
+          ),
+          hintStyle: widget.textStyle,
+          hintText: widget.hintText,
+        ),
+      ),
     );
   }
 }
