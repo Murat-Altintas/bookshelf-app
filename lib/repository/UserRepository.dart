@@ -20,6 +20,12 @@ class UserRepository with ChangeNotifier {
     _durum = value;
   }
 
+  Future<bool> createUser(String email, String, password) async {
+    _auth.createUserWithEmailAndPassword(email: email, password: password);
+    notifyListeners();
+    return true;
+  }
+
   Future<bool> signIn(String email, String sifre) async {
     try {
       _durum = UserDurumu.OturumAciliyor;

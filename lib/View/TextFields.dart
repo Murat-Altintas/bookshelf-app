@@ -36,19 +36,18 @@ class _TextFieldsState extends State<TextFields> {
         validator: widget.validator,
         controller: widget.controller,
         textInputAction: TextInputAction.next,
-        textAlign: TextAlign.center,
         autofocus: false,
         decoration: InputDecoration(
           suffixIcon: widget.suffixIcon,
           errorText: widget.error,
           border: OutlineInputBorder(
-            borderSide: blueTheme.inputDecorationTheme.errorBorder.,
             borderRadius: BorderRadius.all(Radius.circular(context.lowContainer)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(context.lowContainer)),
             borderSide: BorderSide(color: blueTheme.primaryColor, width: 2),
           ),
+          errorBorder: blueTheme.inputDecorationTheme.errorBorder,
           hintStyle: widget.textStyle,
           hintText: widget.hintText,
         ),
