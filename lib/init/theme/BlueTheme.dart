@@ -22,7 +22,7 @@ final ThemeData blueTheme = ThemeData(
 
   dividerColor: Color(0xffffffff),
   //XX
-  highlightColor: Color(0x66bcbcbc),
+  highlightColor: Colors.red,
   splashColor: Color(0xffE8E8E8),
   selectedRowColor: Color(0xfff5f5f5),
   unselectedWidgetColor: Color(0x8a000000),

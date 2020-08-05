@@ -82,17 +82,20 @@ class _ResaultPageState extends State<ResaultPage> {
                     itemCount: allBook.items.length,
                     options: CarouselOptions(
                         pauseAutoPlayOnTouch: true,
+                        disableCenter: true,
+                        enlargeStrategy: CenterPageEnlargeStrategy.scale,
                         enlargeCenterPage: true,
                         viewportFraction: 0.6,
                         enableInfiniteScroll: true,
-                        autoPlay: true,
+                        autoPlay: false,
                         autoPlayInterval: Duration(seconds: 4),
                         autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        autoPlayCurve: Curves.linear,
-                        height: context.height * 58),
+                        autoPlayCurve: Curves.decelerate,
+                        height: context.height * 57),
                     itemBuilder: (BuildContext context, int index) {
+                      var pressAttention = false;
                       return Container(
-                          width: context.width * 55,
+                          width: context.height * 55,
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -124,7 +127,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                   Text(
                                     allBook.items[index].volumeInfo.title == null
                                         ? "No data"
-                                        : allBook.items[index].volumeInfo.title,
+                                        : allBook.items[index].volumeInfo.title.toUpperCase(),
                                     style: blueTheme.primaryTextTheme.headline1
                                         .copyWith(fontSize: context.lowText),
                                     textAlign: TextAlign.center,
@@ -132,17 +135,46 @@ class _ResaultPageState extends State<ResaultPage> {
                                   Text(
                                     allBook.items[index].volumeInfo.authors.toString() == null
                                         ? "No data"
-                                        : allBook.items[index].volumeInfo.authors.toString(),
+                                        : allBook.items[index].volumeInfo.authors
+                                            .toString()
+                                            .replaceAll("]", "")
+                                            .replaceAll("[", ""),
                                     style: blueTheme.primaryTextTheme.headline2
                                         .copyWith(fontSize: context.lowText),
                                     textAlign: TextAlign.center,
                                   ),
-                                  Text(allBook.items[index].volumeInfo.publisher.toString(),
-
+                                  Text(
+                                    allBook.items[index].volumeInfo.publisher.toString() == null
+                                        ? "No data"
+                                        : allBook.items[index].volumeInfo.publisher.toString(),
                                     style: blueTheme.primaryTextTheme.headline3
                                         .copyWith(fontSize: context.lowText),
                                     textAlign: TextAlign.center,
-
+                                  ),
+                                  SizedBox(
+                                    height: context.height * 1,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.favorite_border),
+                                        color: pressAttention ? Colors.red : Colors.blue,
+                                        onPressed: () =>
+                                            setState(() => pressAttention = !pressAttention),
+                                        highlightColor: Colors.black,
+                                        splashColor: Colors.red,
+                                        focusColor: Colors.green,
+                                        hoverColor: Colors.yellow,
+                                        iconSize: 30,
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.check_box_outline_blank),
+                                        onPressed: () {},
+                                        highlightColor: Colors.blue,
+                                        iconSize: 30,
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
