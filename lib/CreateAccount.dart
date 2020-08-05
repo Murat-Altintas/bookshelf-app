@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/LoginPage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grade_point_avarage/View/BlueButtons.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
+import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'View/TextFields.dart';
+import 'init/CoffeeImage.dart';
 import 'init/theme/BlueTheme.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -14,31 +16,9 @@ var mailText = TextEditingController();
 var passwordText = TextEditingController();
 var _formKey = GlobalKey<FormState>();
 bool autoControl = false;
+bool obscureText = true;
 
 class _CreateAccountState extends State<CreateAccount> {
-  double heightSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.height * value;
-  }
-
-  double widthSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.width * value;
-  }
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  void _createAccount() async {
-    var firebaseUser = await _auth.createUserWithEmailAndPassword(email: mailText.text, password: passwordText.text).then(
-          (value) => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginPage(),
-            ),
-          ),
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,23 +28,25 @@ class _CreateAccountState extends State<CreateAccount> {
         autovalidate: autoControl,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: context.paddingMedium,
             child: LayoutBuilder(builder: (context, constraints) {
               return constraints.maxWidth < 400
                   ? Column(
                       children: [
                         Container(
-                          height: heightSize(40),
+                          height: context.height * 40,
                           child: Image.asset("assets/images/createAccount.png"),
                         ),
                         SizedBox(
-                          height: heightSize(3),
+                          height: context.lowestContainer,
                         ),
                         TextFields(
+                          obscureText: false,
                           controller: mailText,
                           hintText: "USERNAME",
-                          textStyle: blueTheme.textTheme.headline2
-                              .copyWith(fontSize: context.normalText),                          validator: (String mailValidator) {
+                          textStyle:
+                              blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                          validator: (String mailValidator) {
                             if (mailValidator != null) {
                               return "Mail adresinizi yanlış girdiniz!";
                             } else
@@ -72,14 +54,17 @@ class _CreateAccountState extends State<CreateAccount> {
                           },
                         ),
                         SizedBox(
-                          height: heightSize(3),
+                          height: context.lowestContainer,
                         ),
                         TextFields(
+                          suffixIcon: IconButton(
+                              icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
                           controller: passwordText,
                           hintText: "PASSWORD",
-
-                          textStyle: blueTheme.textTheme.headline2
-                              .copyWith(fontSize: context.normalText),                          validator: (String passValidator) {
+                          obscureText: true,
+                          textStyle:
+                              blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                          validator: (String passValidator) {
                             if (passValidator != null) {
                               return "Şirenizi yanlış girdiniz!";
                             } else
@@ -87,36 +72,48 @@ class _CreateAccountState extends State<CreateAccount> {
                           },
                         ),
                         SizedBox(
-                          height: heightSize(5),
+                          height: context.lowestContainer,
                         ),
-                        createButtonLittle(),
-                        SizedBox(
-                          height: heightSize(2),
+                        BlueButtons(
+                          onTap: () {
+                            if (_formKey.currentState.validate()) {
+                              UserRepository().createUser(mailText.text, String, passwordText.text);
+                            }
+                          },
+                          incomingText: "CREATE ACCOUNT",
                         ),
-                        goToLoginPageLittle(),
                         SizedBox(
-                          height: heightSize(5),
+                          height: context.lowContainer,
                         ),
-                        coffeeImageLittle(),
+                        BlueButtons(
+                          onTap: () {
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => LoginPage()));
+                          },
+                          incomingText: "LOGIN",
+                        ),
+                        CoffeeImage(
+                          double: context.height * 15,
+                        ),
                         SizedBox(
-                          height: heightSize(2),
+                          height: context.height * 2,
                         ),
                       ],
                     )
                   : Column(
                       children: <Widget>[
                         Container(
-                          height: heightSize(30),
+                          height: context.height * 30,
                           child: Image.asset("assets/images/createAccount.png"),
                         ),
                         SizedBox(
-                          height: heightSize(3),
+                          height: context.height * 3,
                         ),
                         TextFields(
                           controller: mailText,
                           hintText: "USERNAME",
-                          textStyle: blueTheme.textTheme.headline2
-                              .copyWith(fontSize: context.normalText),
+                          textStyle:
+                              blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
                           validator: (String mailVali) {
                             if (mailVali != null) {
                               return "Mail adresinizi yanlış girdiniz!";
@@ -125,13 +122,15 @@ class _CreateAccountState extends State<CreateAccount> {
                           },
                         ),
                         SizedBox(
-                          height: heightSize(3),
+                          height: context.lowestContainer,
                         ),
                         TextFields(
                           controller: passwordText,
                           hintText: "PASSWORD",
-                          textStyle: blueTheme.textTheme.headline2
-                              .copyWith(fontSize: context.normalText),
+                          suffixIcon: IconButton(
+                              icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
+                          textStyle:
+                              blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
                           validator: (String passwordValidator) {
                             if (passwordValidator != null) {
                               return "Şirenizi yanlış girdiniz!";
@@ -140,15 +139,24 @@ class _CreateAccountState extends State<CreateAccount> {
                           },
                         ),
                         SizedBox(
-                          height: heightSize(5),
+                          height: context.lowContainer,
                         ),
-                        goToLoginPage(),
+                        BlueButtons(
+                          onTap: () {
+                            Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => LoginPage()));
+                          },
+                          incomingText: "LOGIN",
+                        ),
                         SizedBox(
-                          height: heightSize(2),
+                          height: context.lowestContainer,
                         ),
-                        createButton(),
-                        coffeeImage(),
-                        SizedBox(height: heightSize(2)),
+                        CoffeeImage(
+                          double: context.height * 15,
+                        ),
+                        SizedBox(
+                          height: context.lowestContainer,
+                        ),
                       ],
                     );
             }),
@@ -158,109 +166,9 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  Widget createButton() => InkWell(
-        onTap: () {
-          _createAccount();
-          /*
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MasterPage()));
-     */
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(
-            Radius.circular(60),
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            color: blueTheme.primaryColor,
-            height: heightSize(7),
-            child: Text(
-              "CREATE ACCOUNT",
-              style: blueTheme.textTheme.headline2
-                  .copyWith(fontSize: context.normalText),
-            ),
-          ),
-        ),
-      );
-
-  Widget createButtonLittle() => InkWell(
-        onTap: () {
-          _createAccount();
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(
-            Radius.circular(60),
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            color: blueTheme.primaryColor,
-            height: heightSize(7),
-            child: Text(
-              "CREATE ACCOUNT",
-              style: blueTheme.textTheme.headline2
-                  .copyWith(fontSize: context.normalText),
-            ),
-          ),
-        ),
-      );
-
-  Widget goToLoginPage() => InkWell(
-        onTap: () {
-          Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginPage()));
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(60)),
-          child: Container(
-            alignment: Alignment.center,
-            color: blueTheme.primaryColor,
-            height: heightSize(7),
-            child: Text(
-              "LOGIN",
-              style: blueTheme.textTheme.headline2
-                  .copyWith(fontSize: context.normalText),
-            ),
-          ),
-        ),
-      );
-
-  Widget goToLoginPageLittle() => InkWell(
-        onTap: () {
-          Navigator.pop(context, MaterialPageRoute(builder: (context) => LoginPage()));
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(60)),
-          child: Container(
-            alignment: Alignment.center,
-            color: blueTheme.primaryColor,
-            height: heightSize(7),
-            child: Text(
-              "LOGIN",
-              style: blueTheme.textTheme.headline2
-                  .copyWith(fontSize: context.normalText),
-            ),
-          ),
-        ),
-      );
-
-
-
-  Widget coffeeImage() => Expanded(
-        child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Image.asset(
-              "assets/images/loginCoffee.png",
-              width: widthSize(30),
-            )),
-      );
-
-  Widget coffeeImageLittle() => Expanded(
-        child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Image.asset(
-              "assets/images/loginCoffee.png",
-              width: widthSize(25),
-            )),
-      );
+  void _showPassword() {
+    setState(() {
+      obscureText = !obscureText;
+    });
+  }
 }

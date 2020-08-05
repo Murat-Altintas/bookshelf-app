@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
+import 'package:grade_point_avarage/View/BlueButtons.dart';
+import 'package:grade_point_avarage/init/CoffeeImage.dart';
 import 'View/ContextExtension.dart';
 import 'View/TextFields.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';
@@ -30,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
           autovalidate: autoControl,
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: context.paddingMedium,
               child: LayoutBuilder(builder: (context, constraints) {
                 return constraints.maxWidth < 400
                     ? Column(
@@ -40,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: Image.asset("assets/images/loginPage.png"),
                           ),
                           SizedBox(
-                            height: context.height * 3,
+                            height: context.lowContainer,
                           ),
                           TextFields(
                             validator: mailControl,
@@ -66,14 +68,29 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             height: context.height * 3,
                           ),
-                          loginButton(),
+                          BlueButtons(
+                            onTap: () {
+                              if (formKey.currentState.validate()) {
+                                UserRepository().signIn(mailText.text, passwordText.text).then(
+                                    (value) => Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) => MasterPage())));
+                              }
+                            },
+                            incomingText: "LOGIN",
+                          ),
                           SizedBox(
-                            height: context.height * 3,
+                            height: context.lowContainer,
                           ),
-                          CreateAccountButton(
-                            height: context.mediumContainer,
+                          BlueButtons(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => CreateAccountButton()));
+                            },
+                            incomingText: "CREATE ACCOUNT",
                           ),
-                          coffeeImageLittle(),
+                          CoffeeImage(
+                            double: context.height * 15,
+                          ),
                           SizedBox(
                             height: context.height * 3,
                           ),
@@ -88,17 +105,10 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             height: context.height * 3,
                           ),
-
-                          SizedBox(
-                            height: context.height * 1,
+                          CreateAccountButton(),
+                          CoffeeImage(
+                            double: context.height * 15,
                           ),
-                          //loginButtonLittle(),
-                          SizedBox(
-                            height: context.height * 3,
-                          ),
-                          CreateAccountButton(
-                          ),
-                          coffeeImage(),
                           SizedBox(
                             height: context.height * 3,
                           ),
@@ -111,24 +121,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  Widget coffeeImage() => Expanded(
-        child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Image.asset(
-              "assets/images/loginCoffee.png",
-              width: context.width * 10,
-            )),
-      );
-
-  Widget coffeeImageLittle() => Expanded(
-        child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Image.asset(
-              "assets/images/loginCoffee.png",
-              width: context.width * 20,
-            )),
-      );
 
   static String mailControl(String value) {
     String regEx =
@@ -152,67 +144,6 @@ class _LoginPageState extends State<LoginPage> {
       return null;
     }
   }
-
-  Widget loginButton() {
-    return InkWell(
-      onTap: () {
-        UserRepository().signIn(mailText.text, passwordText.text).then((value) =>
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
-
-        /*
-            FirebaseAuth _auth;
-            _auth.signInWithEmailAndPassword(
-                email: mailText.toString(), password: passwordText.toString());
-           */
-      },
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(
-          Radius.circular(60),
-        ),
-        child: Container(
-          alignment: Alignment.center,
-          color: blueTheme.primaryColor,
-          height: context.lowContainer,
-          child: Text(
-            "LOGIN",
-            style: blueTheme.textTheme.headline3
-              .copyWith(fontSize: context.normalText),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget loginButtonLittle() => InkWell(
-        onTap: () {
-          /*
-          if (!formKey.currentState.validate()) {
-            setState(() {
-              autoControl = true;
-            });
-          } else {
-            UserRepository().signIn(mailText.text, passwordText.text).then(
-                (value) => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MasterPage())));
-          }
-
-           */
-        },
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(
-            Radius.circular(60),
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            color: blueTheme.primaryColor,
-            height: context.height * 5,
-            child: Text(
-              "LOGIN",
-              style: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-            ),
-          ),
-        ),
-      );
 
   void _showPassword() {
     setState(() {

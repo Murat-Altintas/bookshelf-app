@@ -105,11 +105,8 @@ final ThemeData blueTheme = ThemeData(
       fontFamily: "ZonaLight",
     ),
     headline5: TextStyle(
-      //XX
-      color: Color(0xdd000000),
-      fontSize: 15,
-      fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.normal,
+      color: Colors.blue,
+      fontFamily: "ZonaLight",
     ),
     headline6: TextStyle(
       //XX
@@ -164,24 +161,16 @@ final ThemeData blueTheme = ThemeData(
   primaryTextTheme: TextTheme(
     //XX
     headline1: TextStyle(
-      color: Color(0xfffafafa),
-      fontSize: 35,
-      fontWeight: FontWeight.bold,
-      fontStyle: FontStyle.normal,
+      color: Colors.blue,
+      fontFamily: "ZonaBold",
     ),
     headline2: TextStyle(
-      //XX
-      color: Color(0xfffafafa),
-      fontSize: 30,
-      fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.normal,
+      color: Colors.deepPurple,
+      fontFamily: "ZonaLight",
     ),
     headline3: TextStyle(
-      //XX
-      color: Color(0xfffafafa),
-      fontSize: 25,
-      fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.normal,
+      color: Colors.blueGrey,
+      fontFamily: "ZonaLight",
     ),
     headline4: TextStyle(
       //XX
@@ -297,12 +286,14 @@ final ThemeData blueTheme = ThemeData(
     ),
     filled: false,
     fillColor: Color(0x00000000),
-    errorBorder: UnderlineInputBorder(
+    errorBorder: OutlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.red,
+        color: Colors.green,
         width: 2,
       ),
-      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: BorderRadius.all(
+        Radius.circular(40),
+      ),
     ),
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(
@@ -347,13 +338,9 @@ final ThemeData blueTheme = ThemeData(
   ),
 
   iconTheme: IconThemeData(
-    color: Color(0xdd000000),
-    opacity: 1,
-    size: 24,
+    color: Colors.purple,
   ),
   primaryIconTheme: IconThemeData(
-    color: Color(0xffffffff),
-    opacity: 1,
-    size: 24,
+    color: Colors.purple,
   ),
 );
