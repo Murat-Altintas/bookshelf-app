@@ -97,88 +97,87 @@ class _ResaultPageState extends State<ResaultPage> {
                       return Container(
                           width: context.height * 55,
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 5,
-                                offset: Offset(10, 0),
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                child: allBook.items[index].volumeInfo.imageLinks != null
-                                    ? Image.network(
-                                        allBook.items[index].volumeInfo.imageLinks.thumbnail,
-                                        height: context.height * 35,
-                                        fit: BoxFit.fill,
-                                      )
-                                    : Text("no image"),
-                              ),
-                              Column(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: context.lowestContainer,
-                                  ),
-                                  Text(
-                                    allBook.items[index].volumeInfo.title == null
-                                        ? "No data"
-                                        : allBook.items[index].volumeInfo.title.toUpperCase(),
-                                    style: blueTheme.primaryTextTheme.headline1
-                                        .copyWith(fontSize: context.lowText),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Text(
-                                    allBook.items[index].volumeInfo.authors.toString() == null
-                                        ? "No data"
-                                        : allBook.items[index].volumeInfo.authors
-                                            .toString()
-                                            .replaceAll("]", "")
-                                            .replaceAll("[", ""),
-                                    style: blueTheme.primaryTextTheme.headline2
-                                        .copyWith(fontSize: context.lowText),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Text(
-                                    allBook.items[index].volumeInfo.publisher.toString() == null
-                                        ? "No data"
-                                        : allBook.items[index].volumeInfo.publisher.toString(),
-                                    style: blueTheme.primaryTextTheme.headline3
-                                        .copyWith(fontSize: context.lowText),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(
-                                    height: context.height * 1,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      IconButton(
-                                        icon: Icon(Icons.favorite_border),
-                                        color: pressAttention ? Colors.red : Colors.blue,
-                                        onPressed: () =>
-                                            setState(() => pressAttention = !pressAttention),
-                                        highlightColor: Colors.black,
-                                        splashColor: Colors.red,
-                                        focusColor: Colors.green,
-                                        hoverColor: Colors.yellow,
-                                        iconSize: 30,
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.check_box_outline_blank),
-                                        onPressed: () {},
-                                        highlightColor: Colors.blue,
-                                        iconSize: 30,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 5,
+                                  offset: Offset(10, 0),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  child: allBook.items[index].volumeInfo.imageLinks != null
+                                      ? Image.network(
+                                          allBook.items[index].volumeInfo.imageLinks.thumbnail,
+                                          height: context.height * 35,
+                                          fit: BoxFit.fill,
+                                        )
+                                      : Text("no image"),
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: context.lowestContainer,
+                                    ),
+                                    Text(
+                                      allBook.items[index].volumeInfo.title == null
+                                          ? "No data"
+                                          : allBook.items[index].volumeInfo.title.toUpperCase(),
+                                      style: blueTheme.primaryTextTheme.headline1
+                                          .copyWith(fontSize: context.lowText),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      allBook.items[index].volumeInfo.authors.toString() == null
+                                          ? "No data"
+                                          : allBook.items[index].volumeInfo.authors
+                                              .toString()
+                                              .replaceAll("]", "")
+                                              .replaceAll("[", ""),
+                                      style: blueTheme.primaryTextTheme.headline2
+                                          .copyWith(fontSize: context.lowText),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      allBook.items[index].volumeInfo.publisher.toString() == null
+                                          ? "No data"
+                                          : allBook.items[index].volumeInfo.publisher.toString(),
+                                      style: blueTheme.primaryTextTheme.headline3
+                                          .copyWith(fontSize: context.lowText),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: context.height * 3,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        IconButton(
+                                          icon: Icon(Icons.favorite_border),
+                                          onPressed: () {},
+                                          color: blueTheme.errorColor,
+                                          highlightColor: blueTheme.primaryColor,
+                                          iconSize: 30,
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.check_box_outline_blank),
+                                          onPressed: () {},
+                                          iconSize: 30,
+                                          color: blueTheme.primaryColor,
+                                          highlightColor: blueTheme.accentColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ));
                     },
                   )
