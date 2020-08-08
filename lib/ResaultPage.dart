@@ -22,13 +22,13 @@ class _ResaultPageState extends State<ResaultPage> {
   ScrollController _scrollController = ScrollController();
   Book allBook;
   Book tempBook;
-  int startIndex = 0;
+  double startIndex = 0;
   var bookName = TextEditingController();
 
   getData(String bookName) async {
     var dio = Dio();
     var response = await dio.get(
-        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex");
+        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex
     Map data = await response.data;
     if (allBook == null) allBook = Book.fromJson(data);
     print(allBook.items.length);
@@ -41,12 +41,15 @@ class _ResaultPageState extends State<ResaultPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _scrollController.addListener(() {
+
+    /*
+        _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         startIndex += 10;
         getData(bookName.text);
       }
     });
+     */
   }
 
   @override
@@ -75,6 +78,7 @@ class _ResaultPageState extends State<ResaultPage> {
                   CarouselSlider.builder(
                     itemCount: allBook.items.length,
                     options: CarouselOptions(
+                        onScrolled: scrolledPlus(startIndex),
                         pauseAutoPlayOnTouch: true,
                         disableCenter: true,
                         enlargeStrategy: CenterPageEnlargeStrategy.scale,
@@ -87,7 +91,7 @@ class _ResaultPageState extends State<ResaultPage> {
                         autoPlayCurve: Curves.decelerate,
                         height: context.height * 57),
                     itemBuilder: (BuildContext context, int index) {
-                      var pressAttention = false;
+                      var changeColor = Colors.red;
                       return Container(
                           width: context.height * 55,
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
@@ -157,8 +161,10 @@ class _ResaultPageState extends State<ResaultPage> {
                                   children: <Widget>[
                                     IconButton(
                                       icon: Icon(Icons.favorite_border),
-                                      onPressed: () {},
-                                      color: blueTheme.errorColor,
+                                      color: changeColor,
+                                      onPressed: () {
+                                        setState(() {});
+                                      },
                                       highlightColor: blueTheme.primaryColor,
                                       iconSize: 30,
                                     ),
@@ -168,6 +174,11 @@ class _ResaultPageState extends State<ResaultPage> {
                                       iconSize: 30,
                                       color: blueTheme.primaryColor,
                                       highlightColor: blueTheme.accentColor,
+                                    ),
+                                    Text(
+                                      "Sayfa sayısı: " +
+                                          allBook.items[index].volumeInfo.pageCount.toString(),
+                                      style: blueTheme.primaryTextTheme.headline3,
                                     ),
                                   ],
                                 ),
@@ -307,5 +318,10 @@ class _ResaultPageState extends State<ResaultPage> {
     _firestore.document("bookrequest/imgList").setData(imgMap, merge: true);
 
      */
+  }
+
+  scrolledPlus(double startIndex) {
+    startIndex += 10;
+    return startIndex;
   }
 }
