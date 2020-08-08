@@ -30,13 +30,7 @@ class _ResaultPageState extends State<ResaultPage> {
     var response = await dio.get(
         "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex");
     Map data = await response.data;
-    if (allBook == null)
-      allBook = Book.fromJson(data);
-    else {
-      //tempBook'u neden kullanıyoruz?
-      tempBook = Book.fromJson(data);
-      allBook.items += tempBook.items;
-    }
+    if (allBook == null) allBook = Book.fromJson(data);
     print(allBook.items.length);
     setState(() {});
   }
@@ -110,6 +104,7 @@ class _ResaultPageState extends State<ResaultPage> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 SizedBox(
                                   child: allBook.items[index].volumeInfo.imageLinks != null
@@ -120,59 +115,59 @@ class _ResaultPageState extends State<ResaultPage> {
                                         )
                                       : Text("no image"),
                                 ),
-                                Column(
+                                SizedBox(
+                                  height: context.lowestContainer,
+                                ),
+                                Text(
+                                  allBook.items[index].volumeInfo.title == null
+                                      ? "No data"
+                                      : allBook.items[index].volumeInfo.title.toUpperCase(),
+                                  style: blueTheme.primaryTextTheme.headline1
+                                      .copyWith(fontSize: context.lowText),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                                Text(
+                                  allBook.items[index].volumeInfo.authors.toString() == null
+                                      ? "No data"
+                                      : allBook.items[index].volumeInfo.authors
+                                          .toString()
+                                          .replaceAll("]", "")
+                                          .replaceAll("[", ""),
+                                  style: blueTheme.primaryTextTheme.headline2
+                                      .copyWith(fontSize: context.lowText),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  allBook.items[index].volumeInfo.publisher.toString() == null
+                                      ? "No data"
+                                      : allBook.items[index].volumeInfo.publisher.toString(),
+                                  style: blueTheme.primaryTextTheme.headline3
+                                      .copyWith(fontSize: context.lowText),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(
+                                  height: context.height * 1,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: <Widget>[
-                                    SizedBox(
-                                      height: context.lowestContainer,
+                                    IconButton(
+                                      icon: Icon(Icons.favorite_border),
+                                      onPressed: () {},
+                                      color: blueTheme.errorColor,
+                                      highlightColor: blueTheme.primaryColor,
+                                      iconSize: 30,
                                     ),
-                                    Text(
-                                      allBook.items[index].volumeInfo.title == null
-                                          ? "No data"
-                                          : allBook.items[index].volumeInfo.title.toUpperCase(),
-                                      style: blueTheme.primaryTextTheme.headline1
-                                          .copyWith(fontSize: context.lowText),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      allBook.items[index].volumeInfo.authors.toString() == null
-                                          ? "No data"
-                                          : allBook.items[index].volumeInfo.authors
-                                              .toString()
-                                              .replaceAll("]", "")
-                                              .replaceAll("[", ""),
-                                      style: blueTheme.primaryTextTheme.headline2
-                                          .copyWith(fontSize: context.lowText),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      allBook.items[index].volumeInfo.publisher.toString() == null
-                                          ? "No data"
-                                          : allBook.items[index].volumeInfo.publisher.toString(),
-                                      style: blueTheme.primaryTextTheme.headline3
-                                          .copyWith(fontSize: context.lowText),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    SizedBox(
-                                      height: context.height * 3,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: <Widget>[
-                                        IconButton(
-                                          icon: Icon(Icons.favorite_border),
-                                          onPressed: () {},
-                                          color: blueTheme.errorColor,
-                                          highlightColor: blueTheme.primaryColor,
-                                          iconSize: 30,
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.check_box_outline_blank),
-                                          onPressed: () {},
-                                          iconSize: 30,
-                                          color: blueTheme.primaryColor,
-                                          highlightColor: blueTheme.accentColor,
-                                        ),
-                                      ],
+                                    IconButton(
+                                      icon: Icon(Icons.check_box_outline_blank),
+                                      onPressed: () {},
+                                      iconSize: 30,
+                                      color: blueTheme.primaryColor,
+                                      highlightColor: blueTheme.accentColor,
                                     ),
                                   ],
                                 ),
