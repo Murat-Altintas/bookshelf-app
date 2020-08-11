@@ -6,9 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
+import 'View/Images/ResaultImage.dart';
+import 'package:grade_point_avarage/View/ContextExtension.dart';
 import 'init/theme/BlueTheme.dart';
 import 'model/book.dart';
-import 'package:grade_point_avarage/View/ContextExtension.dart';
 
 class ResaultPage extends StatefulWidget {
   @override
@@ -20,44 +21,25 @@ class _ResaultPageState extends State<ResaultPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   ScrollController _scrollController = ScrollController();
-  Book allBook;
-  Book tempBook;
-  double startIndex = 0;
+
+  List<Item> loadedItems = [];
+
+  int startIndex = 0;
   var bookName = TextEditingController();
 
   getData(String bookName) async {
     var dio = Dio();
-    var response = await dio.get(
-        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex
+    var url =
+        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex";
+    var response = await dio.get(url); //&maxResults=10&startIndex=$startIndex
     Map data = await response.data;
-    if (allBook == null) allBook = Book.fromJson(data);
-    print(allBook.items.length);
+    final booksResponse = Book.fromJson(data);
+    // add more items.
+    loadedItems.addAll(booksResponse.items);
     setState(() {});
   }
 
   //------------------------------------------------------------//
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    /*
-        _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        startIndex += 10;
-        getData(bookName.text);
-      }
-    });
-     */
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _scrollController.removeListener(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,32 +48,36 @@ class _ResaultPageState extends State<ResaultPage> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            resaultPng(),
+            ResaultImage(),
             searchBar(),
             SizedBox(
               height: context.lowestContainer,
             ),
-            if (allBook != null)
+            if (loadedItems.isNotEmpty)
               Expanded(
                   child: Column(
                 children: <Widget>[
                   CarouselSlider.builder(
-                    itemCount: allBook.items.length,
+                    itemCount: loadedItems.length,
                     options: CarouselOptions(
-                        onScrolled: scrolledPlus(startIndex),
+                        onPageChanged: (page, reason) {
+                          if (page == loadedItems.length - 1) {
+                            loadNextPage();
+                          }
+                        },
                         pauseAutoPlayOnTouch: true,
                         disableCenter: true,
                         enlargeStrategy: CenterPageEnlargeStrategy.scale,
                         enlargeCenterPage: true,
                         viewportFraction: 0.6,
-                        enableInfiniteScroll: true,
+                        enableInfiniteScroll: false,
                         autoPlay: false,
                         autoPlayInterval: Duration(seconds: 4),
                         autoPlayAnimationDuration: Duration(milliseconds: 800),
                         autoPlayCurve: Curves.decelerate,
                         height: context.height * 57),
                     itemBuilder: (BuildContext context, int index) {
-                      var changeColor = Colors.red;
+                      var changeColor = true;
                       return Container(
                           width: context.height * 55,
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
@@ -111,21 +97,24 @@ class _ResaultPageState extends State<ResaultPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 SizedBox(
-                                  child: allBook.items[index].volumeInfo.imageLinks != null
+                                  child: loadedItems[index].volumeInfo.imageLinks != null
                                       ? Image.network(
-                                          allBook.items[index].volumeInfo.imageLinks.thumbnail,
+                                          loadedItems[index].volumeInfo.imageLinks.thumbnail,
                                           height: context.height * 35,
                                           fit: BoxFit.fill,
                                         )
-                                      : Text("no image"),
+                                      : Center(
+                                          child: Text("NO IMAGE",
+                                              style: blueTheme.textTheme.headline1)),
+                                  height: context.height * 30,
                                 ),
                                 SizedBox(
                                   height: context.lowestContainer,
                                 ),
                                 Text(
-                                  allBook.items[index].volumeInfo.title == null
+                                  loadedItems[index].volumeInfo.title == null
                                       ? "No data"
-                                      : allBook.items[index].volumeInfo.title.toUpperCase(),
+                                      : loadedItems[index].volumeInfo.title.toUpperCase(),
                                   style: blueTheme.primaryTextTheme.headline1
                                       .copyWith(fontSize: context.lowText),
                                   textAlign: TextAlign.center,
@@ -133,9 +122,11 @@ class _ResaultPageState extends State<ResaultPage> {
                                   maxLines: 2,
                                 ),
                                 Text(
-                                  allBook.items[index].volumeInfo.authors.toString() == null
+                                  loadedItems[index].volumeInfo.authors.toString() == null
                                       ? "No data"
-                                      : allBook.items[index].volumeInfo.authors
+                                      : loadedItems[index]
+                                          .volumeInfo
+                                          .authors
                                           .toString()
                                           .replaceAll("]", "")
                                           .replaceAll("[", ""),
@@ -145,9 +136,9 @@ class _ResaultPageState extends State<ResaultPage> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  allBook.items[index].volumeInfo.publisher.toString() == null
+                                  loadedItems[index].volumeInfo.publisher.toString() == null
                                       ? "No data"
-                                      : allBook.items[index].volumeInfo.publisher.toString(),
+                                      : loadedItems[index].volumeInfo.publisher.toString(),
                                   style: blueTheme.primaryTextTheme.headline3
                                       .copyWith(fontSize: context.lowText),
                                   textAlign: TextAlign.center,
@@ -161,11 +152,10 @@ class _ResaultPageState extends State<ResaultPage> {
                                   children: <Widget>[
                                     IconButton(
                                       icon: Icon(Icons.favorite_border),
-                                      color: changeColor,
+                                      color: changeColor == false ? Colors.red : Colors.blue,
                                       onPressed: () {
-                                        setState(() {});
+                                         changeColor = !changeColor;
                                       },
-                                      highlightColor: blueTheme.primaryColor,
                                       iconSize: 30,
                                     ),
                                     IconButton(
@@ -173,11 +163,10 @@ class _ResaultPageState extends State<ResaultPage> {
                                       onPressed: () {},
                                       iconSize: 30,
                                       color: blueTheme.primaryColor,
-                                      highlightColor: blueTheme.accentColor,
                                     ),
                                     Text(
                                       "Sayfa sayısı: " +
-                                          allBook.items[index].volumeInfo.pageCount.toString(),
+                                          loadedItems[index].volumeInfo.pageCount.toString(),
                                       style: blueTheme.primaryTextTheme.headline3,
                                     ),
                                   ],
@@ -194,23 +183,6 @@ class _ResaultPageState extends State<ResaultPage> {
       ),
     );
   }
-
-  Widget titleText() => RichText(
-        text: TextSpan(
-          text: "What would \n",
-          style: blueTheme.textTheme.headline5.copyWith(fontSize: context.height * 4.5),
-          children: <TextSpan>[
-            TextSpan(
-                text: 'you like to \n',
-                style: blueTheme.textTheme.headline5
-                    .copyWith(fontSize: context.height * 4.5, height: context.height * 0.2)),
-            TextSpan(
-                text: 'learn today?',
-                style: blueTheme.textTheme.headline5
-                    .copyWith(fontSize: context.height * 4.5, height: context.height * 0.2)),
-          ],
-        ),
-      );
 
   searchBar() => Row(
         children: <Widget>[
@@ -229,12 +201,12 @@ class _ResaultPageState extends State<ResaultPage> {
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 20, top: 3),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.lightBlue, width: 2),
+                  borderSide: BorderSide(color: blueTheme.primaryColor, width: 2),
                   borderRadius: BorderRadius.all(Radius.circular(60)),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(60.0)),
-                  borderSide: BorderSide(color: Colors.lightBlue, width: 1),
+                  borderSide: BorderSide(color: blueTheme.primaryColor, width: 1),
                 ),
                 hintText: "Search your favorite book...",
                 hintStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
@@ -247,32 +219,13 @@ class _ResaultPageState extends State<ResaultPage> {
           ),
           IconButton(
             icon: Icon(Icons.search),
-            iconSize: context.height * 5,
-            color: Colors.purple,
+            iconSize: context.iconSize,
+            color: blueTheme.primaryIconTheme.color,
             onPressed: () async {
               getData(bookName.text);
             },
           ),
         ],
-      );
-
-  resaultPng() => Container(
-        height: context.height * 28,
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: context.height * 6,
-              left: context.height * 2,
-              child: titleText(),
-            ),
-            Positioned(
-              left: context.width * 46,
-              top: context.height * 2,
-              child: Container(
-                  height: context.height * 25, child: Image.asset("assets/images/resaultPage.png")),
-            ),
-          ],
-        ),
       );
 
   Future<void> _saveBookTitle(selectedBook) async {
@@ -320,8 +273,8 @@ class _ResaultPageState extends State<ResaultPage> {
      */
   }
 
-  scrolledPlus(double startIndex) {
-    startIndex += 10;
-    return startIndex;
+  void loadNextPage() {
+    startIndex += 3;
+    getData(bookName.text);
   }
 }

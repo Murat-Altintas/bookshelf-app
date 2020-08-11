@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'package:grade_point_avarage/View/BlueButtons.dart';
-import 'package:grade_point_avarage/init/CoffeeImage.dart';
+import 'View/Images/CoffeeImage.dart';
 import 'View/ContextExtension.dart';
 import 'View/TextFields.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';

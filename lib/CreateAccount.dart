@@ -4,7 +4,7 @@ import 'package:grade_point_avarage/View/BlueButtons.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'View/TextFields.dart';
-import 'init/CoffeeImage.dart';
+import 'View/Images/CoffeeImage.dart';
 import 'init/theme/BlueTheme.dart';
 
 class CreateAccount extends StatefulWidget {
