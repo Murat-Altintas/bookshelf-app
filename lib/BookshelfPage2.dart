@@ -5,6 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'MasterPage.dart';
 import 'model/firebaseBook.dart';
+import 'init/theme/BlueTheme.dart';
+import 'View/ContextExtension.dart';
+import 'package:grade_point_avarage/repository/UserRepository.dart';
+import 'package:provider/provider.dart';
 
 class BookshelfPage2 extends StatefulWidget {
   @override
@@ -16,17 +20,6 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //------------------------------------------------------------//
-  double heightSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.height * value;
-  }
-
-  double widthSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.width * value;
-  }
-
-  //------------------------------------------------------------//
 
   @override
   Widget build(BuildContext context) {
@@ -34,21 +27,11 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
     var titleText = RichText(
       text: TextSpan(
         text: "My ",
-        style: TextStyle(
-          fontSize: heightSize(4),
-          color: Colors.lightBlue,
-          fontFamily: 'MainFont',
-          fontWeight: FontWeight.w700,
-        ),
+        style: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText),
         children: <TextSpan>[
           TextSpan(
             text: 'current books...',
-            style: TextStyle(
-              fontSize: heightSize(4),
-              color: Colors.lightBlue,
-              fontFamily: 'MainFont',
-              fontWeight: FontWeight.w300,
-            ),
+            style: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
           ),
         ],
       ),
@@ -61,11 +44,11 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                height: heightSize(35),
+                height: context.height * 33,
                 child: Column(
                   children: <Widget>[
                     Container(
-                      height: heightSize(25),
+                      height: context.height * 25,
                       child: Image.asset("assets/images/bookshelfPage.png"),
                     ),
                     Row(
@@ -73,13 +56,11 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                         IconButton(
                             icon: Icon(
                               Icons.arrow_back_ios,
-                              color: Colors.blue,
+                              color: blueTheme.primaryColor,
                             ),
                             onPressed: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MasterPage()));
+                                  context, MaterialPageRoute(builder: (context) => MasterPage()));
                             }),
                         titleText,
                       ],
@@ -124,71 +105,43 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                         ),
                                       ],
                                     ),
-                                    padding: EdgeInsets.only(
-                                        left: widthSize(5),
-                                        right: widthSize(5)),
-                                    height: heightSize(25),
-                                    width: widthSize(90),
-                                    child: Row(
-                                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 4,
-                                          child: Container(
-                                            height: heightSize(35),
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image:
-                                                    NetworkImage(model.image),
-                                              ),
-                                            ),
-                                            //child: imgList[index],  //imgList is here
+                                    child: Padding(
+                                      padding: context.paddingMedium,
+                                      child: Row(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            child: Image.network(model.image),
+                                            height: context.height * 15,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: widthSize(3),
-                                        ),
-                                        Expanded(
-                                          flex: 9,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              Text(
-                                                  model.title,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                    fontSize: heightSize(2),
-                                                    color: Colors.lightBlue,
-                                                    fontFamily: 'MainFont',
-                                                    fontWeight: FontWeight.w700,
-                                                  )),
-                                              // always test the code.
-                                              Text(
-                                                model.authors,
-                                                style: TextStyle(
-                                                  fontSize: heightSize(2),
-                                                  color: Colors.purple,
+                                          SizedBox(
+                                            width: context.lowestContainer,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(model.title,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: blueTheme.textTheme.headline1
+                                                        .copyWith(fontSize: context.normalText)),
+                                                // always test the code.
+                                                Text(model.authors,
+                                                    style: blueTheme.textTheme.headline2
+                                                        .copyWith(fontSize: context.lowText)),
+                                                SizedBox(height: context.lowestContainer),
+                                                Text(
+                                                  model.publisher,
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
-                                              ),
-                                              SizedBox(
-                                                height: heightSize(2),
-                                              ),
-                                              Text(
-                                                model.publisher,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
-                                    height: heightSize(3),
+                                    height: context.lowestContainer,
                                   ),
                                 ],
                               );
@@ -207,7 +160,10 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
 
   Future<List<FirebaseBook>> getBooks() async {
     final FirebaseUser user = await _auth.currentUser();
-    return (await _firestore.collection(user.uid).getDocuments()).documents.map((doc) => FirebaseBook.fromJson(doc.data)).toList();
+    return (await _firestore.collection(user.uid).getDocuments())
+        .documents
+        .map((doc) => FirebaseBook.fromJson(doc.data))
+        .toList();
   }
 
   Future<List<Map<String, dynamic>>> bookFill() async {
@@ -215,10 +171,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
     final uid = user.uid;
     try {
       List<Map<String, dynamic>> idMap = [];
-      await _firestore
-          .collection("$uid")
-          .getDocuments()
-          .then((QuerySnapshot snapshot) {
+      await _firestore.collection("$uid").getDocuments().then((QuerySnapshot snapshot) {
         snapshot.documents.forEach((f) {
           idMap.add(f.data);
           // print('this is the data:::: ${f.data}');

@@ -105,7 +105,7 @@ final ThemeData blueTheme = ThemeData(
       fontFamily: "ZonaLight",
     ),
     headline5: TextStyle(
-      color: Colors.blue,
+      color: Colors.purple,
       fontFamily: "ZonaLight",
     ),
     headline6: TextStyle(

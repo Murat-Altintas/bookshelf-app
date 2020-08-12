@@ -151,10 +151,14 @@ class _ResaultPageState extends State<ResaultPage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: <Widget>[
                                     IconButton(
-                                      icon: Icon(Icons.favorite_border),
-                                      color: changeColor == false ? Colors.red : Colors.blue,
+                                      icon: changeColor == false
+                                          ? Icon(Icons.favorite_border)
+                                          : Icon(Icons.favorite),
+                                      color: blueTheme.errorColor,
                                       onPressed: () {
-                                         changeColor = !changeColor;
+                                        setState(() {
+                                          changeColor = !changeColor;
+                                        });
                                       },
                                       iconSize: 30,
                                     ),
@@ -274,7 +278,7 @@ class _ResaultPageState extends State<ResaultPage> {
   }
 
   void loadNextPage() {
-    startIndex += 3;
+    startIndex += 10;
     getData(bookName.text);
   }
 }
