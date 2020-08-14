@@ -30,7 +30,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
         style: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText),
         children: <TextSpan>[
           TextSpan(
-            text: 'current books...',
+            text: 'favorite books...',
             style: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
           ),
         ],
@@ -111,7 +111,8 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                         children: <Widget>[
                                           SizedBox(
                                             child: Image.network(model.image),
-                                            height: context.height * 15,
+                                            height: context.height * 20,
+                                            width: context.width * 20,
                                           ),
                                           SizedBox(
                                             width: context.lowestContainer,

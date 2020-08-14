@@ -19,23 +19,18 @@ class ResaultPage extends StatefulWidget {
 class _ResaultPageState extends State<ResaultPage> {
   final Firestore _firestore = Firestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  ScrollController _scrollController = ScrollController();
-
   List<Item> loadedItems = [];
-
   int startIndex = 0;
   var bookName = TextEditingController();
-
   getData(String bookName) async {
     var dio = Dio();
-    var url =
-        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex";
-    var response = await dio.get(url); //&maxResults=10&startIndex=$startIndex
+    var response = await dio.get(
+        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex");
     Map data = await response.data;
     final booksResponse = Book.fromJson(data);
     // add more items.
     loadedItems.addAll(booksResponse.items);
+
     setState(() {});
   }
 
@@ -53,142 +48,139 @@ class _ResaultPageState extends State<ResaultPage> {
             SizedBox(
               height: context.lowestContainer,
             ),
-            if (loadedItems.isNotEmpty)
-              Expanded(
-                  child: Column(
-                children: <Widget>[
-                  CarouselSlider.builder(
-                    itemCount: loadedItems.length,
-                    options: CarouselOptions(
-                        onPageChanged: (page, reason) {
-                          if (page == loadedItems.length - 1) {
-                            loadNextPage();
-                          }
-                        },
-                        pauseAutoPlayOnTouch: true,
-                        disableCenter: true,
-                        enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                        enlargeCenterPage: true,
-                        viewportFraction: 0.6,
-                        enableInfiniteScroll: false,
-                        autoPlay: false,
-                        autoPlayInterval: Duration(seconds: 4),
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        autoPlayCurve: Curves.decelerate,
-                        height: context.height * 57),
-                    itemBuilder: (BuildContext context, int index) {
-                      var changeColor = true;
-                      return Container(
-                          width: context.height * 55,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 5,
-                                  offset: Offset(10, 0),
-                                ),
-                              ],
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                SizedBox(
-                                  child: loadedItems[index].volumeInfo.imageLinks != null
-                                      ? Image.network(
+            Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        CarouselSlider.builder(
+                          itemCount: loadedItems.length,
+                          options: CarouselOptions(
+                              onPageChanged: (page, reason) {
+                                if (page == loadedItems.length - 1) {
+                                  loadNextPage();
+                                  print("+10 page");
+                                }
+                              },
+                              pauseAutoPlayOnTouch: true,
+                              disableCenter: true,
+                              enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                              enlargeCenterPage: true,
+                              viewportFraction: 0.6,
+                              enableInfiniteScroll: false,
+                              autoPlay: false,
+                              autoPlayInterval: Duration(seconds: 4),
+                              autoPlayAnimationDuration: Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.decelerate,
+                              height: context.height * 57),
+                          itemBuilder: (BuildContext context, int index) {
+                            var changeColor = true;
+                            return Container(
+                                width: context.height * 55,
+                                margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 5,
+                                        offset: Offset(10, 0),
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        child: loadedItems[index].volumeInfo.imageLinks != null
+                                            ? Image.network(
                                           loadedItems[index].volumeInfo.imageLinks.thumbnail,
                                           height: context.height * 35,
                                           fit: BoxFit.fill,
                                         )
-                                      : Center(
-                                          child: Text("NO IMAGE",
-                                              style: blueTheme.textTheme.headline1)),
-                                  height: context.height * 30,
-                                ),
-                                SizedBox(
-                                  height: context.lowestContainer,
-                                ),
-                                Text(
-                                  loadedItems[index].volumeInfo.title == null
-                                      ? "No data"
-                                      : loadedItems[index].volumeInfo.title.toUpperCase(),
-                                  style: blueTheme.primaryTextTheme.headline1
-                                      .copyWith(fontSize: context.lowText),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                ),
-                                Text(
-                                  loadedItems[index].volumeInfo.authors.toString() == null
-                                      ? "No data"
-                                      : loadedItems[index]
-                                          .volumeInfo
-                                          .authors
-                                          .toString()
-                                          .replaceAll("]", "")
-                                          .replaceAll("[", ""),
-                                  style: blueTheme.primaryTextTheme.headline2
-                                      .copyWith(fontSize: context.lowText),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  loadedItems[index].volumeInfo.publisher.toString() == null
-                                      ? "No data"
-                                      : loadedItems[index].volumeInfo.publisher.toString(),
-                                  style: blueTheme.primaryTextTheme.headline3
-                                      .copyWith(fontSize: context.lowText),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                SizedBox(
-                                  height: context.height * 1,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    IconButton(
-                                      icon: changeColor == false
-                                          ? Icon(Icons.favorite_border)
-                                          : Icon(Icons.favorite),
-                                      color: blueTheme.errorColor,
-                                      onPressed: () {
-                                        setState(() {
-                                          changeColor = !changeColor;
-                                        });
-                                      },
-                                      iconSize: 30,
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.check_box_outline_blank),
-                                      onPressed: () {},
-                                      iconSize: 30,
-                                      color: blueTheme.primaryColor,
-                                    ),
-                                    Text(
-                                      "Sayfa sayısı: " +
-                                          loadedItems[index].volumeInfo.pageCount.toString(),
-                                      style: blueTheme.primaryTextTheme.headline3,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ));
-                    },
-                  )
-                ],
-              )),
+                                            : Center(
+                                            child: Text("NO IMAGE",
+                                                style: blueTheme.textTheme.headline1)),
+                                        height: context.height * 30,
+                                      ),
+                                      SizedBox(
+                                        height: context.lowestContainer,
+                                      ),
+                                      Text(
+                                        loadedItems[index].volumeInfo.title == null
+                                            ? "No data"
+                                            : loadedItems[index].volumeInfo.title.toUpperCase(),
+                                        style: blueTheme.primaryTextTheme.headline1
+                                            .copyWith(fontSize: context.lowText),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      ),
+                                      Text(
+                                        loadedItems[index].volumeInfo.authors.toString() == null
+                                            ? "No data"
+                                            : loadedItems[index].volumeInfo.authors.toString().replaceAll("]", "").replaceAll("[  ", ""),
+                                        style: blueTheme.primaryTextTheme.headline2
+                                            .copyWith(fontSize: context.lowText),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        loadedItems[index].volumeInfo.publisher.toString() == null
+                                            ? "No data"
+                                            : loadedItems[index].volumeInfo.publisher.toString(),
+                                        style: blueTheme.primaryTextTheme.headline3
+                                            .copyWith(fontSize: context.lowText),
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(
+                                        height: context.height * 1,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: <Widget>[
+                                          IconButton(
+                                            icon: changeColor == false
+                                                ? Icon(Icons.favorite_border)
+                                                : Icon(Icons.favorite),
+                                            color: blueTheme.errorColor,
+                                            onPressed: () {
+                                              setState(() {
+                                                _saveBookTitle(loadedItems[index]);
+                                                changeColor = !changeColor;
+                                              });
+                                            },
+                                            iconSize: 30,
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.check_box_outline_blank),
+                                            onPressed: () {},
+                                            iconSize: 30,
+                                            color: blueTheme.primaryColor,
+                                          ),
+                                          Text(
+                                            "Sayfa sayısı: " +
+                                                loadedItems[index].volumeInfo.pageCount.toString(),
+                                            style: blueTheme.primaryTextTheme.headline3,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ));
+                          },
+                        )
+                      ],
+                    )),
           ],
         ),
       ),
     );
   }
 
-  searchBar() => Row(
+  searchBar() =>
+      Row(
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.arrow_back),
@@ -232,24 +224,23 @@ class _ResaultPageState extends State<ResaultPage> {
         ],
       );
 
-  Future<void> _saveBookTitle(selectedBook) async {
+  Future<void> _saveBookTitle(allBook) async {
     Map<String, String> idMap = Map();
-    idMap[selectedBook.id] = selectedBook.id;
+    idMap[allBook.id] = allBook.id;
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
 
-    String title = selectedBook.volumeInfo.title == null
+    String title =
+    allBook.volumeInfo.title == null ? "NO DATA" : allBook.volumeInfo.title.toString();
+    String authors = allBook.volumeInfo.authors == null
         ? "NO DATA"
-        : selectedBook.volumeInfo.title.toString();
-    String authors = selectedBook.volumeInfo.authors == null
+        : allBook.volumeInfo.authors.first.toString();
+    String publisher = allBook.volumeInfo.publisher == null
         ? "NO DATA"
-        : selectedBook.volumeInfo.authors.first.toString();
-    String publisher = selectedBook.volumeInfo.publisher == null
+        : allBook.volumeInfo.publisher.toString();
+    String image = allBook.volumeInfo.imageLinks == null
         ? "NO DATA"
-        : selectedBook.volumeInfo.publisher.toString();
-    String image = selectedBook.volumeInfo.imageLinks == null
-        ? "NO DATA"
-        : selectedBook.volumeInfo.imageLinks.thumbnail.toString();
+        : allBook.volumeInfo.imageLinks.thumbnail.toString();
 
     Map<String, String> mixMap = {
       "title": title,
