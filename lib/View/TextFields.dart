@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
 import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
@@ -36,8 +39,11 @@ class _TextFieldsState extends State<TextFields> {
         validator: widget.validator,
         controller: widget.controller,
         textInputAction: TextInputAction.next,
-        autofocus: false,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(top: 15, left: 20),
+          errorStyle: TextStyle(
+            fontSize: context.lowText,
+          ),
           suffixIcon: widget.suffixIcon,
           errorText: widget.error,
           border: OutlineInputBorder(

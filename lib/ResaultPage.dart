@@ -22,6 +22,7 @@ class _ResaultPageState extends State<ResaultPage> {
   List<Item> loadedItems = [];
   int startIndex = 0;
   var bookName = TextEditingController();
+
   getData(String bookName) async {
     var dio = Dio();
     var response = await dio.get(
@@ -49,138 +50,128 @@ class _ResaultPageState extends State<ResaultPage> {
               height: context.lowestContainer,
             ),
             Expanded(
-                    child: Column(
-                      children: <Widget>[
-                        CarouselSlider.builder(
-                          itemCount: loadedItems.length,
-                          options: CarouselOptions(
-                              onPageChanged: (page, reason) {
-                                if (page == loadedItems.length - 1) {
-                                  loadNextPage();
-                                  print("+10 page");
-                                }
-                              },
-                              pauseAutoPlayOnTouch: true,
-                              disableCenter: true,
-                              enlargeStrategy: CenterPageEnlargeStrategy.scale,
-                              enlargeCenterPage: true,
-                              viewportFraction: 0.6,
-                              enableInfiniteScroll: false,
-                              autoPlay: false,
-                              autoPlayInterval: Duration(seconds: 4),
-                              autoPlayAnimationDuration: Duration(milliseconds: 800),
-                              autoPlayCurve: Curves.decelerate,
-                              height: context.height * 57),
-                          itemBuilder: (BuildContext context, int index) {
-                            var changeColor = true;
-                            return Container(
-                                width: context.height * 55,
-                                margin: EdgeInsets.symmetric(horizontal: 5.0),
-                                child: Ink(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 5,
-                                        offset: Offset(10, 0),
-                                      ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(12),
+                child: Column(
+              children: <Widget>[
+                CarouselSlider.builder(
+                  itemCount: loadedItems.length,
+                  options: CarouselOptions(
+                      onPageChanged: (page, reason) {
+                        if (page == loadedItems.length - 1) {
+                          loadNextPage();
+                          print("+10 page");
+                        }
+                      },
+                      pauseAutoPlayOnTouch: true,
+                      disableCenter: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.scale,
+                      enlargeCenterPage: true,
+                      viewportFraction: 0.6,
+                      enableInfiniteScroll: false,
+                      autoPlay: false,
+                      autoPlayInterval: Duration(seconds: 4),
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      autoPlayCurve: Curves.decelerate,
+                      height: context.height * 57),
+                  itemBuilder: (BuildContext context, int index) {
+                    Widget changeIcon = Icon(Icons.favorite_border);
+                    return Container(
+                        width: context.height * 55,
+                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Ink(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 5,
+                                offset: Offset(10, 0),
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              SizedBox(
+                                child: loadedItems[index].volumeInfo.imageLinks != null
+                                    ? Image.network(
+                                        loadedItems[index].volumeInfo.imageLinks.thumbnail,
+                                        height: context.height * 35,
+                                        fit: BoxFit.fill,
+                                      )
+                                    : Center(child: Text("NO IMAGE", style: blueTheme.textTheme.headline1)),
+                                height: context.height * 30,
+                              ),
+                              SizedBox(
+                                height: context.lowestContainer,
+                              ),
+                              Text(
+                                loadedItems[index].volumeInfo.title == null ? "No data" : loadedItems[index].volumeInfo.title.toUpperCase(),
+                                style: blueTheme.primaryTextTheme.headline1.copyWith(fontSize: context.lowText),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                              Text(
+                                loadedItems[index].volumeInfo.authors.toString() == null
+                                    ? "No data"
+                                    : loadedItems[index].volumeInfo.authors.toString().replaceAll("]", "").replaceAll("[  ", ""),
+                                style: blueTheme.primaryTextTheme.headline2.copyWith(fontSize: context.lowText),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                loadedItems[index].volumeInfo.publisher.toString() == null
+                                    ? "No data"
+                                    : loadedItems[index].volumeInfo.publisher.toString(),
+                                style: blueTheme.primaryTextTheme.headline3.copyWith(fontSize: context.lowText),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(
+                                height: context.height * 1,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: changeIcon,
+                                    color: blueTheme.errorColor,
+                                    onPressed: () {
+                                      setState(() {
+                                        if (changeIcon == Icon(Icons.favorite_border)) {
+                                          changeIcon = Icon(Icons.favorite);
+                                        } //_saveBookTitle(loadedItems[index]);
+                                      });
+                                    },
+                                    iconSize: 30,
                                   ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        child: loadedItems[index].volumeInfo.imageLinks != null
-                                            ? Image.network(
-                                          loadedItems[index].volumeInfo.imageLinks.thumbnail,
-                                          height: context.height * 35,
-                                          fit: BoxFit.fill,
-                                        )
-                                            : Center(
-                                            child: Text("NO IMAGE",
-                                                style: blueTheme.textTheme.headline1)),
-                                        height: context.height * 30,
-                                      ),
-                                      SizedBox(
-                                        height: context.lowestContainer,
-                                      ),
-                                      Text(
-                                        loadedItems[index].volumeInfo.title == null
-                                            ? "No data"
-                                            : loadedItems[index].volumeInfo.title.toUpperCase(),
-                                        style: blueTheme.primaryTextTheme.headline1
-                                            .copyWith(fontSize: context.lowText),
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                      Text(
-                                        loadedItems[index].volumeInfo.authors.toString() == null
-                                            ? "No data"
-                                            : loadedItems[index].volumeInfo.authors.toString().replaceAll("]", "").replaceAll("[  ", ""),
-                                        style: blueTheme.primaryTextTheme.headline2
-                                            .copyWith(fontSize: context.lowText),
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      Text(
-                                        loadedItems[index].volumeInfo.publisher.toString() == null
-                                            ? "No data"
-                                            : loadedItems[index].volumeInfo.publisher.toString(),
-                                        style: blueTheme.primaryTextTheme.headline3
-                                            .copyWith(fontSize: context.lowText),
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      SizedBox(
-                                        height: context.height * 1,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: <Widget>[
-                                          IconButton(
-                                            icon: changeColor == false
-                                                ? Icon(Icons.favorite_border)
-                                                : Icon(Icons.favorite),
-                                            color: blueTheme.errorColor,
-                                            onPressed: () {
-                                              setState(() {
-                                                _saveBookTitle(loadedItems[index]);
-                                                changeColor = !changeColor;
-                                              });
-                                            },
-                                            iconSize: 30,
-                                          ),
-                                          IconButton(
-                                            icon: Icon(Icons.check_box_outline_blank),
-                                            onPressed: () {},
-                                            iconSize: 30,
-                                            color: blueTheme.primaryColor,
-                                          ),
-                                          Text(
-                                            "Sayfa sayısı: " +
-                                                loadedItems[index].volumeInfo.pageCount.toString(),
-                                            style: blueTheme.primaryTextTheme.headline3,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  IconButton(
+                                    icon: Icon(Icons.check_box_outline_blank),
+                                    onPressed: () {},
+                                    iconSize: 30,
+                                    color: blueTheme.primaryColor,
                                   ),
-                                ));
-                          },
-                        )
-                      ],
-                    )),
+                                  Text(
+                                    "Sayfa sayısı: " + loadedItems[index].volumeInfo.pageCount.toString(),
+                                    style: blueTheme.primaryTextTheme.headline3,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ));
+                  },
+                )
+              ],
+            )),
           ],
         ),
       ),
     );
   }
 
-  searchBar() =>
-      Row(
+  searchBar() => Row(
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.arrow_back),
@@ -230,17 +221,10 @@ class _ResaultPageState extends State<ResaultPage> {
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
 
-    String title =
-    allBook.volumeInfo.title == null ? "NO DATA" : allBook.volumeInfo.title.toString();
-    String authors = allBook.volumeInfo.authors == null
-        ? "NO DATA"
-        : allBook.volumeInfo.authors.first.toString();
-    String publisher = allBook.volumeInfo.publisher == null
-        ? "NO DATA"
-        : allBook.volumeInfo.publisher.toString();
-    String image = allBook.volumeInfo.imageLinks == null
-        ? "NO DATA"
-        : allBook.volumeInfo.imageLinks.thumbnail.toString();
+    String title = allBook.volumeInfo.title == null ? "NO DATA" : allBook.volumeInfo.title.toString();
+    String authors = allBook.volumeInfo.authors == null ? "NO DATA" : allBook.volumeInfo.authors.first.toString();
+    String publisher = allBook.volumeInfo.publisher == null ? "NO DATA" : allBook.volumeInfo.publisher.toString();
+    String image = allBook.volumeInfo.imageLinks == null ? "NO DATA" : allBook.volumeInfo.imageLinks.thumbnail.toString();
 
     Map<String, String> mixMap = {
       "title": title,

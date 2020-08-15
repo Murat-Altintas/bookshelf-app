@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'package:grade_point_avarage/View/BlueButtons.dart';
+import 'CreateAccount.dart';
 import 'View/Images/CoffeeImage.dart';
 import 'View/ContextExtension.dart';
 import 'View/TextFields.dart';
@@ -42,57 +44,84 @@ class _LoginPageState extends State<LoginPage> {
                             child: Image.asset("assets/images/loginPage.png"),
                           ),
                           SizedBox(
-                            height: context.lowContainer,
+                            height: context.lowestContainer,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                width: context.width * 45,
+                                child: TextFields(
+                                  validator: nameControl,
+                                  obscureText: false,
+                                  controller: mailText,
+                                  hintText: "NAME",
+                                  textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                                ),
+                              ),
+                              Container(
+                                width: context.width * 45,
+                                child: TextFields(
+                                  validator: surnameControl,
+                                  obscureText: false,
+                                  controller: mailText,
+                                  hintText: "SURNAME",
+                                  textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: context.lowestContainer,
                           ),
                           TextFields(
                             validator: mailControl,
                             obscureText: false,
                             controller: mailText,
                             hintText: "MAIL",
-                            textStyle: blueTheme.textTheme.headline2
-                                .copyWith(fontSize: context.normalText),
+                            textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
                           ),
                           SizedBox(
-                            height: context.height * 3,
+                            height: context.lowestContainer,
                           ),
                           TextFields(
                             validator: passwordControl,
                             obscureText: obscureText,
-                            suffixIcon: IconButton(
-                                icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
+                            suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
                             controller: passwordText,
                             hintText: "PASSWORD",
-                            textStyle: blueTheme.textTheme.headline2
-                                .copyWith(fontSize: context.normalText),
+                            textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
                           ),
                           SizedBox(
-                            height: context.height * 3,
+                            height: context.lowestContainer,
                           ),
                           BlueButtons(
                             onTap: () {
                               if (formKey.currentState.validate()) {
-                                UserRepository().signIn(mailText.text, passwordText.text).then(
-                                    (value) => Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) => MasterPage())));
+                                UserRepository()
+                                    .signIn(mailText.text, passwordText.text)
+                                    .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
                               }
                             },
                             incomingText: "LOGIN",
                           ),
                           SizedBox(
-                            height: context.lowContainer,
+                            height: context.lowestContainer,
                           ),
                           BlueButtons(
                             onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => CreateAccountButton()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
                             },
                             incomingText: "CREATE ACCOUNT",
+                          ),
+                          SizedBox(
+                            height: context.lowestContainer,
                           ),
                           CoffeeImage(
                             double: context.height * 15,
                           ),
                           SizedBox(
-                            height: context.height * 3,
+                            height: context.height * 1,
                           ),
                         ],
                       )
@@ -120,6 +149,32 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  static String nameControl(String value) {
+    String regEx =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = new RegExp(regEx);
+    if (value.length == 0) {
+      return "Please write a name";
+    } else if (!regExp.hasMatch(value)) {
+      return "Invalid name";
+    } else {
+      return null;
+    }
+  }
+
+  static String surnameControl(String value) {
+    String regEx =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = new RegExp(regEx);
+    if (value.length == 0) {
+      return "Please write a surname";
+    } else if (!regExp.hasMatch(value)) {
+      return "Invalid surname";
+    } else {
+      return null;
+    }
   }
 
   static String mailControl(String value) {

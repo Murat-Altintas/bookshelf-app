@@ -35,10 +35,7 @@ final ThemeData blueTheme = ThemeData(
   cursorColor: Color(0xff4285f4),
   textSelectionHandleColor: Color(0xffe57373),
   backgroundColor: Color(0xffef9a9a),
-  toggleButtonsTheme: ToggleButtonsThemeData(
-      fillColor: Color(0xffC20003),
-      textStyle: TextStyle(color: Colors.white),
-      selectedColor: Colors.white),
+  toggleButtonsTheme: ToggleButtonsThemeData(fillColor: Color(0xffC20003), textStyle: TextStyle(color: Colors.white), selectedColor: Colors.white),
   floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: Color(0xffC20003)),
 
   dialogBackgroundColor: Color(0xffffffff),
@@ -288,7 +285,7 @@ final ThemeData blueTheme = ThemeData(
     fillColor: Color(0x00000000),
     errorBorder: OutlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.green,
+        color: Colors.red,
         width: 2,
       ),
       borderRadius: BorderRadius.all(

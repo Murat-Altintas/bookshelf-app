@@ -20,7 +20,7 @@ extension MediaQueryExtension on BuildContext {
   double get lowestContainer => height * 3;
   double get lowContainer => height * 5;
   double get mediumContainer => height * 7;
-  double get highContainer => height * 9;
+  double get heighContainer => height * 9;
 }
 
 extension ThemeExtension on BuildContext {

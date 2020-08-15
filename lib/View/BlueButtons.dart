@@ -23,7 +23,7 @@ class _BlueButtonsState extends State<BlueButtons> {
           color: blueTheme.primaryColor,
         ),
         alignment: Alignment.center,
-        height: context.mediumContainer,
+        height: context.lowContainer,
         child: Text(
           widget.incomingText,
           style: blueTheme.textTheme.headline3.copyWith(fontSize: context.normalText),
