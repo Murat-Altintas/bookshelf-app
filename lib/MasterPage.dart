@@ -23,14 +23,7 @@ class MasterPageState extends State<MasterPage> {
 
   @override
   Widget build(BuildContext context) {
-    var bgGradient = Container(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-      ),
-      height: heightSize(100),
-      width: widthSize(100),
-      decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, stops: [0.1, 1], colors: [Colors.purple.shade300, Colors.pink.shade300])),
-    );
+
     var welcome = RichText(
       text: TextSpan(
         text: "Welcome",

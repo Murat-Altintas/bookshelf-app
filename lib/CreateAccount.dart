@@ -12,6 +12,8 @@ class CreateAccount extends StatefulWidget {
   _CreateAccountState createState() => _CreateAccountState();
 }
 
+var nameText = TextEditingController();
+var surnameText = TextEditingController();
 var mailText = TextEditingController();
 var passwordText = TextEditingController();
 var _formKey = GlobalKey<FormState>();
@@ -34,69 +36,90 @@ class _CreateAccountState extends State<CreateAccount> {
                   ? Column(
                       children: [
                         Container(
-                          height: context.height * 40,
+                          height: context.height * 35,
                           child: Image.asset("assets/images/createAccount.png"),
                         ),
                         SizedBox(
                           height: context.lowestContainer,
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              width: context.width * 43,
+                              child: TextFields(
+                                validator: UserRepository().nameControl,
+                                obscureText: false,
+                                controller: nameText,
+                                hintText: "NAME",
+                                textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                              ),
+                            ),
+                            Container(
+                              width: context.width * 43,
+                              child: TextFields(
+                                validator: UserRepository().surnameControl,
+                                obscureText: false,
+                                controller: surnameText,
+                                hintText: "SURNAME",
+                                textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                              ),
+                            ),
+                          ],
+                        ),
+                        //----------------------------------------------------------------------------------------//
                         TextFields(
                           obscureText: false,
                           controller: mailText,
-                          hintText: "USERNAME",
-                          textStyle:
-                              blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                          validator: (String mailValidator) {
-                            if (mailValidator != null) {
-                              return "Mail adresinizi yanlış girdiniz!";
-                            } else
-                              return null;
-                          },
+                          hintText: "E-MAIL",
+                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                          validator: UserRepository().mailControl,
                         ),
                         SizedBox(
-                          height: context.lowestContainer,
+                          height: context.fieldSpaceContainer,
                         ),
                         TextFields(
-                          suffixIcon: IconButton(
-                              icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
+                          suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
                           controller: passwordText,
                           hintText: "PASSWORD",
                           obscureText: true,
-                          textStyle:
-                              blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                          validator: (String passValidator) {
-                            if (passValidator != null) {
-                              return "Şirenizi yanlış girdiniz!";
-                            } else
-                              return null;
-                          },
+                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                          validator: UserRepository().passwordControl,
                         ),
                         SizedBox(
-                          height: context.lowestContainer,
+                          height: context.fieldSpaceContainer,
                         ),
                         BlueButtons(
                           onTap: () {
+                            UserRepository().nameSurname(nameText.toString(), surnameText.toString());
+                            print("$nameText, $surnameText ");
+                            /*
                             if (_formKey.currentState.validate()) {
-                              UserRepository().createUser(mailText.text, String, passwordText.text);
+                              UserRepository().createUser(
+                                  mailText.text, String, passwordText.text);
                             }
+                          */
                           },
                           incomingText: "CREATE ACCOUNT",
                         ),
                         SizedBox(
-                          height: context.lowContainer,
+                          height: context.lowestContainer,
                         ),
                         BlueButtons(
                           onTap: () {
-                            Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => LoginPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                           },
                           incomingText: "LOGIN",
+                        ),
+
+                        SizedBox(
+                          height: context.fieldSpaceContainer,
                         ),
                         CoffeeImage(
                           double: context.height * 15,
                         ),
                         SizedBox(
-                          height: context.height * 2,
+                          height: context.fieldSpaceContainer,
                         ),
                       ],
                     )
@@ -107,44 +130,27 @@ class _CreateAccountState extends State<CreateAccount> {
                           child: Image.asset("assets/images/createAccount.png"),
                         ),
                         SizedBox(
-                          height: context.height * 3,
+                          height: context.heighContainer,
                         ),
                         TextFields(
                           controller: mailText,
-                          hintText: "USERNAME",
-                          textStyle:
-                              blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                          validator: (String mailVali) {
-                            if (mailVali != null) {
-                              return "Mail adresinizi yanlış girdiniz!";
-                            } else
-                              return null;
-                          },
-                        ),
-                        SizedBox(
-                          height: context.lowestContainer,
+                          hintText: "E-MAIL",
+                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                          validator: UserRepository().mailControl,
                         ),
                         TextFields(
                           controller: passwordText,
                           hintText: "PASSWORD",
-                          suffixIcon: IconButton(
-                              icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
-                          textStyle:
-                              blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                          validator: (String passwordValidator) {
-                            if (passwordValidator != null) {
-                              return "Şirenizi yanlış girdiniz!";
-                            } else
-                              return null;
-                          },
+                          suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
+                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                          validator: UserRepository().passwordControl,
                         ),
                         SizedBox(
                           height: context.lowContainer,
                         ),
                         BlueButtons(
                           onTap: () {
-                            Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => LoginPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                           },
                           incomingText: "LOGIN",
                         ),

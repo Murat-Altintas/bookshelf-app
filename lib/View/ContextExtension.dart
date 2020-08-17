@@ -17,11 +17,12 @@ extension MediaQueryExtension on BuildContext {
 
   double get iconSize => height * 5;
 
+  double get fieldSpaceContainer => height * 1;
   double get lowestContainer => height * 3;
   double get lowContainer => height * 5;
   double get mediumContainer => height * 7;
   double get heighContainer => height * 9;
-}
+  }
 
 extension ThemeExtension on BuildContext {
   ThemeData get theme => Theme.of(this);
