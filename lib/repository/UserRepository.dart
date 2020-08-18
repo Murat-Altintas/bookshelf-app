@@ -9,7 +9,7 @@ enum UserDurumu { Idle, OturumAcilmamis, OturumAciliyor, OturumAcik }
 class UserRepository {
   FirebaseAuth _auth;
   FirebaseUser _user;
-  Firestore firestore;
+  Firestore firestore = Firestore.instance;
   UserDurumu _durum = UserDurumu.Idle;
 
   FirebaseUser get user => _user;
@@ -25,18 +25,13 @@ class UserRepository {
   }
 
   Future<bool> createUser(String email, password, name, surname) async {
-    await _auth.createUserWithEmailAndPassword(email: email, password: password).then((userID) async {
-      userID.user.uid;
-
-      Map<dynamic, dynamic> userMap = {
-        "name": name,
-        "surname": surname,
-      };
-
-      firestore.collection("Users").document("").setData(userMap);
-    });
-
-    return true;
+    await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    final uid = user.uid;
+    Map<String, String> userMap = {
+      "name": name,
+      "surname": surname,
+    };
+    firestore.collection("Users").document(uid).setData(userMap);
   }
 
   Future<bool> signIn(String email, String sifre) async {
@@ -67,14 +62,18 @@ class UserRepository {
     } else {
       _user = user;
       _durum = UserDurumu.OturumAcik;
-    }}
-
-  Future<void> nameSurname(String name, surname) async {
-    Map<String, dynamic> userMap = Map();
-    userMap[name] = "name";
-    userMap[surname] = "surname";
-    await firestore.collection("user").document().setData(userMap).then((value) => print("complate"));
+    }
   }
+
+  Future<void> nameSurname(String name, String surname) async {
+    Map<String, dynamic> userMap = {
+      "name": name,
+      "surname": surname,
+    };
+    await firestore.collection("user").document().setData(userMap);
+  }
+
+  //----------------------------------------------------------------------------------//
 
   String nameControl(String value) {
     String regEx =

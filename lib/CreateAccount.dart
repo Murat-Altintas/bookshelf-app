@@ -91,8 +91,8 @@ class _CreateAccountState extends State<CreateAccount> {
                         ),
                         BlueButtons(
                           onTap: () {
-                            UserRepository().nameSurname(nameText.toString(), surnameText.toString());
-                            print("$nameText, $surnameText ");
+                            UserRepository().createUser(mailText.text, passwordText.text, nameText.text, surnameText.text);
+
                             /*
                             if (_formKey.currentState.validate()) {
                               UserRepository().createUser(
