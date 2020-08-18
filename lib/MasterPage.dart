@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/BookshelfPage2.dart';
-import 'BookshelfPage.dart';
-import 'OptionsPage.dart';
+import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
 import 'ResaultPage.dart';
+import 'package:grade_point_avarage/View/ContextExtension.dart';
 
 class MasterPage extends StatefulWidget {
   @override
@@ -11,37 +11,16 @@ class MasterPage extends StatefulWidget {
 }
 
 class MasterPageState extends State<MasterPage> {
-  double heightSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.height * value;
-  }
-
-  double widthSize(double value) {
-    value /= 100;
-    return MediaQuery.of(context).size.width * value;
-  }
-
   @override
   Widget build(BuildContext context) {
-
     var welcome = RichText(
       text: TextSpan(
         text: "Welcome",
-        style: TextStyle(
-          fontSize: heightSize(3),
-          color: Colors.purple,
-          fontFamily: 'MainFont',
-          fontWeight: FontWeight.w700,
-        ),
+        style: blueTheme.textTheme.headline5.copyWith(fontSize: context.lowText),
         children: <TextSpan>[
           TextSpan(
             text: ' to your bookshelf...',
-            style: TextStyle(
-              fontSize: heightSize(3),
-              color: Colors.purple,
-              fontFamily: 'MainFont',
-              fontWeight: FontWeight.w300,
-            ),
+            style: blueTheme.textTheme.headline6.copyWith(fontSize: context.lowText),
           ),
         ],
       ),
@@ -49,30 +28,14 @@ class MasterPageState extends State<MasterPage> {
     var user = RichText(
       text: TextSpan(
         text: "Hello",
-        style: TextStyle(
-          fontSize: heightSize(5),
-          color: Colors.purple,
-          fontFamily: 'MainFont',
-          fontWeight: FontWeight.w700,
-        ),
+        style: blueTheme.textTheme.headline5.copyWith(fontSize: context.normalText),
         children: <TextSpan>[
           TextSpan(
             text: ' Mr. Altintas',
-            style: TextStyle(
-              fontSize: heightSize(5),
-              color: Colors.purple,
-              fontFamily: 'MainFont',
-              fontWeight: FontWeight.w300,
-            ),
+            style: blueTheme.textTheme.headline6.copyWith(fontSize: context.normalText),
           )
         ],
       ),
-    );
-    var mainIcon = TextStyle(
-      fontSize: heightSize(2.5),
-      color: Colors.white,
-      fontFamily: 'MainFont',
-      fontWeight: FontWeight.w700,
     );
     return Scaffold(
       body: SafeArea(
@@ -80,8 +43,8 @@ class MasterPageState extends State<MasterPage> {
           children: <Widget>[
             Center(
               child: Container(
-                padding: EdgeInsets.all(10),
-                height: heightSize(35),
+                padding: context.paddingLow,
+                height: context.height * 35,
                 child: Image.asset("assets/images/topsearch.png"),
               ),
             ),
@@ -90,7 +53,7 @@ class MasterPageState extends State<MasterPage> {
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: heightSize(3),
+                    height: context.lowestContainer,
                   ),
                   Row(
                     children: <Widget>[
@@ -106,128 +69,16 @@ class MasterPageState extends State<MasterPage> {
               ),
             ),
             SizedBox(
-              height: heightSize(2),
+              height: context.lowestContainer,
             ),
             Container(
               padding: EdgeInsets.all(21),
               width: double.infinity,
-              height: heightSize(40),
+              height: context.height * 40,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: Container(
-                        color: Colors.lightBlueAccent,
-                        width: widthSize(45),
-                        height: heightSize(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Container(
-                              height: heightSize(20),
-                              child: Image.asset("assets/images/my_search.png"),
-                            ),
-                            Text(
-                              "MY SEARCH",
-                              style: mainIcon,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: widthSize(5),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => BookshelfPage2()));
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: Container(
-                        color: Colors.purple,
-                        width: widthSize(45),
-                        height: heightSize(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            SizedBox(
-                              height: heightSize(20),
-                              child: Image.asset("assets/images/my_bookshelf.png"),
-                            ),
-                            Text(
-                              "MY BOOKSHELF",
-                              style: mainIcon,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: widthSize(5),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => BookshelfPage2()));
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: Container(
-                        color: Colors.pinkAccent,
-                        width: widthSize(45),
-                        height: heightSize(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            SizedBox(
-                              height: heightSize(20),
-                              child: Image.asset("assets/images/my_favorites.png"),
-                            ),
-                            Text(
-                              "MY FAVORITES",
-                              style: mainIcon,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: widthSize(5),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: Container(
-                        color: Colors.orangeAccent,
-                        width: widthSize(45),
-                        height: heightSize(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            SizedBox(
-                              height: heightSize(20),
-                              child: Image.asset("assets/images/my_options.png"),
-                            ),
-                            Text(
-                              "MY OPTIONS",
-                              style: mainIcon,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
             ),
@@ -236,4 +87,33 @@ class MasterPageState extends State<MasterPage> {
       ),
     );
   }
+
+  /*
+  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      child: Container(
+                        color: Colors.lightBlueAccent,
+                        width: context.width * 45,
+                        height: context.height * 20,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Container(
+                              height: context.height * 20,
+                              child: Image.asset("assets/images/my_search.png"),
+                            ),
+                            Text(
+                              "MY SEARCH",
+                              style: blueTheme.textTheme.headline3.copyWith(fontSize: context.normalText),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+   */
 }

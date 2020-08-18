@@ -67,6 +67,9 @@ class _CreateAccountState extends State<CreateAccount> {
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: context.fieldSpaceContainer,
+                        ),
                         //----------------------------------------------------------------------------------------//
                         TextFields(
                           obscureText: false,
@@ -91,14 +94,9 @@ class _CreateAccountState extends State<CreateAccount> {
                         ),
                         BlueButtons(
                           onTap: () {
-                            UserRepository().createUser(mailText.text, passwordText.text, nameText.text, surnameText.text);
-
-                            /*
                             if (_formKey.currentState.validate()) {
-                              UserRepository().createUser(
-                                  mailText.text, String, passwordText.text);
+                              UserRepository().createUser(mailText.text, passwordText.text, nameText.text, surnameText.text);
                             }
-                          */
                           },
                           incomingText: "CREATE ACCOUNT",
                         ),

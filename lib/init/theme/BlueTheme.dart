@@ -103,14 +103,11 @@ final ThemeData blueTheme = ThemeData(
     ),
     headline5: TextStyle(
       color: Colors.purple,
-      fontFamily: "ZonaLight",
+      fontFamily: "ZonaBold",
     ),
     headline6: TextStyle(
-      //XX
-      color: Color(0xdd000000),
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.normal,
+      color: Colors.purple,
+      fontFamily: "ZonaLight",
     ),
     subtitle1: TextStyle(
       color: Color(0xdd000000),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/BookshelfPage2.dart';
 import 'package:grade_point_avarage/CreateAccount.dart';
+import 'package:grade_point_avarage/MasterPage.dart';
 import 'package:grade_point_avarage/ResaultPage.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       //backgroundColor: Colors.lightBlueAccent.shade100,
-      body: CreateAccount(),
+      body: MasterPage(),
     );
   }
 }
