@@ -30,7 +30,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      //backgroundColor: Colors.lightBlueAccent.shade100,
       body: MasterPage(),
     );
   }

@@ -11,6 +11,7 @@ extension MediaQueryExtension on BuildContext {
   double get lowestText => height * 1.7;
   double get lowText => height * 2;
   double get normalText => height * 2.5;
+  double get heightText => height * 3;
 
   double get paddingLowValue => width * 1;
   double get paddingMediumValue => width * 5;

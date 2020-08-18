@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:grade_point_avarage/BookshelfPage2.dart';
+import 'package:grade_point_avarage/View/MasterPageButton.dart';
 import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
+import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'ResaultPage.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
 
@@ -13,73 +17,102 @@ class MasterPage extends StatefulWidget {
 class MasterPageState extends State<MasterPage> {
   @override
   Widget build(BuildContext context) {
-    var welcome = RichText(
+    Widget welcome = RichText(
       text: TextSpan(
         text: "Welcome",
-        style: blueTheme.textTheme.headline5.copyWith(fontSize: context.lowText),
+        style: blueTheme.textTheme.headline5.copyWith(fontSize: context.heightText),
         children: <TextSpan>[
           TextSpan(
             text: ' to your bookshelf...',
-            style: blueTheme.textTheme.headline6.copyWith(fontSize: context.lowText),
+            style: blueTheme.textTheme.headline6.copyWith(fontSize: context.normalText),
           ),
         ],
       ),
     );
-    var user = RichText(
+    Widget user = RichText(
       text: TextSpan(
         text: "Hello",
-        style: blueTheme.textTheme.headline5.copyWith(fontSize: context.normalText),
+        style: blueTheme.textTheme.headline5.copyWith(fontSize: context.heightText),
         children: <TextSpan>[
           TextSpan(
-            text: ' Mr. Altintas',
+            text: ' UserName',
             style: blueTheme.textTheme.headline6.copyWith(fontSize: context.normalText),
           )
         ],
       ),
     );
+    Widget topText = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        welcome,
+        user,
+      ],
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Center(
-              child: Container(
-                padding: context.paddingLow,
-                height: context.height * 35,
-                child: Image.asset("assets/images/topsearch.png"),
-              ),
+            Container(
+              padding: context.paddingLow,
+              height: context.height * 35,
+              child: Image.asset("assets/images/topsearch.png"),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: context.lowestContainer,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      welcome,
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      user,
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            topText,
             SizedBox(
               height: context.lowestContainer,
             ),
-            Container(
-              padding: EdgeInsets.all(21),
-              width: double.infinity,
-              height: context.height * 40,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-
-                ],
+            Padding(
+              padding: context.paddingMedium,
+              child: Container(
+                height: context.height * 32,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    MasterPageButton(
+                      Image: Image.asset("assets/images/my_search.png"),
+                      OnTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
+                      },
+                      Color: Colors.lightBlue,
+                      Text: ("My Resault"),
+                    ),
+                    SizedBox(
+                      width: context.lowestContainer,
+                    ),
+                    MasterPageButton(
+                      Image: Image.asset("assets/images/my_bookshelf.png"),
+                      OnTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
+                      },
+                      Color: Colors.deepPurple,
+                      Text: ("My Bookshelf"),
+                    ),
+                    SizedBox(
+                      width: context.lowestContainer,
+                    ),
+                    MasterPageButton(
+                      Image: Image.asset("assets/images/my_favorites.png"),
+                      OnTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
+                      },
+                      Color: Colors.purple,
+                      Text: ("My Favorites"),
+                    ),
+                    SizedBox(
+                      width: context.lowestContainer,
+                    ),
+                    MasterPageButton(
+                      Image: Image.asset("assets/images/my_options.png"),
+                      OnTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
+                      },
+                      Color: Colors.pink,
+                      Text: ("My Options"),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -88,32 +121,7 @@ class MasterPageState extends State<MasterPage> {
     );
   }
 
-  /*
-  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      child: Container(
-                        color: Colors.lightBlueAccent,
-                        width: context.width * 45,
-                        height: context.height * 20,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Container(
-                              height: context.height * 20,
-                              child: Image.asset("assets/images/my_search.png"),
-                            ),
-                            Text(
-                              "MY SEARCH",
-                              style: blueTheme.textTheme.headline3.copyWith(fontSize: context.normalText),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+/*
+
    */
 }
