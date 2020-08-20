@@ -7,7 +7,6 @@ import 'View/Images/CoffeeImage.dart';
 import 'View/ContextExtension.dart';
 import 'View/TextFields.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';
-import 'package:provider/provider.dart';
 import 'init/theme/BlueTheme.dart';
 
 class LoginPage extends StatefulWidget {

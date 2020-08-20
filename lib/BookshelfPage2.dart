@@ -7,8 +7,6 @@ import 'MasterPage.dart';
 import 'model/firebaseBook.dart';
 import 'init/theme/BlueTheme.dart';
 import 'View/ContextExtension.dart';
-import 'package:grade_point_avarage/repository/UserRepository.dart';
-import 'package:provider/provider.dart';
 
 class BookshelfPage2 extends StatefulWidget {
   @override

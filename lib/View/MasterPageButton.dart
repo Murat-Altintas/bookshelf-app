@@ -3,12 +3,12 @@ import 'package:grade_point_avarage/View/ContextExtension.dart';
 import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
 
 class MasterPageButton extends StatefulWidget {
-  final OnTap;
-  final Image;
-  final Text;
-  final Color;
+  final onTap;
+  final image;
+  final text;
+  final color;
 
-  const MasterPageButton({Key key, this.OnTap, this.Image, this.Text, this.Color}) : super(key: key);
+  const MasterPageButton({Key key, this.onTap, this.image, this.text, this.color}) : super(key: key);
 
   @override
   _MasterPageButtonState createState() => _MasterPageButtonState();
@@ -18,11 +18,11 @@ class _MasterPageButtonState extends State<MasterPageButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.OnTap,
+      onTap: widget.onTap,
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         child: Container(
-          color: widget.Color,
+          color: widget.color,
           width: context.width * 45,
           height: context.height * 20,
           child: Column(
@@ -30,10 +30,10 @@ class _MasterPageButtonState extends State<MasterPageButton> {
             children: <Widget>[
               Container(
                 height: context.height * 20,
-                child: widget.Image,
+                child: widget.image,
               ),
               Text(
-                widget.Text,
+                widget.text,
                 style: blueTheme.textTheme.headline3.copyWith(fontSize: context.heightText),
               ),
             ],

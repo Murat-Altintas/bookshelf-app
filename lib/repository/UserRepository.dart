@@ -1,76 +1,64 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grade_point_avarage/model/book.dart';
 
-enum UserDurumu { Idle, OturumAcilmamis, OturumAciliyor, OturumAcik }
 
 class UserRepository {
   FirebaseAuth _auth;
   FirebaseUser _user;
-  Firestore firestore = Firestore.instance;
-  UserDurumu _durum = UserDurumu.Idle;
-
-  FirebaseUser get user => _user;
-
-  set user(FirebaseUser value) {
-    _user = value;
-  }
-
-  UserDurumu get durum => _durum;
-
-  set durum(UserDurumu value) {
-    _durum = value;
-  }
+  Firestore _firestore = Firestore.instance;
 
   Future<bool> createUser(String email, password, name, surname) async {
     await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    final uid = user.uid;
+    final uid = _user.uid;
     Map<String, String> userMap = {
       "name": name,
       "surname": surname,
     };
-    firestore.collection("Users").document(uid).setData(userMap);
+    _firestore.collection("Users").document(uid).setData(userMap);
+    return true;
   }
 
   Future<bool> signIn(String email, String sifre) async {
-    try {
-      _durum = UserDurumu.OturumAciliyor;
-      _auth.signInWithEmailAndPassword(email: email, password: sifre);
-      return true;
-    } catch (e) {
-      _durum = UserDurumu.OturumAcilmamis;
-      return false;
-    }
+    await _auth.signInWithEmailAndPassword(email: email, password: sifre);
+    return true;
   }
 
-  Future signOut() async {
-    _auth.signOut();
-    _durum = UserDurumu.OturumAcilmamis;
-    return Future.delayed(Duration.zero);
-  }
+  Future<void> saveBookTitle(allBook) async {
+    Map<String, String> idMap = Map();
+    idMap[allBook.id] = allBook.id;
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
 
-  UserRepository() {
-    _auth = FirebaseAuth.instance;
-    _auth.onAuthStateChanged.listen(_onAuthStateChanged);
-  }
+    String title = allBook.volumeInfo.title == null ? "NO DATA" : allBook.volumeInfo.title.toString();
+    String authors = allBook.volumeInfo.authors == null ? "NO DATA" : allBook.volumeInfo.authors.first.toString();
+    String publisher = allBook.volumeInfo.publisher == null ? "NO DATA" : allBook.volumeInfo.publisher.toString();
+    String image = allBook.volumeInfo.imageLinks == null ? "NO DATA" : allBook.volumeInfo.imageLinks.thumbnail.toString();
 
-  Future<void> _onAuthStateChanged(FirebaseUser user) async {
-    if (user == null) {
-      _durum = UserDurumu.OturumAcilmamis;
-    } else {
-      _user = user;
-      _durum = UserDurumu.OturumAcik;
-    }
-  }
-
-  Future<void> nameSurname(String name, String surname) async {
-    Map<String, dynamic> userMap = {
-      "name": name,
-      "surname": surname,
+    Map<String, String> mixMap = {
+      "title": title,
+      "authors": authors,
+      "publisher": publisher,
+      "image": image,
     };
-    await firestore.collection("user").document().setData(userMap);
+
+    await _firestore.collection(uid).document("$idMap").setData(mixMap, merge: true);
+  }
+
+  getBooks({String bookName, int startIndex}) async {
+    List<Item> loadedItems = [];
+    var dio = Dio();
+    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex");
+    Map data = await response.data;
+    final booksResponse =  Book.fromJson(data);
+    returnLoadedItems(loadedItems, booksResponse);
+    //setState(() {});
+  }
+
+  void returnLoadedItems(List<Item> loadedItems, Book booksResponse) {
+    loadedItems.addAll(booksResponse.items);
   }
 
   //----------------------------------------------------------------------------------//

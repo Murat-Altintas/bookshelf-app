@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:grade_point_avarage/BookshelfPage2.dart';
 import 'package:grade_point_avarage/View/MasterPageButton.dart';
 import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
-import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'ResaultPage.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
 
@@ -71,45 +69,45 @@ class MasterPageState extends State<MasterPage> {
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
                     MasterPageButton(
-                      Image: Image.asset("assets/images/my_search.png"),
-                      OnTap: () {
+                      image: Image.asset("assets/images/my_search.png"),
+                      onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
                       },
-                      Color: Colors.lightBlue,
-                      Text: ("My Resault"),
+                      color: Colors.lightBlue,
+                      text: ("My Resault"),
                     ),
                     SizedBox(
                       width: context.lowestContainer,
                     ),
                     MasterPageButton(
-                      Image: Image.asset("assets/images/my_bookshelf.png"),
-                      OnTap: () {
+                      image: Image.asset("assets/images/my_bookshelf.png"),
+                      onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
                       },
-                      Color: Colors.deepPurple,
-                      Text: ("My Bookshelf"),
+                      color: Colors.deepPurple,
+                      text: ("My Bookshelf"),
                     ),
                     SizedBox(
                       width: context.lowestContainer,
                     ),
                     MasterPageButton(
-                      Image: Image.asset("assets/images/my_favorites.png"),
-                      OnTap: () {
+                      image: Image.asset("assets/images/my_favorites.png"),
+                      onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
                       },
-                      Color: Colors.purple,
-                      Text: ("My Favorites"),
+                      color: Colors.purple,
+                      text: ("My Favorites"),
                     ),
                     SizedBox(
                       width: context.lowestContainer,
                     ),
                     MasterPageButton(
-                      Image: Image.asset("assets/images/my_options.png"),
-                      OnTap: () {
+                      image: Image.asset("assets/images/my_options.png"),
+                      onTap: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
                       },
-                      Color: Colors.pink,
-                      Text: ("My Options"),
+                      color: Colors.pink,
+                      text: ("My Options"),
                     ),
                   ],
                 ),

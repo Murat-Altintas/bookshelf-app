@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:grade_point_avarage/BookshelfPage2.dart';
-import 'package:grade_point_avarage/CreateAccount.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'package:grade_point_avarage/ResaultPage.dart';
-import 'package:provider/provider.dart';
+import 'package:grade_point_avarage/View/Images/ResaultImage.dart';
 
-import 'LoginPage.dart';
 
 void main() => runApp(GradePoint());
 
@@ -30,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: MasterPage(),
+      body: ResaultPage(),
     );
   }
 }
