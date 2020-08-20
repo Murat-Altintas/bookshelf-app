@@ -16,7 +16,6 @@ class ResaultPage extends StatefulWidget {
 }
 
 class _ResaultPageState extends State<ResaultPage> {
-  List<Item> loadedItems = [];
   int startIndex = 0;
   var bookName = TextEditingController();
 
@@ -36,13 +35,13 @@ class _ResaultPageState extends State<ResaultPage> {
             ),
             Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-              children: <Widget>[
+              child: Column(
+                children: <Widget>[
                   CarouselSlider.builder(
-                    itemCount: loadedItems.length,
+                    itemCount: UserRepository().loadedItems.length,
                     options: CarouselOptions(
                         onPageChanged: (page, reason) {
-                          if (page == loadedItems.length - 1) {
+                          if (page == UserRepository().loadedItems.length - 1) {
                             loadNextPage();
                             print("+10 page");
                           }
@@ -79,9 +78,9 @@ class _ResaultPageState extends State<ResaultPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 SizedBox(
-                                  child: loadedItems[index].volumeInfo.imageLinks != null
+                                  child: UserRepository().loadedItems[index].volumeInfo.imageLinks != null
                                       ? Image.network(
-                                          loadedItems[index].volumeInfo.imageLinks.thumbnail,
+                                          UserRepository().loadedItems[index].volumeInfo.imageLinks.thumbnail,
                                           height: context.height * 35,
                                           fit: BoxFit.fill,
                                         )
@@ -92,20 +91,20 @@ class _ResaultPageState extends State<ResaultPage> {
                                   height: context.lowestContainer,
                                 ),
                                 Text(
-                                  loadedItems[index].volumeInfo.title == null ? "No data" : loadedItems[index].volumeInfo.title.toUpperCase(),
+                                  UserRepository().loadedItems[index].volumeInfo.title == null ? "No data" : UserRepository().loadedItems[index].volumeInfo.title.toUpperCase(),
                                   style: blueTheme.primaryTextTheme.headline1.copyWith(fontSize: context.lowText),
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
                                 Text(
-                                  loadedItems[index].volumeInfo.authors.toString() == null ? "No data" : loadedItems[index].volumeInfo.authors.toString().replaceAll("]", "").replaceAll("[  ", ""),
+                                  UserRepository().loadedItems[index].volumeInfo.authors.toString() == null ? "No data" : UserRepository().loadedItems[index].volumeInfo.authors.toString().replaceAll("]", "").replaceAll("[  ", ""),
                                   style: blueTheme.primaryTextTheme.headline2.copyWith(fontSize: context.lowText),
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
-                                  loadedItems[index].volumeInfo.publisher.toString() == null ? "No data" : loadedItems[index].volumeInfo.publisher.toString(),
+                                  UserRepository().loadedItems[index].volumeInfo.publisher.toString() == null ? "No data" : UserRepository().loadedItems[index].volumeInfo.publisher.toString(),
                                   style: blueTheme.primaryTextTheme.headline3.copyWith(fontSize: context.lowText),
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
@@ -124,7 +123,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                           if (changeIcon == Icon(Icons.favorite_border)) {
                                             changeIcon = Icon(Icons.favorite);
                                           }
-                                          UserRepository().saveBookTitle(loadedItems[index]);
+                                          UserRepository().saveBookTitle(UserRepository().loadedItems[index]);
                                         });
                                       },
                                       iconSize: 30,
@@ -136,7 +135,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                       color: blueTheme.primaryColor,
                                     ),
                                     Text(
-                                      "Sayfa sayısı: " + loadedItems[index].volumeInfo.pageCount.toString(),
+                                      "Sayfa sayısı: " + UserRepository().loadedItems[index].volumeInfo.pageCount.toString(),
                                       style: blueTheme.primaryTextTheme.headline3,
                                     ),
                                   ],
@@ -146,9 +145,9 @@ class _ResaultPageState extends State<ResaultPage> {
                           ));
                     },
                   )
-              ],
-            ),
-                )),
+                ],
+              ),
+            )),
           ],
         ),
       ),
