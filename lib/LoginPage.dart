@@ -71,12 +71,10 @@ class _LoginPageState extends State<LoginPage> {
                         BlueButtons(
                           onTap: () {
                             if (formKey.currentState.validate()) {
-
                               UserRepository()
                                   .signIn(mailText.text, passwordText.text)
                                   .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
                             }
-
                           },
                           incomingText: "LOGIN",
                         ),

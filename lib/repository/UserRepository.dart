@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grade_point_avarage/model/book.dart';
 
 class UserRepository {
-  FirebaseAuth _auth;
+  FirebaseAuth _auth= FirebaseAuth.instance;
   FirebaseUser _user;
   Firestore _firestore = Firestore.instance;
   List<Item> loadedItems = [];
@@ -46,13 +46,15 @@ class UserRepository {
     await _firestore.collection(uid).document("$idMap").setData(mixMap, merge: true);
   }
 
-   getBooks({String bookName, int startIndex}) async {
+   Future<void> getBooks({String bookName, int startIndex=10,bool reset=false}) async {
+    print("name:"+bookName);
+    if(reset) loadedItems.clear();
     var dio = Dio();
     var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex");
     Map data = await response.data;
-    final booksResponse = Book.fromJson(data);
+    final booksResponse =  Book.fromJson(data);
     loadedItems.addAll(booksResponse.items);
-    //setState(() {});
+    print("Response:"+loadedItems[0].volumeInfo.title);
   }
 
   //----------------------------------------------------------------------------------//
