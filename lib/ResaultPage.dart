@@ -192,7 +192,6 @@ class _ResaultPageState extends State<ResaultPage> {
     if(favoriIDs.contains(loadedItem.id)){
       changeIcon=false;
     }else changeIcon=true;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[

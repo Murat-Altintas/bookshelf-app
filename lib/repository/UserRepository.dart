@@ -4,10 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grade_point_avarage/model/book.dart';
 
 class UserRepository {
-  FirebaseAuth _auth= FirebaseAuth.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser _user;
   Firestore _firestore = Firestore.instance;
   List<Item> loadedItems = [];
+  String userName;
 
   Future<bool> createUser(String email, password, name, surname) async {
     await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -46,21 +47,36 @@ class UserRepository {
     await _firestore.collection(uid).document("$idMap").setData(mixMap, merge: true);
   }
 
-   Future<void> getBooks({String bookName, int startIndex=10,bool reset=false}) async {
-    print("name:"+bookName);
-    if(reset) loadedItems.clear();
+  Future<void> getBooks({String bookName, int startIndex = 10, bool reset = false}) async {
+    print("name:" + bookName);
+    if (reset) loadedItems.clear();
     var dio = Dio();
-    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex");
+    var response = await dio.get(
+        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex");
     Map data = await response.data;
-    final booksResponse =  Book.fromJson(data);
+    final booksResponse = Book.fromJson(data);
     loadedItems.addAll(booksResponse.items);
-    print("Response:"+loadedItems[0].volumeInfo.title);
+    print("Response:" + loadedItems[0].volumeInfo.title);
+  }
+
+  Future<String> getUserName() async {
+    try {
+      return await _auth.currentUser().then((urs) async {
+        return await _firestore.collection("Users").document(urs.uid).get().then((userData) {
+          return userData.data["name"];
+        });
+      });
+    } catch (e) {
+      print(e);
+      return "null";
+    }
   }
 
   //----------------------------------------------------------------------------------//
 
   String nameControl(String value) {
-    String regEx = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    String regEx =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regExp = new RegExp(regEx);
     if (value.length == 0) {
       return "Write your name";
@@ -72,7 +88,8 @@ class UserRepository {
   }
 
   String surnameControl(String value) {
-    String regEx = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    String regEx =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regExp = new RegExp(regEx);
     if (value.length == 0) {
       return "Write your surname";
@@ -84,7 +101,8 @@ class UserRepository {
   }
 
   String mailControl(String value) {
-    String regEx = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    String regEx =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regExp = new RegExp(regEx);
     if (value.length == 0) {
       return "Write your e-mail";

@@ -4,15 +4,23 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:grade_point_avarage/View/MasterPageButton.dart';
 import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
+import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'ResaultPage.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
 
 class MasterPage extends StatefulWidget {
+  final String  userName;
+
+  const MasterPage({Key key, this.userName}) : super(key: key);
   @override
   MasterPageState createState() => MasterPageState();
 }
 
 class MasterPageState extends State<MasterPage> {
+
+
+
+
   @override
   Widget build(BuildContext context) {
     Widget welcome = RichText(
@@ -33,7 +41,7 @@ class MasterPageState extends State<MasterPage> {
         style: blueTheme.textTheme.headline5.copyWith(fontSize: context.heightText),
         children: <TextSpan>[
           TextSpan(
-            text: ' UserName',
+            text: widget.userName,
             style: blueTheme.textTheme.headline6.copyWith(fontSize: context.normalText),
           )
         ],
@@ -41,10 +49,17 @@ class MasterPageState extends State<MasterPage> {
     );
     Widget topText = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        welcome,
-        user,
+        Row(
+          children: <Widget>[
+            welcome,
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            user,
+          ],
+        ),
       ],
     );
 
@@ -57,7 +72,13 @@ class MasterPageState extends State<MasterPage> {
               height: context.height * 35,
               child: Image.asset("assets/images/topsearch.png"),
             ),
-            topText,
+            SizedBox(
+              height: context.lowestContainer,
+            ),
+            Padding(
+              padding: context.paddingMedium,
+              child: topText,
+            ),
             SizedBox(
               height: context.lowestContainer,
             ),
@@ -74,7 +95,7 @@ class MasterPageState extends State<MasterPage> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => ResaultPage()));
                       },
                       color: Colors.lightBlue,
-                      text: ("My Resault"),
+                      text: ("My Search"),
                     ),
                     SizedBox(
                       width: context.lowestContainer,

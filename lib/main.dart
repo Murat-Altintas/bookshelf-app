@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:grade_point_avarage/LoginPage.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'package:grade_point_avarage/ResaultPage.dart';
 import 'package:grade_point_avarage/View/Images/ResaultImage.dart';
+import 'package:grade_point_avarage/repository/UserRepository.dart';
 
 
 void main() => runApp(GradePoint());
@@ -28,7 +31,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: LoginPage(),
+      body: FutureBuilder(
+        future: UserRepository().getUserName(),
+        builder: (_,snap){
+          if(snap.connectionState==ConnectionState.done){
+            return MasterPage(userName: snap.data);
+          }else{
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
   }
 }

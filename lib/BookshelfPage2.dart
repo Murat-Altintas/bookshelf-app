@@ -67,7 +67,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                 ),
               ),
               FutureBuilder<List<FirebaseBook>>(
-                future: getBooks(),
+                future: showBooks(),
                 builder: (context, dataSnapShot) {
                   if (dataSnapShot.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -157,7 +157,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
     );
   }
 
-  Future<List<FirebaseBook>> getBooks() async {
+  Future<List<FirebaseBook>> showBooks() async {
     final FirebaseUser user = await _auth.currentUser();
     return (await _firestore.collection(user.uid).getDocuments())
         .documents

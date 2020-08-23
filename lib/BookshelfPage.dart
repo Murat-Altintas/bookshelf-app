@@ -13,7 +13,6 @@ class BookshelfPage extends StatefulWidget {
 }
 
 class _BookshelfPageState extends State<BookshelfPage> {
-
   final Firestore _firestore = Firestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -23,8 +22,7 @@ class _BookshelfPageState extends State<BookshelfPage> {
 
   getData(String bookName, pageIndex) async {
     var dio = Dio();
-    var response = await dio.get(
-        "https://www.googleapis.com/books/v1/volumes?maxResults=100&q=$bookName");
+    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?maxResults=100&q=$bookName");
     //https://www.googleapis.com/books/v1/volumes?q=selam&maxResults=40&startIndex=2
 
     Map data = await response.data;
@@ -42,6 +40,7 @@ class _BookshelfPageState extends State<BookshelfPage> {
     value /= 100;
     return MediaQuery.of(context).size.width * value;
   }
+
   //------------------------------------------------------------//
 
   @override
@@ -96,12 +95,9 @@ class _BookshelfPageState extends State<BookshelfPage> {
                 child: Expanded(
                   child: FutureBuilder(
                     future: getBooks(), //future döndüren metod
-                    builder: (context,
-                        AsyncSnapshot<List<Map<String, dynamic>>>
-                        dataSnapShot) {
+                    builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> dataSnapShot) {
                       // gelen verinin türünü belirtmezsen length seçemezsin
-                      if (dataSnapShot.connectionState ==
-                          ConnectionState.done) {
+                      if (dataSnapShot.connectionState == ConnectionState.done) {
                         print('the data is:');
                         print(jsonEncode(dataSnapShot.data));
                         List<String> titleList = [];
@@ -138,8 +134,7 @@ class _BookshelfPageState extends State<BookshelfPage> {
                                       ),
                                     ],
                                   ),
-                                  padding: EdgeInsets.only(
-                                      left: widthSize(5), right: widthSize(5)),
+                                  padding: EdgeInsets.only(left: widthSize(5), right: widthSize(5)),
                                   height: heightSize(25),
                                   width: widthSize(90),
                                   child: Row(
@@ -149,8 +144,7 @@ class _BookshelfPageState extends State<BookshelfPage> {
                                         flex: 4,
                                         child: Container(
                                           height: heightSize(35),
-                                          child: Image.network(
-                                              imgList[index]), //imgList is here
+                                          child: Image.network(imgList[index]), //imgList is here
                                         ),
                                       ),
                                       SizedBox(
@@ -159,14 +153,11 @@ class _BookshelfPageState extends State<BookshelfPage> {
                                       Expanded(
                                         flex: 9,
                                         child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: <Widget>[
-                                            Text(
-                                                titleList[
-                                                index], //titleList is here        //titleList is here//titleList is here//titleList is here//titleList is here//titleList is here
+                                            Text(titleList[index],
+                                                //titleList is here        //titleList is here//titleList is here//titleList is here//titleList is here//titleList is here
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   fontSize: heightSize(2),
@@ -175,8 +166,7 @@ class _BookshelfPageState extends State<BookshelfPage> {
                                                   fontWeight: FontWeight.w700,
                                                 )),
                                             Text(
-                                              authorsList[
-                                              index], //authorsList is here
+                                              authorsList[index], //authorsList is here
                                               style: TextStyle(
                                                 fontSize: heightSize(2),
                                                 color: Colors.purple,
@@ -197,8 +187,7 @@ class _BookshelfPageState extends State<BookshelfPage> {
                                               //sıkıntı yok yani anladım, benim 2-3 haftaya okul da bitcek onun için tezi yetiştirmem lazım
                                               // tmm knk seni rahatsız etmem bitene kadar enazından :D tmm tmm anlaştık hadi bana müsaade
                                               // çok teşekkür ederim Allah razı olsn knk görüşürz eline sağlık cümlemizden görüşürz
-                                              publisherList[
-                                              index], //publisherList is here
+                                              publisherList[index], //publisherList is here
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ],
@@ -231,15 +220,11 @@ class _BookshelfPageState extends State<BookshelfPage> {
   }
 
   Future<List<Map<String, dynamic>>> getBooks() async {
-
     final FirebaseUser user = await _auth.currentUser();
     final uid = user.uid;
     try {
       List<Map<String, dynamic>> idMap = [];
-      await _firestore
-          .collection("$uid")
-          .getDocuments()
-          .then((QuerySnapshot snapshot) {
+      await _firestore.collection("$uid").getDocuments().then((QuerySnapshot snapshot) {
         snapshot.documents.forEach((f) {
           idMap.add(f.data);
           print('this is the data:::: ${f.data}');

@@ -73,7 +73,16 @@ class _LoginPageState extends State<LoginPage> {
                             if (formKey.currentState.validate()) {
                               UserRepository()
                                   .signIn(mailText.text, passwordText.text)
-                                  .then((value) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
+                                  .then((value){
+                                UserRepository().getUserName().then((name) =>
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MasterPage(
+                                              userName: name,
+                                            ))))
+                                    ;
+                                  });
                             }
                           },
                           incomingText: "LOGIN",
