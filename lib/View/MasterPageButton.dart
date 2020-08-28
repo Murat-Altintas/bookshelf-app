@@ -8,7 +8,9 @@ class MasterPageButton extends StatefulWidget {
   final text;
   final color;
 
-  const MasterPageButton({Key key, this.onTap, this.image, this.text, this.color}) : super(key: key);
+  const MasterPageButton(
+      {Key key, this.onTap, this.image, this.text, this.color})
+      : super(key: key);
 
   @override
   _MasterPageButtonState createState() => _MasterPageButtonState();
@@ -34,7 +36,8 @@ class _MasterPageButtonState extends State<MasterPageButton> {
               ),
               Text(
                 widget.text,
-                style: blueTheme.textTheme.headline3.copyWith(fontSize: context.heightText),
+                style: blueTheme.textTheme.headline3
+                    .copyWith(fontSize: context.heightText),
               ),
             ],
           ),

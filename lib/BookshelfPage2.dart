@@ -108,7 +108,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                       child: Row(
                                         children: <Widget>[
                                           SizedBox(
-                                            child: Image.network(model.image),
+                                            child:  model.image.isEmpty ? Text("NO DATA") : Image.network(model.image),
                                             height: context.height * 20,
                                             width: context.width * 20,
                                           ),

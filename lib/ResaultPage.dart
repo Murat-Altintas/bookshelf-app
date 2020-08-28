@@ -19,7 +19,9 @@ class _ResaultPageState extends State<ResaultPage> {
   int startIndex = 0;
   var bookName = TextEditingController();
   UserRepository userRepo = UserRepository();
-  List<String> favoriIDs=[];
+  List<String> favoriteIDs = [];
+  List<String> checkIDs = [];
+
   //------------------------------------------------------------//
 
   @override
@@ -36,10 +38,12 @@ class _ResaultPageState extends State<ResaultPage> {
             ),
             Expanded(
                 child: SingleChildScrollView(
+
               child: Column(
                 children: <Widget>[
                   CarouselSlider.builder(
                     itemCount: userRepo.loadedItems.length,
+
                     options: CarouselOptions(
                         onPageChanged: (page, reason) {
                           if (page == userRepo.loadedItems.length - 1) {
@@ -59,8 +63,6 @@ class _ResaultPageState extends State<ResaultPage> {
                         autoPlayCurve: Curves.decelerate,
                         height: context.height * 57),
                     itemBuilder: (BuildContext context, int index) {
-
-
                       return Container(
                           width: context.height * 55,
                           margin: EdgeInsets.symmetric(horizontal: 5.0),
@@ -120,7 +122,7 @@ class _ResaultPageState extends State<ResaultPage> {
                                 SizedBox(
                                   height: context.height * 1,
                                 ),
-                                 iconBar(userRepo.loadedItems[index]),
+                                iconBar(userRepo.loadedItems[index]),
                               ],
                             ),
                           ));
@@ -139,7 +141,7 @@ class _ResaultPageState extends State<ResaultPage> {
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.arrow_back),
-            iconSize: context.iconSize,
+            iconSize: context.iconMedium,
             color: blueTheme.primaryIconTheme.color,
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage()));
@@ -170,10 +172,9 @@ class _ResaultPageState extends State<ResaultPage> {
           ),
           IconButton(
             icon: Icon(Icons.search),
-            iconSize: context.iconSize,
+            iconSize: context.iconMedium,
             color: blueTheme.primaryIconTheme.color,
             onPressed: () async {
-              userRepo.getBooks(reset: true,bookName: bookName.text).whenComplete(() {
                 setState(() {
                   print("Response:" + userRepo.loadedItems[0].volumeInfo.title);
                 });
@@ -188,33 +189,54 @@ class _ResaultPageState extends State<ResaultPage> {
   }
 
   Widget iconBar(Item loadedItem) {
-    bool changeIcon ;
-    if(favoriIDs.contains(loadedItem.id)){
-      changeIcon=false;
-    }else changeIcon=true;
+    bool favIcon;
+    bool checkIcon;
+    if (favoriteIDs.contains(loadedItem.id)) {
+      favIcon = false;
+    } else
+      favIcon = true;
+    if (checkIDs.contains(loadedItem.id)) {
+      checkIcon = false;
+    } else
+      checkIcon = true;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         IconButton(
-          icon: changeIcon? Icon(Icons.favorite_border):Icon(Icons.favorite),
+          icon: favIcon ? Icon(Icons.favorite_border) : Icon(Icons.favorite),
           color: blueTheme.errorColor,
           onPressed: () {
             setState(() {
-              if(changeIcon)
-              favoriIDs.add(loadedItem.id);
-              else{
-                favoriIDs.remove(loadedItem.id);
+              if (favIcon) {
+                favoriteIDs.add(loadedItem.id);
+                userRepo.saveBooks(loadedItem, true);
+                print("ADD saveFavBooks Complate");
+              } else {
+                favoriteIDs.remove(loadedItem.id);
+                userRepo.deleteBook(loadedItem, true);
+                print("DELETE saveFavBooks Complate");
               }
-              userRepo.saveBookTitle(loadedItem);
             });
           },
           iconSize: 30,
         ),
         IconButton(
-          icon: Icon(Icons.check_box_outline_blank),
-          onPressed: () {},
-          iconSize: 30,
+          icon: checkIcon ? Icon(Icons.check_box_outline_blank) : Icon(Icons.check_box),
           color: blueTheme.primaryColor,
+          onPressed: () {
+            setState(() {
+              if (checkIcon) {
+                checkIDs.add(loadedItem.id);
+                userRepo.saveBooks(loadedItem, false);
+                print("ADD saveMyBooks Complate");
+              } else {
+                checkIDs.remove(loadedItem.id);
+                userRepo.deleteBook(loadedItem, false);
+                print("DELETE saveMyBooks Complate");
+              }
+            });
+          },
+          iconSize: 30,
         ),
         Text(
           "Sayfa sayısı: " + loadedItem.volumeInfo.pageCount.toString(),

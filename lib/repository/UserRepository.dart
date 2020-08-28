@@ -26,7 +26,7 @@ class UserRepository {
     return true;
   }
 
-  Future<void> saveBookTitle(allBook) async {
+  Future<void> saveBooks(allBook, FavOrBookshelf) async {
     Map<String, String> idMap = Map();
     idMap[allBook.id] = allBook.id;
     final FirebaseUser user = await _auth.currentUser();
@@ -44,7 +44,24 @@ class UserRepository {
       "image": image,
     };
 
-    await _firestore.collection(uid).document("$idMap").setData(mixMap, merge: true);
+    if (FavOrBookshelf == true) {
+      await _firestore.collection("MyFavorites").document(uid).collection("FavoriteBooks").document("$idMap").setData(mixMap, merge: true);
+    } else if (FavOrBookshelf == false) {
+      await _firestore.collection("MyBooks").document(uid).collection("BookshelfBooks").document("$idMap").setData(mixMap, merge: true);
+    }
+  }
+
+  Future<void> deleteBook(allBook, FavOrBookshelf) async {
+    Map<String, String> idMap = Map();
+    idMap[allBook.id] = allBook.id;
+    final FirebaseUser user = await _auth.currentUser();
+    final uid = user.uid;
+
+    if (FavOrBookshelf == true) {
+      await _firestore.collection("MyFavorites").document(uid).collection("FavoriteBooks").document("$idMap").delete();
+    } else if (FavOrBookshelf == false) {
+      await _firestore.collection("MyBooks").document(uid).collection("BookshelfBooks").document("$idMap").delete();
+    }
   }
 
   Future<void> getBooks({String bookName, int startIndex = 10, bool reset = false}) async {
