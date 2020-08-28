@@ -175,6 +175,7 @@ class _ResaultPageState extends State<ResaultPage> {
             iconSize: context.iconMedium,
             color: blueTheme.primaryIconTheme.color,
             onPressed: () async {
+              userRepo.getBooks(reset: true, bookName: bookName.text).whenComplete(() {
                 setState(() {
                   print("Response:" + userRepo.loadedItems[0].volumeInfo.title);
                 });
