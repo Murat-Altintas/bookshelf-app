@@ -14,7 +14,7 @@ class BookshelfPage2 extends StatefulWidget {
 }
 
 class _BookshelfPage2State extends State<BookshelfPage2> {
-  final Firestore _firestore = Firestore.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //------------------------------------------------------------//
@@ -158,21 +158,22 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
   }
 
   Future<List<FirebaseBook>> showBooks() async {
-    final FirebaseUser user = await _auth.currentUser();
-    return (await _firestore.collection(user.uid).getDocuments())
-        .documents
-        .map((doc) => FirebaseBook.fromJson(doc.data))
+    final User user =  _auth.currentUser;
+    return (await _firestore.collection(user.uid).get())
+        .docs
+
+        .map((doc) => FirebaseBook.fromJson(doc.data()))
         .toList();
   }
 
   Future<List<Map<String, dynamic>>> bookFill() async {
-    final FirebaseUser user = await _auth.currentUser();
+    final User user =  _auth.currentUser;
     final uid = user.uid;
     try {
       List<Map<String, dynamic>> idMap = [];
-      await _firestore.collection("$uid").getDocuments().then((QuerySnapshot snapshot) {
-        snapshot.documents.forEach((f) {
-          idMap.add(f.data);
+      await _firestore.collection("$uid").get().then((QuerySnapshot snapshot) {
+        snapshot.docs.forEach((f) {
+          idMap.add(f.data());
           // print('this is the data:::: ${f.data}');
         });
       });

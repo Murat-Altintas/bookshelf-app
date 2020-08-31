@@ -38,12 +38,10 @@ class _ResaultPageState extends State<ResaultPage> {
             ),
             Expanded(
                 child: SingleChildScrollView(
-
               child: Column(
                 children: <Widget>[
                   CarouselSlider.builder(
                     itemCount: userRepo.loadedItems.length,
-
                     options: CarouselOptions(
                         onPageChanged: (page, reason) {
                           if (page == userRepo.loadedItems.length - 1) {

@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:grade_point_avarage/View/MasterPageButton.dart';
 import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'BookshelfPage2.dart';
 import 'ResaultPage.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MasterPage extends StatefulWidget {
   final String userName;
@@ -64,92 +66,85 @@ class MasterPageState extends State<MasterPage> {
         ),
       ],
     );
-    return FutureBuilder(
-        future: UserRepository().getUserName(),
-        builder: (_, snap) {
-          if (snap.connectionState == ConnectionState.done) {
-            return MasterPage(userName: snap.data);
-          } else {
-            return Scaffold(
-              body: SafeArea(
-                child: Column(
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Container(
+                padding: context.paddingLow,
+                height: context.height * 35,
+                child: Image.asset("assets/images/topsearch.png")),
+            SizedBox(
+              height: context.lowestContainer,
+            ),
+            Padding(
+              padding: context.paddingMedium,
+              child: topText,
+            ),
+            SizedBox(
+              height: context.lowestContainer,
+            ),
+            Padding(
+              padding: context.paddingMedium,
+              child: Container(
+                height: context.height * 32,
+                child: ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    Container(
-                      padding: context.paddingLow,
-                      height: context.height * 35,
-                      child: Image.asset("assets/images/topsearch.png"),
+                    MasterPageButton(
+                      image: Image.asset("assets/images/my_search.png"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResaultPage()));
+                      },
+                      color: Colors.lightBlue,
+                      text: ("My Search"),
                     ),
                     SizedBox(
-                      height: context.lowestContainer,
+                      width: context.lowestContainer,
                     ),
-                    Padding(
-                      padding: context.paddingMedium,
-                      child: topText,
+                    MasterPageButton(
+                      image:
+                      Image.asset("assets/images/my_bookshelf.png"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BookshelfPage2()));
+                      },
+                      color: Colors.deepPurple,
+                      text: ("My Bookshelf"),
                     ),
                     SizedBox(
-                      height: context.lowestContainer,
+                      width: context.lowestContainer,
                     ),
-                    Padding(
-                      padding: context.paddingMedium,
-                      child: Container(
-                        height: context.height * 32,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            MasterPageButton(
-                              image: Image.asset("assets/images/my_search.png"),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ResaultPage()));
-                              },
-                              color: Colors.lightBlue,
-                              text: ("My Search"),
-                            ),
-                            SizedBox(
-                              width: context.lowestContainer,
-                            ),
-                            MasterPageButton(
-                              image:
-                                  Image.asset("assets/images/my_bookshelf.png"),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            BookshelfPage2()));
-                              },
-                              color: Colors.deepPurple,
-                              text: ("My Bookshelf"),
-                            ),
-                            SizedBox(
-                              width: context.lowestContainer,
-                            ),
-                            MasterPageButton(
-                              image:
-                                  Image.asset("assets/images/my_favorites.png"),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ResaultPage()));
-                              },
-                              color: Colors.purple,
-                              text: ("My Favorites"),
-                            ),
-                            SizedBox(
-                              width: context.lowestContainer,
-                            ),
-                          ],
-                        ),
-                      ),
+                    MasterPageButton(
+                      image:
+                      Image.asset("assets/images/my_favorites.png"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResaultPage()));
+                      },
+                      color: Colors.purple,
+                      text: ("My Favorites"),
+                    ),
+                    SizedBox(
+                      width: context.lowestContainer,
                     ),
                   ],
                 ),
               ),
-            );
-          }
-        });
+            ),
+          ],
+        ),
+      ),
+    );
+
   }
 }

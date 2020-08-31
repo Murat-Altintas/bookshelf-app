@@ -1,12 +1,22 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grade_point_avarage/model/book.dart';
 
 class UserRepository {
+
+  static final UserRepository _singleton = UserRepository._internal();
+
+  factory UserRepository() {
+    return _singleton;
+  }
+
+  UserRepository._internal();
+
   FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseUser _user;
-  Firestore _firestore = Firestore.instance;
+  User _user;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Item> loadedItems = [];
   String userName;
 
@@ -17,19 +27,20 @@ class UserRepository {
       "name": name,
       "surname": surname,
     };
-    _firestore.collection("Users").document(uid).setData(userMap);
+    _firestore.collection("Users").doc(uid).set(userMap);
     return true;
   }
 
   Future<bool> signIn(String email, String sifre) async {
-    await _auth.signInWithEmailAndPassword(email: email, password: sifre);
+    var credential = await _auth.signInWithEmailAndPassword(email: email, password: sifre);
+    _user= credential.user;
     return true;
   }
 
-  Future<void> saveBooks(allBook, FavOrBookshelf) async {
+  Future<void> saveBooks(allBook, favOrBookshelf) async {
     Map<String, String> idMap = Map();
     idMap[allBook.id] = allBook.id;
-    final FirebaseUser user = await _auth.currentUser();
+    final User user =  _auth.currentUser;
     final uid = user.uid;
 
     String title = allBook.volumeInfo.title == null ? "NO DATA" : allBook.volumeInfo.title.toString();
@@ -44,23 +55,23 @@ class UserRepository {
       "image": image,
     };
 
-    if (FavOrBookshelf == true) {
-      await _firestore.collection("MyFavorites").document(uid).collection("FavoriteBooks").document("$idMap").setData(mixMap, merge: true);
-    } else if (FavOrBookshelf == false) {
-      await _firestore.collection("MyBooks").document(uid).collection("BookshelfBooks").document("$idMap").setData(mixMap, merge: true);
+    if (favOrBookshelf == true) {
+      await _firestore.collection("MyFavorites").doc(uid).collection("FavoriteBooks").doc("$idMap").set(mixMap,SetOptions(merge: true));
+    } else if (favOrBookshelf == false) {
+      await _firestore.collection("MyBooks").doc(uid).collection("BookshelfBooks").doc("$idMap").set(mixMap, SetOptions(merge: true));
     }
   }
 
-  Future<void> deleteBook(allBook, FavOrBookshelf) async {
+  Future<void> deleteBook(allBook, favOrBookshelf) async {
     Map<String, String> idMap = Map();
     idMap[allBook.id] = allBook.id;
-    final FirebaseUser user = await _auth.currentUser();
-    final uid = user.uid;
+    
+    final uid = _user.uid;
 
-    if (FavOrBookshelf == true) {
-      await _firestore.collection("MyFavorites").document(uid).collection("FavoriteBooks").document("$idMap").delete();
-    } else if (FavOrBookshelf == false) {
-      await _firestore.collection("MyBooks").document(uid).collection("BookshelfBooks").document("$idMap").delete();
+    if (favOrBookshelf == true) {
+      await _firestore.collection("MyFavorites").doc(uid).collection("FavoriteBooks").doc("$idMap").delete();
+    } else if (favOrBookshelf == false) {
+      await _firestore.collection("MyBooks").doc(uid).collection("BookshelfBooks").doc("$idMap").delete();
     }
   }
 
@@ -78,11 +89,10 @@ class UserRepository {
 
   Future<String> getUserName() async {
     try {
-      return await _auth.currentUser().then((urs) async {
-        return await _firestore.collection("Users").document(urs.uid).get().then((userData) {
-          return userData.data["name"];
+        return await _firestore.collection("Users").doc(_user.uid).get().then((userData) {
+          return (userData.data())["name"];
         });
-      });
+      
     } catch (e) {
       print(e);
       return "null";

@@ -12,7 +12,7 @@ class CreateAccount extends StatefulWidget {
   _CreateAccountState createState() => _CreateAccountState();
 }
 
-var nameText = TextEditingController();
+var nickNameText = TextEditingController();
 var surnameText = TextEditingController();
 var mailText = TextEditingController();
 var passwordText = TextEditingController();
@@ -42,30 +42,12 @@ class _CreateAccountState extends State<CreateAccount> {
                         SizedBox(
                           height: context.lowestContainer,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              width: context.width * 43,
-                              child: TextFields(
-                                validator: UserRepository().nameControl,
-                                obscureText: false,
-                                controller: nameText,
-                                hintText: "NAME",
-                                textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                              ),
-                            ),
-                            Container(
-                              width: context.width * 43,
-                              child: TextFields(
-                                validator: UserRepository().surnameControl,
-                                obscureText: false,
-                                controller: surnameText,
-                                hintText: "SURNAME",
-                                textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                              ),
-                            ),
-                          ],
+                        TextFields(
+                          validator: UserRepository().nameControl,
+                          obscureText: false,
+                          controller: nickNameText,
+                          hintText: "NICKNAME",
+                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
                         ),
                         SizedBox(
                           height: context.fieldSpaceContainer,
@@ -95,7 +77,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         BlueButtons(
                           onTap: () {
                             if (_formKey.currentState.validate()) {
-                              UserRepository().createUser(mailText.text, passwordText.text, nameText.text, surnameText.text);
+                              UserRepository().createUser(mailText.text, passwordText.text, nickNameText.text, surnameText.text);
                             }
                           },
                           incomingText: "CREATE ACCOUNT",
