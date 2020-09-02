@@ -2,8 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:grade_point_avarage/BookshelfPage2.dart';
+import 'package:grade_point_avarage/BookshelfPage.dart';
 import 'package:grade_point_avarage/CreateAccount.dart';
+import 'package:grade_point_avarage/FavoritesPage.dart';
 import 'package:grade_point_avarage/LoginPage.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'package:grade_point_avarage/ResaultPage.dart';
@@ -41,8 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
         future: UserRepository().getUserName(),
         builder: (_, snap) {
           if (snap.connectionState == ConnectionState.done) {
-            return LoginPage();
-
+            return MasterPage();
             //return MasterPage(userName: snap.data);
           } else {
             return Center(child: CircularProgressIndicator());

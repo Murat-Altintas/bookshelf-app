@@ -8,12 +8,12 @@ import 'model/firebaseBook.dart';
 import 'init/theme/BlueTheme.dart';
 import 'View/ContextExtension.dart';
 
-class BookshelfPage2 extends StatefulWidget {
+class FavoritesPage extends StatefulWidget {
   @override
-  _BookshelfPage2State createState() => _BookshelfPage2State();
+  _FavoritesPageState createState() => _FavoritesPageState();
 }
 
-class _BookshelfPage2State extends State<BookshelfPage2> {
+class _FavoritesPageState extends State<FavoritesPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -41,30 +41,26 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Container(
-                height: context.height * 33,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: context.height * 25,
-                      child: Image.asset("assets/images/bookshelfPage.png"),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        IconButton(
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: blueTheme.primaryColor,
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => MasterPage()));
-                            }),
-                        titleText,
-                      ],
-                    ),
-                  ],
-                ),
+              Column(
+                children: <Widget>[
+                  Container(
+                    height: context.height * 30,
+                    child: Image.asset("assets/images/favoritesPage.png"),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      IconButton(
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            color: blueTheme.primaryColor,
+                          ),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage()));
+                          }),
+                      titleText,
+                    ],
+                  ),
+                ],
               ),
               FutureBuilder<List<FirebaseBook>>(
                 future: showBooks(),
@@ -108,7 +104,7 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                       child: Row(
                                         children: <Widget>[
                                           SizedBox(
-                                            child:  model.image.isEmpty ? Text("NO DATA") : Image.network(model.image),
+                                            child: model.image.isEmpty ? Text("NO DATA") : Image.network(model.image),
                                             height: context.height * 20,
                                             width: context.width * 20,
                                           ),
@@ -121,12 +117,9 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
                                               children: <Widget>[
                                                 Text(model.title,
                                                     overflow: TextOverflow.ellipsis,
-                                                    style: blueTheme.textTheme.headline1
-                                                        .copyWith(fontSize: context.normalText)),
+                                                    style: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText)),
                                                 // always test the code.
-                                                Text(model.authors,
-                                                    style: blueTheme.textTheme.headline2
-                                                        .copyWith(fontSize: context.lowText)),
+                                                Text(model.authors, style: blueTheme.textTheme.headline2.copyWith(fontSize: context.lowText)),
                                                 SizedBox(height: context.lowestContainer),
                                                 Text(
                                                   model.publisher,
@@ -158,16 +151,15 @@ class _BookshelfPage2State extends State<BookshelfPage2> {
   }
 
   Future<List<FirebaseBook>> showBooks() async {
-    final User user =  _auth.currentUser;
-    return (await _firestore.collection(user.uid).get())
+    final User user = _auth.currentUser;
+    return (await _firestore.collection("MyFavorites").doc(user.uid).collection("FavoriteBooks").get())
         .docs
-
         .map((doc) => FirebaseBook.fromJson(doc.data()))
         .toList();
   }
 
   Future<List<Map<String, dynamic>>> bookFill() async {
-    final User user =  _auth.currentUser;
+    final User user = _auth.currentUser;
     final uid = user.uid;
     try {
       List<Map<String, dynamic>> idMap = [];

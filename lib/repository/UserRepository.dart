@@ -1,11 +1,9 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grade_point_avarage/model/book.dart';
 
 class UserRepository {
-
   static final UserRepository _singleton = UserRepository._internal();
 
   factory UserRepository() {
@@ -33,14 +31,14 @@ class UserRepository {
 
   Future<bool> signIn(String email, String sifre) async {
     var credential = await _auth.signInWithEmailAndPassword(email: email, password: sifre);
-    _user= credential.user;
+    _user = credential.user;
     return true;
   }
 
   Future<void> saveBooks(allBook, favOrBookshelf) async {
     Map<String, String> idMap = Map();
     idMap[allBook.id] = allBook.id;
-    final User user =  _auth.currentUser;
+    final User user = _auth.currentUser;
     final uid = user.uid;
 
     String title = allBook.volumeInfo.title == null ? "NO DATA" : allBook.volumeInfo.title.toString();
@@ -56,7 +54,7 @@ class UserRepository {
     };
 
     if (favOrBookshelf == true) {
-      await _firestore.collection("MyFavorites").doc(uid).collection("FavoriteBooks").doc("$idMap").set(mixMap,SetOptions(merge: true));
+      await _firestore.collection("MyFavorites").doc(uid).collection("FavoriteBooks").doc("$idMap").set(mixMap, SetOptions(merge: true));
     } else if (favOrBookshelf == false) {
       await _firestore.collection("MyBooks").doc(uid).collection("BookshelfBooks").doc("$idMap").set(mixMap, SetOptions(merge: true));
     }
@@ -65,7 +63,7 @@ class UserRepository {
   Future<void> deleteBook(allBook, favOrBookshelf) async {
     Map<String, String> idMap = Map();
     idMap[allBook.id] = allBook.id;
-    
+
     final uid = _user.uid;
 
     if (favOrBookshelf == true) {
@@ -89,10 +87,9 @@ class UserRepository {
 
   Future<String> getUserName() async {
     try {
-        return await _firestore.collection("Users").doc(_user.uid).get().then((userData) {
-          return (userData.data())["name"];
-        });
-      
+      return await _firestore.collection("Users").doc(_user.uid).get().then((userData) {
+        return (userData.data())["name"];
+      });
     } catch (e) {
       print(e);
       return "null";

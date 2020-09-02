@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grade_point_avarage/FavoritesPage.dart';
 import 'package:grade_point_avarage/View/MasterPageButton.dart';
 import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';
-import 'BookshelfPage2.dart';
+import 'BookshelfPage.dart';
+import 'OptionsPage.dart';
 import 'ResaultPage.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -114,7 +116,7 @@ class MasterPageState extends State<MasterPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    BookshelfPage2()));
+                                    BookshelfPage()));
                       },
                       color: Colors.deepPurple,
                       text: ("My Bookshelf"),
@@ -129,13 +131,25 @@ class MasterPageState extends State<MasterPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ResaultPage()));
+                                builder: (context) => FavoritesPage()));
                       },
                       color: Colors.purple,
                       text: ("My Favorites"),
                     ),
                     SizedBox(
                       width: context.lowestContainer,
+                    ),
+                    MasterPageButton(
+                      image:
+                      Image.asset("assets/images/my_options.png"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OptionsPage()));
+                      },
+                      color: Colors.pink,
+                      text: ("My Options"),
                     ),
                   ],
                 ),
