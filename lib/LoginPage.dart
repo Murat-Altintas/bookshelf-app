@@ -48,8 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: false,
                           controller: mailText,
                           hintText: "MAIL",
-                          textStyle: blueTheme.textTheme.headline2
-                              .copyWith(fontSize: context.normalText),
+                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
                         ),
                         SizedBox(
                           height: context.lowestContainer,
@@ -57,13 +56,10 @@ class _LoginPageState extends State<LoginPage> {
                         TextFields(
                           validator: UserRepository().passwordControl,
                           obscureText: obscureText,
-                          suffixIcon: IconButton(
-                              icon: Icon(Icons.remove_red_eye),
-                              onPressed: _showPassword),
+                          suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
                           controller: passwordText,
                           hintText: "PASSWORD",
-                          textStyle: blueTheme.textTheme.headline2
-                              .copyWith(fontSize: context.normalText),
+                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
                         ),
                         SizedBox(
                           height: context.lowContainer,
@@ -71,18 +67,14 @@ class _LoginPageState extends State<LoginPage> {
                         BlueButtons(
                           onTap: () {
                             if (formKey.currentState.validate()) {
-                              UserRepository()
-                                  .signIn(mailText.text, passwordText.text)
-                                  .then((value){
-                                UserRepository().getUserName().then((name) =>
-                                    Navigator.push(
+                              UserRepository().signIn(mailText.text, passwordText.text).then((value) {
+                                UserRepository().getNickname().then((name) => Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => MasterPage(
                                               userName: name,
-                                            ))))
-                                    ;
-                                  });
+                                            ))));
+                              });
                             }
                           },
                           incomingText: "LOGIN",
@@ -92,10 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         BlueButtons(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CreateAccount()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
                           },
                           incomingText: "CREATE ACCOUNT",
                         ),
@@ -121,10 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         BlueButtons(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CreateAccount()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
                           },
                           incomingText: "CREATE ACCOUNT",
                         ),

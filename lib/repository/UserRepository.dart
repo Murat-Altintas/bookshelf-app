@@ -35,6 +35,26 @@ class UserRepository {
     return true;
   }
 
+  Future<String> getNickname() async {
+    try {
+      return await _firestore.collection("Users").doc(_user.uid).get().then((userData) {
+        return (userData.data())["name"];
+      });
+    } catch (e) {
+      print(e);
+      return "null";
+    }
+  }
+
+  Future<void> updateNickname(String nickname) async {
+    final uid = _user.uid;
+
+    Map<String, String> updateNick = {
+      "name": nickname,
+    };
+    _firestore.collection("Users").doc(uid).update(updateNick);
+  }
+
   Future<void> saveBooks(allBook, favOrBookshelf) async {
     Map<String, String> idMap = Map();
     idMap[allBook.id] = allBook.id;
@@ -83,17 +103,6 @@ class UserRepository {
     final booksResponse = Book.fromJson(data);
     loadedItems.addAll(booksResponse.items);
     print("Response:" + loadedItems[0].volumeInfo.title);
-  }
-
-  Future<String> getUserName() async {
-    try {
-      return await _firestore.collection("Users").doc(_user.uid).get().then((userData) {
-        return (userData.data())["name"];
-      });
-    } catch (e) {
-      print(e);
-      return "null";
-    }
   }
 
   //----------------------------------------------------------------------------------//

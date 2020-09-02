@@ -7,6 +7,7 @@ import 'package:grade_point_avarage/CreateAccount.dart';
 import 'package:grade_point_avarage/FavoritesPage.dart';
 import 'package:grade_point_avarage/LoginPage.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
+import 'package:grade_point_avarage/OptionsPage.dart';
 import 'package:grade_point_avarage/ResaultPage.dart';
 import 'package:grade_point_avarage/View/Images/ResaultImage.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';
@@ -39,10 +40,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: FutureBuilder(
-        future: UserRepository().getUserName(),
+        future: UserRepository().getNickname(),
         builder: (_, snap) {
           if (snap.connectionState == ConnectionState.done) {
-            return MasterPage();
+            return LoginPage();
             //return MasterPage(userName: snap.data);
           } else {
             return Center(child: CircularProgressIndicator());

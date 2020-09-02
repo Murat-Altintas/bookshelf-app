@@ -14,15 +14,7 @@ class TextFields extends StatefulWidget {
   final obscureText;
   final error;
 
-  const TextFields(
-      {Key key,
-      this.controller,
-      this.validator,
-      this.hintText,
-      this.textStyle,
-      this.suffixIcon,
-      this.obscureText,
-      this.error})
+  const TextFields({Key key, this.controller, this.validator, this.hintText, this.textStyle, this.suffixIcon, this.obscureText, this.error})
       : super(key: key);
 
   @override

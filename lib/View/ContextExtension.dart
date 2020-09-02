@@ -16,7 +16,7 @@ extension MediaQueryExtension on BuildContext {
   double get paddingLowValue => width * 1;
   double get paddingMediumValue => width * 5;
 
-  double get iconSmall => height * 5;
+  double get iconSmall => height * 4;
   double get iconMedium => height * 5;
 
   double get fieldSpaceContainer => height * 1;
