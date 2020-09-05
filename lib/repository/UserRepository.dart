@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grade_point_avarage/model/book.dart';
+import 'package:grade_point_avarage/model/firebaseBook.dart';
 
 class UserRepository {
   static final UserRepository _singleton = UserRepository._internal();
@@ -16,6 +17,8 @@ class UserRepository {
   User _user;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Item> loadedItems = [];
+  List<Item> favoriteItems = [];
+
   String userName;
 
   Future<bool> createUser(String email, password, name, surname) async {
@@ -46,13 +49,23 @@ class UserRepository {
     }
   }
 
-  Future<void> updateNickname(String nickname) async {
-    final uid = _user.uid;
+  Future<String> updateMailAndPassword(String updateMail) async {
+    await _user.updateEmail(updateMail);
+    return "Email Update is complete";
+  }
 
+  Future<String> updatePassword(String password) async {
+    await _user.updatePassword(password);
+    return "Password Update is complete";
+  }
+
+  Future<bool> updateNickname(String nickname) async {
+    final uid = _user.uid;
     Map<String, String> updateNick = {
       "name": nickname,
     };
-    _firestore.collection("Users").doc(uid).update(updateNick);
+    await _firestore.collection("Users").doc(uid).update(updateNick);
+    return true;
   }
 
   Future<void> saveBooks(allBook, favOrBookshelf) async {
@@ -80,6 +93,16 @@ class UserRepository {
     }
   }
 
+  Future<void> getBooks({String bookName, int maxResults = 10}) async {
+    var dio = Dio();
+    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&$maxResults=10");
+    //        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=20&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex");
+    Map data = await response.data;
+    final booksResponse = Book.fromJson(data);
+    loadedItems.addAll(booksResponse.items);
+    print("Response:" + loadedItems[0].volumeInfo.title);
+  }
+
   Future<void> deleteBook(allBook, favOrBookshelf) async {
     Map<String, String> idMap = Map();
     idMap[allBook.id] = allBook.id;
@@ -93,19 +116,15 @@ class UserRepository {
     }
   }
 
-  Future<void> getBooks({String bookName, int startIndex = 10, bool reset = false}) async {
-    print("name:" + bookName);
-    if (reset) loadedItems.clear();
-    var dio = Dio();
-    var response = await dio.get(
-        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=10&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex");
-    Map data = await response.data;
-    final booksResponse = Book.fromJson(data);
-    loadedItems.addAll(booksResponse.items);
-    print("Response:" + loadedItems[0].volumeInfo.title);
+  Future<List<FirebaseBook>> getFavoriteBooks() async {
+    final User user = _auth.currentUser;
+    return (await _firestore.collection("MyFavorites").doc(user.uid).collection("FavoriteBooks").get())
+        .docs
+        .map((doc) => FirebaseBook.fromJson(doc.data()))
+        .toList();
   }
 
-  //----------------------------------------------------------------------------------//
+  //--Controllers are here--//
 
   String nameControl(String value) {
     String regEx =

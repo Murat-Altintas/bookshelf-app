@@ -28,102 +28,75 @@ class _LoginPageState extends State<LoginPage> {
         autovalidate: autoControl,
         child: SafeArea(
           child: Padding(
-            padding: context.paddingMedium,
-            child: LayoutBuilder(builder: (context, constraints) {
-              return constraints.maxWidth < 400
-                  ? Column(
-                      children: [
-                        Container(
-                          height: context.height * 30,
-                          child: Image.asset("assets/images/loginPage.png"),
-                        ),
-                        SizedBox(
-                          height: context.lowestContainer,
-                        ),
-                        SizedBox(
-                          height: context.fieldSpaceContainer,
-                        ),
-                        TextFields(
-                          validator: UserRepository().mailControl,
-                          obscureText: false,
-                          controller: mailText,
-                          hintText: "MAIL",
-                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                        ),
-                        SizedBox(
-                          height: context.lowestContainer,
-                        ),
-                        TextFields(
-                          validator: UserRepository().passwordControl,
-                          obscureText: obscureText,
-                          suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
-                          controller: passwordText,
-                          hintText: "PASSWORD",
-                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                        ),
-                        SizedBox(
-                          height: context.lowContainer,
-                        ),
-                        BlueButtons(
-                          onTap: () {
-                            if (formKey.currentState.validate()) {
-                              UserRepository().signIn(mailText.text, passwordText.text).then((value) {
-                                UserRepository().getNickname().then((name) => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MasterPage(
-                                              userName: name,
-                                            ))));
-                              });
-                            }
-                          },
-                          incomingText: "LOGIN",
-                        ),
-                        SizedBox(
-                          height: context.lowestContainer,
-                        ),
-                        BlueButtons(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
-                          },
-                          incomingText: "CREATE ACCOUNT",
-                        ),
-                        SizedBox(
-                          height: context.lowestContainer,
-                        ),
-                        CoffeeImage(
-                          double: context.height * 20,
-                        ),
-                        SizedBox(
-                          height: context.height * 1,
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: <Widget>[
-                        Container(
-                          height: context.height * 10,
-                          child: Image.asset("assets/images/loginPage.png"),
-                        ),
-                        SizedBox(
-                          height: context.height * 3,
-                        ),
-                        BlueButtons(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
-                          },
-                          incomingText: "CREATE ACCOUNT",
-                        ),
-                        CoffeeImage(
-                          double: context.height * 15,
-                        ),
-                        SizedBox(
-                          height: context.height * 3,
-                        ),
-                      ],
-                    );
-            }),
-          ),
+              padding: context.paddingMedium,
+              child: Column(
+                children: [
+                  Container(
+                    height: context.height * 30,
+                    child: Image.asset("assets/images/loginPage.png"),
+                  ),
+                  SizedBox(
+                    height: context.lowestContainer,
+                  ),
+                  SizedBox(
+                    height: context.fieldSpaceContainer,
+                  ),
+                  TextFields(
+                    validator: UserRepository().mailControl,
+                    obscureText: false,
+                    controller: mailText,
+                    hintText: "MAIL",
+                    textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                  ),
+                  SizedBox(
+                    height: context.lowestContainer,
+                  ),
+                  TextFields(
+                    validator: UserRepository().passwordControl,
+                    obscureText: obscureText,
+                    suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
+                    controller: passwordText,
+                    hintText: "PASSWORD",
+                    textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                  ),
+                  SizedBox(
+                    height: context.lowContainer,
+                  ),
+                  BlueButtons(
+                    onTap: () {
+                      if (formKey.currentState.validate()) {
+                        UserRepository().signIn(mailText.text, passwordText.text).then((value) {
+                          UserRepository().getNickname().then((name) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MasterPage(
+                                        userName: name,
+                                      ))));
+                        });
+                      }
+                    },
+                    incomingText: "LOGIN",
+                  ),
+                  SizedBox(
+                    height: context.lowestContainer,
+                  ),
+                  BlueButtons(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount()));
+                    },
+                    incomingText: "CREATE ACCOUNT",
+                  ),
+                  SizedBox(
+                    height: context.lowestContainer,
+                  ),
+                  CoffeeImage(
+                    double: context.height * 20,
+                  ),
+                  SizedBox(
+                    height: context.height * 1,
+                  ),
+                ],
+              )),
         ),
       ),
     );

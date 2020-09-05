@@ -31,121 +31,74 @@ class _CreateAccountState extends State<CreateAccount> {
         child: SafeArea(
           child: Padding(
             padding: context.paddingMedium,
-            child: LayoutBuilder(builder: (context, constraints) {
-              return constraints.maxWidth < 400
-                  ? Column(
-                      children: [
-                        Container(
-                          height: context.height * 35,
-                          child: Image.asset("assets/images/createAccount.png"),
-                        ),
-                        SizedBox(
-                          height: context.lowestContainer,
-                        ),
-                        TextFields(
-                          validator: UserRepository().nameControl,
-                          obscureText: false,
-                          controller: nickNameText,
-                          hintText: "NICKNAME",
-                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                        ),
-                        SizedBox(
-                          height: context.fieldSpaceContainer,
-                        ),
-                        //----------------------------------------------------------------------------------------//
-                        TextFields(
-                          obscureText: false,
-                          controller: mailText,
-                          hintText: "E-MAIL",
-                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                          validator: UserRepository().mailControl,
-                        ),
-                        SizedBox(
-                          height: context.fieldSpaceContainer,
-                        ),
-                        TextFields(
-                          suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
-                          controller: passwordText,
-                          hintText: "PASSWORD",
-                          obscureText: true,
-                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                          validator: UserRepository().passwordControl,
-                        ),
-                        SizedBox(
-                          height: context.fieldSpaceContainer,
-                        ),
-                        BlueButtons(
-                          onTap: () {
-                            if (_formKey.currentState.validate()) {
-                              UserRepository().createUser(mailText.text, passwordText.text, nickNameText.text, surnameText.text);
-                            }
-                          },
-                          incomingText: "CREATE ACCOUNT",
-                        ),
-                        SizedBox(
-                          height: context.lowestContainer,
-                        ),
-                        BlueButtons(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                          },
-                          incomingText: "LOGIN",
-                        ),
-
-                        SizedBox(
-                          height: context.fieldSpaceContainer,
-                        ),
-                        CoffeeImage(
-                          double: context.height * 15,
-                        ),
-                        SizedBox(
-                          height: context.fieldSpaceContainer,
-                        ),
-                      ],
-                    )
-                  : Column(
-                      children: <Widget>[
-                        Container(
-                          height: context.height * 30,
-                          child: Image.asset("assets/images/createAccount.png"),
-                        ),
-                        SizedBox(
-                          height: context.heighContainer,
-                        ),
-                        TextFields(
-                          controller: mailText,
-                          hintText: "E-MAIL",
-                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                          validator: UserRepository().mailControl,
-                        ),
-                        TextFields(
-                          controller: passwordText,
-                          hintText: "PASSWORD",
-                          suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
-                          textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                          validator: UserRepository().passwordControl,
-                        ),
-                        SizedBox(
-                          height: context.lowContainer,
-                        ),
-                        BlueButtons(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                          },
-                          incomingText: "LOGIN",
-                        ),
-                        SizedBox(
-                          height: context.lowestContainer,
-                        ),
-                        CoffeeImage(
-                          double: context.height * 15,
-                        ),
-                        SizedBox(
-                          height: context.lowestContainer,
-                        ),
-                      ],
-                    );
-            }),
+            child: Column(
+              children: [
+                Container(
+                  height: context.height * 35,
+                  child: Image.asset("assets/images/createAccount.png"),
+                ),
+                SizedBox(
+                  height: context.lowestContainer,
+                ),
+                TextFields(
+                  validator: UserRepository().nameControl,
+                  obscureText: false,
+                  controller: nickNameText,
+                  hintText: "NICKNAME",
+                  textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                ),
+                SizedBox(
+                  height: context.fieldSpaceContainer,
+                ),
+                TextFields(
+                  obscureText: false,
+                  controller: mailText,
+                  hintText: "E-MAIL",
+                  textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                  validator: UserRepository().mailControl,
+                ),
+                SizedBox(
+                  height: context.fieldSpaceContainer,
+                ),
+                TextFields(
+                  suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
+                  controller: passwordText,
+                  hintText: "PASSWORD",
+                  obscureText: true,
+                  textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                  validator: UserRepository().passwordControl,
+                ),
+                SizedBox(
+                  height: context.fieldSpaceContainer,
+                ),
+                BlueButtons(
+                  onTap: () {
+                    if (_formKey.currentState.validate()) {
+                      UserRepository().createUser(mailText.text, passwordText.text, nickNameText.text, surnameText.text);
+                    }
+                  },
+                  incomingText: "CREATE ACCOUNT",
+                ),
+                SizedBox(
+                  height: context.lowestContainer,
+                ),
+                BlueButtons(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
+                  incomingText: "LOGIN",
+                ),
+                SizedBox(
+                  height: context.fieldSpaceContainer,
+                ),
+                CoffeeImage(
+                  double: context.height * 15,
+                ),
+                SizedBox(
+                  height: context.fieldSpaceContainer,
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,9 +1,8 @@
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'MasterPage.dart';
+import 'model/book.dart';
 import 'model/firebaseBook.dart';
 import 'init/theme/BlueTheme.dart';
 import 'View/ContextExtension.dart';
@@ -14,10 +13,8 @@ class FavoritesPage extends StatefulWidget {
 }
 
 class _FavoritesPageState extends State<FavoritesPage> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  List<Item> loadedItems = [];
 
-  //------------------------------------------------------------//
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +60,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 ],
               ),
               FutureBuilder<List<FirebaseBook>>(
-                future: showBooks(),
+                future: UserRepository().getFavoriteBooks(),
                 builder: (context, dataSnapShot) {
                   if (dataSnapShot.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -81,61 +78,70 @@ class _FavoritesPageState extends State<FavoritesPage> {
                             itemCount: titleList.length,
                             itemBuilder: (context, index) {
                               final model = titleList[index];
-                              return Column(
-                                children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        color: Colors.black12,
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(12),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
-                                          blurRadius: 5,
-                                          offset: Offset(0, 5),
+                              return Padding(
+                                padding: context.paddingMedium,
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                          color: Colors.black12,
+                                          width: 2,
                                         ),
-                                      ],
-                                    ),
-                                    child: Padding(
-                                      padding: context.paddingMedium,
-                                      child: Row(
-                                        children: <Widget>[
-                                          SizedBox(
-                                            child: model.image.isEmpty ? Text("NO DATA") : Image.network(model.image),
-                                            height: context.height * 20,
-                                            width: context.width * 20,
-                                          ),
-                                          SizedBox(
-                                            width: context.lowestContainer,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(model.title,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText)),
-                                                // always test the code.
-                                                Text(model.authors, style: blueTheme.textTheme.headline2.copyWith(fontSize: context.lowText)),
-                                                SizedBox(height: context.lowestContainer),
-                                                Text(
-                                                  model.publisher,
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                              ],
-                                            ),
+                                        borderRadius: BorderRadius.circular(12),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.1),
+                                            blurRadius: 5,
+                                            offset: Offset(0, 5),
                                           ),
                                         ],
                                       ),
+                                      child: Padding(
+                                        padding: context.paddingMedium,
+                                        child: Row(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              child: model.image.isEmpty ? Text("NO DATA") : Image.network(model.image),
+                                              height: context.height * 20,
+                                              width: context.width * 20,
+                                            ),
+                                            SizedBox(
+                                              width: context.lowestContainer,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(
+                                                    model.title,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText),
+                                                  ),
+                                                  // always test the code.
+                                                  Text(
+                                                    model.authors,
+                                                    style: blueTheme.textTheme.headline2.copyWith(fontSize: context.lowText),
+                                                  ),
+                                                  SizedBox(height: context.lowestContainer),
+                                                  Text(
+                                                    model.publisher,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            //--------------------------------------------------deleteFavoriteBook(model),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: context.lowestContainer,
-                                  ),
-                                ],
+                                    SizedBox(
+                                      height: context.lowestContainer,
+                                    ),
+                                  ],
+                                ),
                               );
                             }),
                       );
@@ -150,14 +156,22 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 
-  Future<List<FirebaseBook>> showBooks() async {
-    final User user = _auth.currentUser;
-    return (await _firestore.collection("MyFavorites").doc(user.uid).collection("FavoriteBooks").get())
-        .docs
-        .map((doc) => FirebaseBook.fromJson(doc.data()))
-        .toList();
+
+
+
+  Widget deleteFavoriteBook(Item loadedItem) {
+    return IconButton(
+      icon: Icon(Icons.delete),
+      color: blueTheme.errorColor,
+      onPressed: () {
+        UserRepository().deleteBook(loadedItem, true);
+        print("DELETE saveFavBooks Complate");
+      },
+      iconSize: 30,
+    );
   }
 
+/*
   Future<List<Map<String, dynamic>>> bookFill() async {
     final User user = _auth.currentUser;
     final uid = user.uid;
@@ -175,4 +189,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
       return null;
     }
   }
+
+ */
 }
