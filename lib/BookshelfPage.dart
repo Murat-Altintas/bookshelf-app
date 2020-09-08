@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'MasterPage.dart';
 import 'model/firebaseBook.dart';
 import 'init/theme/BlueTheme.dart';
@@ -21,7 +22,6 @@ class _BookshelfPageState extends State<BookshelfPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("AWESOME TO BE HERE!");
     var titleText = RichText(
       text: TextSpan(
         text: "My ",
@@ -127,6 +127,17 @@ class _BookshelfPageState extends State<BookshelfPage> {
                                                 ),
                                               ],
                                             ),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.delete),
+                                            color: blueTheme.errorColor,
+                                            onPressed: () {
+                                              UserRepository().deleteBook(model.bookID, false).whenComplete(() {
+                                                setState(() {});
+                                              });
+                                              print("delete complete");
+                                            },
+                                            iconSize: 30,
                                           ),
                                         ],
                                       ),

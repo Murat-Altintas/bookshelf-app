@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:grade_point_avarage/View/BlueButtons.dart';
 import 'package:grade_point_avarage/View/Images/CoffeeImage.dart';
 import 'package:grade_point_avarage/View/TextFields.dart';
@@ -15,19 +16,33 @@ class OptionsPage extends StatefulWidget {
 }
 
 class _OptionsPageState extends State<OptionsPage> {
-  var nickNameText = TextEditingController();
-  var emailText = TextEditingController();
-  var passwordText = TextEditingController();
+  var _nickNameText = TextEditingController();
+  var _mailText = TextEditingController();
+  var _passwordText = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   var formKey = GlobalKey<FormState>();
+  bool autoValidate = false;
+  FocusNode _fNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _fNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _fNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    showSnackBar() {
+    showSnackBar(String change) {
       final snackBar = SnackBar(
-        content: Text("Nickname is changed."),
+        content: Text("$change is changed."),
         duration: Duration(seconds: 4),
-        backgroundColor: Colors.yellow,
+        backgroundColor: Colors.black38,
       );
       scaffoldKey.currentState.showSnackBar(snackBar);
     }
@@ -50,6 +65,7 @@ class _OptionsPageState extends State<OptionsPage> {
       key: scaffoldKey,
       body: Form(
         key: formKey,
+        autovalidate: true,
         child: SafeArea(
           child: Padding(
             padding: context.paddingMedium,
@@ -76,7 +92,18 @@ class _OptionsPageState extends State<OptionsPage> {
                   height: context.lowContainer,
                 ),
                 TextFields(
-                  validator: UserRepository().nameControl,
+                  focusNode: _fNode,
+                  controller: _nickNameText,
+                  validator: (String value) {
+                    String regEx =
+                        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                    RegExp regExp = new RegExp(regEx);
+                    if (value.length == 0) {
+                      return "Please don't leave blank";
+                    } else if (!regExp.hasMatch(value)) {
+                      return "Please don't use special characters";
+                    }
+                  },
                   obscureText: false,
                   hintText: "Write your new nickname...",
                   suffixIcon: IconButton(
@@ -86,10 +113,17 @@ class _OptionsPageState extends State<OptionsPage> {
                       size: context.iconSmall,
                     ),
                     onPressed: () {
-                      if (formKey.currentState.validate())
-                      UserRepository().updateNickname(nickNameText.text);
-                      showSnackBar();
-                      nickNameText.clear();
+                      if (formKey.currentState.validate()) {
+                        UserRepository().updateNickname(_nickNameText.text);
+                        _fNode.unfocus();
+                        showSnackBar("Nickname");
+                        _nickNameText.clear();
+                        setState(() {
+                          _fNode.unfocus();
+                        });
+                      } else if (!formKey.currentState.validate()){
+                        setState(() {});
+                      }
                     },
                   ),
                   textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
@@ -98,9 +132,9 @@ class _OptionsPageState extends State<OptionsPage> {
                   height: context.lowestContainer,
                 ),
                 TextFields(
-                  validator: UserRepository().mailControl,
+                  //  validator: UserRepository().nickAndMailControl,
                   obscureText: false,
-                  controller: emailText,
+                  controller: _mailText,
                   hintText: "Write your new email...",
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -109,8 +143,13 @@ class _OptionsPageState extends State<OptionsPage> {
                       size: context.iconSmall,
                     ),
                     onPressed: () {
-                      UserRepository().updateMailAndPassword(emailText.text);
-                      emailText.clear();
+                      UserRepository().updateMail(_mailText.text);
+                      _fNode.unfocus();
+                      showSnackBar("Mail");
+                      _mailText.clear();
+                      setState(() {
+                        autoValidate = false;
+                      });
                     },
                   ),
                   textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
@@ -119,9 +158,10 @@ class _OptionsPageState extends State<OptionsPage> {
                   height: context.lowestContainer,
                 ),
                 TextFields(
-                  validator: UserRepository().passwordControl,
+                  // validator: UserRepository().passwordControl,
+                  keyboardType: TextInputType.number,
                   obscureText: false,
-                  controller: passwordText,
+                  controller: _passwordText,
                   hintText: "Write your new password...",
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -130,8 +170,13 @@ class _OptionsPageState extends State<OptionsPage> {
                       size: context.iconSmall,
                     ),
                     onPressed: () {
-                      UserRepository().updatePassword(passwordText.text);
-                      passwordText.clear();
+                      UserRepository().updatePassword(_passwordText.text);
+                      _fNode.unfocus();
+                      showSnackBar("Password");
+                      _passwordText.clear();
+                      setState(() {
+                        autoValidate = false;
+                      });
                     },
                   ),
                   textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),

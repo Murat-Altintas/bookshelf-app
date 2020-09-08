@@ -41,7 +41,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   height: context.lowestContainer,
                 ),
                 TextFields(
-                  validator: UserRepository().nameControl,
+                  validator: UserRepository().nickAndMailControl,
                   obscureText: false,
                   controller: nickNameText,
                   hintText: "NICKNAME",
@@ -55,12 +55,13 @@ class _CreateAccountState extends State<CreateAccount> {
                   controller: mailText,
                   hintText: "E-MAIL",
                   textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
-                  validator: UserRepository().mailControl,
+                  validator: UserRepository().nickAndMailControl,
                 ),
                 SizedBox(
                   height: context.fieldSpaceContainer,
                 ),
                 TextFields(
+                  keyboardType: TextInputType.number,
                   suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
                   controller: passwordText,
                   hintText: "PASSWORD",

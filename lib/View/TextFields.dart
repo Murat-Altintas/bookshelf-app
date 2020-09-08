@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
 import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
 
@@ -13,8 +14,10 @@ class TextFields extends StatefulWidget {
   final suffixIcon;
   final obscureText;
   final error;
+  final keyboardType;
+  final focusNode;
 
-  const TextFields({Key key, this.controller, this.validator, this.hintText, this.textStyle, this.suffixIcon, this.obscureText, this.error})
+  const TextFields({Key key, this.controller, this.validator, this.hintText, this.textStyle, this.suffixIcon, this.obscureText, this.error, this.keyboardType, this.focusNode})
       : super(key: key);
 
   @override
@@ -27,6 +30,8 @@ class _TextFieldsState extends State<TextFields> {
     return Container(
       height: context.heighContainer,
       child: TextFormField(
+        focusNode: widget.focusNode,
+        keyboardType: widget.keyboardType,
         obscureText: widget.obscureText,
         validator: widget.validator,
         controller: widget.controller,

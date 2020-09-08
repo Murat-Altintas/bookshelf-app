@@ -15,10 +15,8 @@ class FavoritesPage extends StatefulWidget {
 class _FavoritesPageState extends State<FavoritesPage> {
   List<Item> loadedItems = [];
 
-
   @override
   Widget build(BuildContext context) {
-    print("AWESOME TO BE HERE!");
     var titleText = RichText(
       text: TextSpan(
         text: "My ",
@@ -72,12 +70,11 @@ class _FavoritesPageState extends State<FavoritesPage> {
                         child: Text("An error occured!"),
                       );
                     } else {
-                      final titleList = dataSnapShot.data;
                       return Expanded(
                         child: ListView.builder(
-                            itemCount: titleList.length,
+                            itemCount: dataSnapShot.data.length,
                             itemBuilder: (context, index) {
-                              final model = titleList[index];
+                              final model = dataSnapShot.data[index];
                               return Padding(
                                 padding: context.paddingMedium,
                                 child: Column(
@@ -132,7 +129,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
                                                 ],
                                               ),
                                             ),
-                                            //--------------------------------------------------deleteFavoriteBook(model),
+                                            IconButton(
+                                              icon: Icon(Icons.delete),
+                                              color: blueTheme.errorColor,
+                                              onPressed: () {
+                                                UserRepository().deleteBook(model.bookID, true).whenComplete(() {
+                                                  setState(() {});
+                                                });
+                                                print("delete complete");
+                                              },
+                                              iconSize: 30,
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -153,21 +160,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
           ),
         ),
       ),
-    );
-  }
-
-
-
-
-  Widget deleteFavoriteBook(Item loadedItem) {
-    return IconButton(
-      icon: Icon(Icons.delete),
-      color: blueTheme.errorColor,
-      onPressed: () {
-        UserRepository().deleteBook(loadedItem, true);
-        print("DELETE saveFavBooks Complate");
-      },
-      iconSize: 30,
     );
   }
 

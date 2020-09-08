@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'package:grade_point_avarage/View/BlueButtons.dart';
 import 'CreateAccount.dart';
+import 'FavoritesPage.dart';
 import 'View/Images/CoffeeImage.dart';
 import 'View/ContextExtension.dart';
 import 'View/TextFields.dart';
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: context.fieldSpaceContainer,
                   ),
                   TextFields(
-                    validator: UserRepository().mailControl,
+                    validator: UserRepository().nickAndMailControl,
                     obscureText: false,
                     controller: mailText,
                     hintText: "MAIL",
@@ -52,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: context.lowestContainer,
                   ),
                   TextFields(
+                    keyboardType: TextInputType.number,
                     validator: UserRepository().passwordControl,
                     obscureText: obscureText,
                     suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
@@ -66,12 +68,9 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       if (formKey.currentState.validate()) {
                         UserRepository().signIn(mailText.text, passwordText.text).then((value) {
-                          UserRepository().getNickname().then((name) => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MasterPage(
-                                        userName: name,
-                                      ))));
+                          UserRepository()
+                              .getNickname()
+                              .then((name) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
                         });
                       }
                     },

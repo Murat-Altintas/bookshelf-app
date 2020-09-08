@@ -14,7 +14,7 @@ class UserRepository {
   UserRepository._internal();
 
   FirebaseAuth _auth = FirebaseAuth.instance;
-  User _user;
+  User user;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Item> loadedItems = [];
   List<Item> favoriteItems = [];
@@ -23,7 +23,7 @@ class UserRepository {
 
   Future<bool> createUser(String email, password, name, surname) async {
     await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    final uid = _user.uid;
+    final uid = user.uid;
     Map<String, String> userMap = {
       "name": name,
       "surname": surname,
@@ -34,37 +34,34 @@ class UserRepository {
 
   Future<bool> signIn(String email, String sifre) async {
     var credential = await _auth.signInWithEmailAndPassword(email: email, password: sifre);
-    _user = credential.user;
+    user = credential.user;
     return true;
   }
 
-  Future<String> getNickname() async {
+  Future<void> getNickname() async {
     try {
-      return await _firestore.collection("Users").doc(_user.uid).get().then((userData) {
-        return (userData.data())["name"];
+       await _firestore.collection("Users").doc(user.uid).get().then((userData) {
+        userName= (userData.data())["name"];
       });
     } catch (e) {
       print(e);
-      return "null";
+
     }
   }
 
-  Future<String> updateMailAndPassword(String updateMail) async {
-    await _user.updateEmail(updateMail);
+  Future<String> updateMail(String updateMail) async {
+    await user.updateEmail(updateMail);
     return "Email Update is complete";
   }
 
   Future<String> updatePassword(String password) async {
-    await _user.updatePassword(password);
+    await user.updatePassword(password);
     return "Password Update is complete";
   }
 
   Future<bool> updateNickname(String nickname) async {
-    final uid = _user.uid;
-    Map<String, String> updateNick = {
-      "name": nickname,
-    };
-    await _firestore.collection("Users").doc(uid).update(updateNick);
+    final uid = user.uid;
+    await _firestore.collection("Users").doc(uid).update({"name": nickname});
     return true;
   }
 
@@ -78,88 +75,66 @@ class UserRepository {
     String authors = allBook.volumeInfo.authors == null ? "NO DATA" : allBook.volumeInfo.authors.first.toString();
     String publisher = allBook.volumeInfo.publisher == null ? "NO DATA" : allBook.volumeInfo.publisher.toString();
     String image = allBook.volumeInfo.imageLinks == null ? "NO DATA" : allBook.volumeInfo.imageLinks.thumbnail.toString();
+    String bookID = idMap == null ? "NO DATA" : allBook.id;
 
     Map<String, String> mixMap = {
       "title": title,
       "authors": authors,
       "publisher": publisher,
       "image": image,
+      "bookID": bookID,
+
     };
 
     if (favOrBookshelf == true) {
-      await _firestore.collection("MyFavorites").doc(uid).collection("FavoriteBooks").doc("$idMap").set(mixMap, SetOptions(merge: true));
+      await _firestore.collection("MyFavorites").doc(uid).collection("FavoriteBooks").doc(allBook.id).set(mixMap, SetOptions(merge: true));
     } else if (favOrBookshelf == false) {
-      await _firestore.collection("MyBooks").doc(uid).collection("BookshelfBooks").doc("$idMap").set(mixMap, SetOptions(merge: true));
+      await _firestore.collection("MyBooks").doc(uid).collection("BookshelfBooks").doc(allBook.id).set(mixMap, SetOptions(merge: true));
     }
   }
 
-  Future<void> getBooks({String bookName, int maxResults = 10}) async {
+  void cleanBooks(){
+    loadedItems.clear();
+  }
+
+  Future<void> getBooks({String bookName, int startIndex = 10,bool clean=false}) async {
     var dio = Dio();
-    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&$maxResults=10");
+    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&startIndex=$startIndex");
     //        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=20&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex");
     Map data = await response.data;
     final booksResponse = Book.fromJson(data);
+    if(clean) cleanBooks();
     loadedItems.addAll(booksResponse.items);
     print("Response:" + loadedItems[0].volumeInfo.title);
   }
 
-  Future<void> deleteBook(allBook, favOrBookshelf) async {
-    Map<String, String> idMap = Map();
-    idMap[allBook.id] = allBook.id;
-
-    final uid = _user.uid;
+  Future<void> deleteBook(String bookID, bool favOrBookshelf) async {
+    final uid = user.uid;
 
     if (favOrBookshelf == true) {
-      await _firestore.collection("MyFavorites").doc(uid).collection("FavoriteBooks").doc("$idMap").delete();
+      await _firestore.collection("MyFavorites").doc(uid).collection("FavoriteBooks").doc(bookID).delete();
     } else if (favOrBookshelf == false) {
-      await _firestore.collection("MyBooks").doc(uid).collection("BookshelfBooks").doc("$idMap").delete();
+      await _firestore.collection("MyBooks").doc(uid).collection("BookshelfBooks").doc(bookID).delete();
     }
   }
 
   Future<List<FirebaseBook>> getFavoriteBooks() async {
     final User user = _auth.currentUser;
     return (await _firestore.collection("MyFavorites").doc(user.uid).collection("FavoriteBooks").get())
-        .docs
-        .map((doc) => FirebaseBook.fromJson(doc.data()))
-        .toList();
+        .docs.map((doc) => FirebaseBook.fromJson(doc.data())).toList();
   }
 
   //--Controllers are here--//
 
-  String nameControl(String value) {
-    String regEx =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regExp = new RegExp(regEx);
-    if (value.length == 0) {
-      return "Write your name";
-    } else if (!regExp.hasMatch(value)) {
-      return "Invalid name";
-    } else {
-      return null;
-    }
-  }
 
-  String surnameControl(String value) {
+  String nickAndMailControl(String value) {
     String regEx =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regExp = new RegExp(regEx);
     if (value.length == 0) {
-      return "Write your surname";
+      return "Please don't leave blank";
     } else if (!regExp.hasMatch(value)) {
-      return "Invalid surname";
-    } else {
-      return null;
-    }
-  }
-
-  String mailControl(String value) {
-    String regEx =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regExp = new RegExp(regEx);
-    if (value.length == 0) {
-      return "Write your e-mail";
-    } else if (!regExp.hasMatch(value)) {
-      return "Invalid e-mail";
+      return "Please don't use special characters";
     } else {
       return null;
     }
@@ -167,7 +142,7 @@ class UserRepository {
 
   String passwordControl(String value) {
     if (value.isEmpty) {
-      return "Write your password";
+      return "Please don't leave blank";
     } else if (value.length <= 4 && value.length <= 20) {
       return "Password must be between 5-20 characters";
     } else {

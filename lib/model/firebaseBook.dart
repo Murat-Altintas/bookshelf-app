@@ -15,12 +15,14 @@ class FirebaseBook {
   String publisher;
   String title;
   String authors;
+  String bookID;
 
   FirebaseBook({
     this.image,
     this.publisher,
     this.title,
     this.authors,
+    this.bookID,
   });
 
   factory FirebaseBook.fromJson(Map<String, dynamic> json) => FirebaseBook(
@@ -28,6 +30,7 @@ class FirebaseBook {
         publisher: json["publisher"] ?? '',
         title: json["title"] ?? '',
         authors: json["authors"] ?? '',
+        bookID: json["bookID"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,5 +38,6 @@ class FirebaseBook {
         "publisher": publisher,
         "title": title,
         "authors": authors,
+        "bookID" : bookID,
       };
 }

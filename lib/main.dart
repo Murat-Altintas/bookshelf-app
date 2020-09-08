@@ -35,21 +35,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool logged=false;
   @override
   Widget build(BuildContext context) {
+    if(UserRepository().user!=null)
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: FutureBuilder(
         future: UserRepository().getNickname(),
         builder: (_, snap) {
           if (snap.connectionState == ConnectionState.done) {
-            return FavoritesPage();
-            //return MasterPage(userName: snap.data);
+            //return LoginPage();
+            return LoginPage();
           } else {
             return Center(child: CircularProgressIndicator());
           }
         },
       ),
     );
+    else return LoginPage();
   }
 }

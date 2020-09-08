@@ -15,15 +15,16 @@ import 'package:grade_point_avarage/View/ContextExtension.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MasterPage extends StatefulWidget {
-  final String userName;
 
-  const MasterPage({Key key, this.userName}) : super(key: key);
+
+  const MasterPage({Key key}) : super(key: key);
 
   @override
   MasterPageState createState() => MasterPageState();
 }
 
 class MasterPageState extends State<MasterPage> {
+  final String userName= UserRepository().userName;
   @override
   Widget build(BuildContext context) {
     Widget welcome = RichText(
@@ -44,7 +45,7 @@ class MasterPageState extends State<MasterPage> {
         style: blueTheme.textTheme.headline5.copyWith(fontSize: context.heightText),
         children: <TextSpan>[
           TextSpan(
-            text: widget.userName,
+            text: userName,
             style: blueTheme.textTheme.headline6.copyWith(fontSize: context.normalText),
           )
         ],
@@ -57,6 +58,9 @@ class MasterPageState extends State<MasterPage> {
           children: <Widget>[
             welcome,
           ],
+        ),
+        SizedBox(
+          height: context.fieldSpaceContainer,
         ),
         Row(
           children: <Widget>[
@@ -76,14 +80,14 @@ class MasterPageState extends State<MasterPage> {
                 child: Image.asset("assets/images/topsearch.png"),
               ),
               SizedBox(
-                height: context.lowestContainer,
+                height: context.lowContainer,
               ),
               Padding(
-                padding: context.paddingMedium,
+                padding: context.paddingLow,
                 child: topText,
               ),
               SizedBox(
-                height: context.lowestContainer,
+                height: context.lowContainer,
               ),
               Container(
                 height: context.height * 32,
@@ -136,11 +140,6 @@ class MasterPageState extends State<MasterPage> {
               ),
               SizedBox(
                 height: context.lowContainer,
-              ),
-              Container(
-                child: CoffeeImage(
-                  double: context.height * 15,
-                ),
               ),
             ],
           ),

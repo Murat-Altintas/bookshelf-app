@@ -21,7 +21,11 @@ class _ResaultPageState extends State<ResaultPage> {
   UserRepository userRepo = UserRepository();
   List<String> favoriteIDs = [];
   List<String> checkIDs = [];
-
+  @override
+  void initState() {
+    UserRepository().cleanBooks();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +83,11 @@ class _ResaultPageState extends State<ResaultPage> {
         iconSize: context.iconMedium,
         color: blueTheme.primaryIconTheme.color,
         onPressed: () async {
-          userRepo.getBooks(bookName: bookName.text);
+          userRepo.getBooks(bookName: bookName.text,clean: true).whenComplete(() {
+            setState(() {
+
+            });
+          });
         },
       ),
     ],
@@ -92,7 +100,11 @@ class _ResaultPageState extends State<ResaultPage> {
             options: CarouselOptions(
                 onPageChanged: (page, reason) {
                   if (page == userRepo.loadedItems.length - 1) {
-                    loadNextPage();
+                    loadNextPage().whenComplete(() {
+                      setState(() {
+
+                      });
+                    });
                     print("+10 page");
                   }
                 },
@@ -176,8 +188,8 @@ class _ResaultPageState extends State<ResaultPage> {
   }
 
 
-  void loadNextPage() {
-    userRepo.getBooks(bookName: bookName.text, maxResults: maxResults += 10);
+  Future<void> loadNextPage() async {
+    await userRepo.getBooks(bookName: bookName.text, startIndex: maxResults += 10);
   }
 
   Widget iconBar(Item loadedItem) {
@@ -205,7 +217,7 @@ class _ResaultPageState extends State<ResaultPage> {
                 print("ADD saveFavBooks Complate");
               } else {
                 favoriteIDs.remove(loadedItem.id);
-                userRepo.deleteBook(loadedItem, true);
+                userRepo.deleteBook(loadedItem.id, true);
                 print("DELETE saveFavBooks Complate");
               }
             });
@@ -223,7 +235,7 @@ class _ResaultPageState extends State<ResaultPage> {
                 print("ADD saveMyBooks Complate");
               } else {
                 checkIDs.remove(loadedItem.id);
-                userRepo.deleteBook(loadedItem, false);
+                userRepo.deleteBook(loadedItem.id, false);
                 print("DELETE saveMyBooks Complate");
               }
             });
