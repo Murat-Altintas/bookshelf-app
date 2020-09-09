@@ -94,16 +94,7 @@ class _OptionsPageState extends State<OptionsPage> {
                 TextFields(
                   focusNode: _fNode,
                   controller: _nickNameText,
-                  validator: (String value) {
-                    String regEx =
-                        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                    RegExp regExp = new RegExp(regEx);
-                    if (value.length == 0) {
-                      return "Please don't leave blank";
-                    } else if (!regExp.hasMatch(value)) {
-                      return "Please don't use special characters";
-                    }
-                  },
+                  validator: UserRepository().nickAndMailControl,
                   obscureText: false,
                   hintText: "Write your new nickname...",
                   suffixIcon: IconButton(
@@ -113,17 +104,13 @@ class _OptionsPageState extends State<OptionsPage> {
                       size: context.iconSmall,
                     ),
                     onPressed: () {
-                      if (formKey.currentState.validate()) {
-                        UserRepository().updateNickname(_nickNameText.text);
+                      UserRepository().updateNickname(_nickNameText.text);
+                      _fNode.unfocus();
+                      showSnackBar("Nickname");
+                      _nickNameText.clear();
+                      setState(() {
                         _fNode.unfocus();
-                        showSnackBar("Nickname");
-                        _nickNameText.clear();
-                        setState(() {
-                          _fNode.unfocus();
-                        });
-                      } else if (!formKey.currentState.validate()){
-                        setState(() {});
-                      }
+                      });
                     },
                   ),
                   textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
