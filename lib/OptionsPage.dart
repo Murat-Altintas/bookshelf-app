@@ -40,7 +40,7 @@ class _OptionsPageState extends State<OptionsPage> {
   Widget build(BuildContext context) {
     showSnackBar(String change) {
       final snackBar = SnackBar(
-        content: Text("$change is changed."),
+        content: Text("$change"),
         duration: Duration(seconds: 4),
         backgroundColor: Colors.black38,
       );
@@ -94,7 +94,7 @@ class _OptionsPageState extends State<OptionsPage> {
                 TextFields(
                   focusNode: _fNode,
                   controller: _nickNameText,
-                  validator: UserRepository().nickAndMailControl,
+                  validator: UserRepository().nickControl,
                   obscureText: false,
                   hintText: "Write your new nickname...",
                   suffixIcon: IconButton(
@@ -104,10 +104,16 @@ class _OptionsPageState extends State<OptionsPage> {
                       size: context.iconSmall,
                     ),
                     onPressed: () {
-                      UserRepository().updateNickname(_nickNameText.text);
-                      _fNode.unfocus();
-                      showSnackBar("Nickname");
-                      _nickNameText.clear();
+                      if (UserRepository().nickControl(_nickNameText.text) == null) {
+                        UserRepository().updateNickname(_nickNameText.text);
+                        _fNode.unfocus();
+                        showSnackBar("Nickname is changed");
+                        _nickNameText.clear();
+                      } else {
+                        _fNode.unfocus();
+                        showSnackBar("Please don't use special characters");
+                        _nickNameText.clear();
+                      }
                       setState(() {
                         _fNode.unfocus();
                       });
@@ -119,7 +125,7 @@ class _OptionsPageState extends State<OptionsPage> {
                   height: context.lowestContainer,
                 ),
                 TextFields(
-                  //  validator: UserRepository().nickAndMailControl,
+                  validator: UserRepository().mailControl,
                   obscureText: false,
                   controller: _mailText,
                   hintText: "Write your new email...",
@@ -130,11 +136,10 @@ class _OptionsPageState extends State<OptionsPage> {
                       size: context.iconSmall,
                     ),
                     onPressed: () {
-                      UserRepository().updateMail(_mailText.text);
-                      _fNode.unfocus();
-                      showSnackBar("Mail");
-                      _mailText.clear();
+                      UserRepository().updateMail(_mailText.text).then((value) => {showSnackBar(value)});
                       setState(() {
+                        _fNode.unfocus();
+                        _mailText.clear();
                         autoValidate = false;
                       });
                     },
@@ -145,7 +150,7 @@ class _OptionsPageState extends State<OptionsPage> {
                   height: context.lowestContainer,
                 ),
                 TextFields(
-                  // validator: UserRepository().passwordControl,
+                  validator: UserRepository().passwordControl,
                   keyboardType: TextInputType.number,
                   obscureText: false,
                   controller: _passwordText,

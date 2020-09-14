@@ -23,7 +23,6 @@ class GradePoint extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Flutter",
       home: MyHomePage(),
     );
   }
@@ -45,7 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
         future: UserRepository().getNickname(),
         builder: (_, snap) {
           if (snap.connectionState == ConnectionState.done) {
-            //return LoginPage();
             return LoginPage();
           } else {
             return Center(child: CircularProgressIndicator());
@@ -53,6 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
-    else return LoginPage();
+    else return CreateAccount();
   }
 }

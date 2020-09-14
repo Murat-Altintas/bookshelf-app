@@ -84,9 +84,7 @@ class _ResaultPageState extends State<ResaultPage> {
         color: blueTheme.primaryIconTheme.color,
         onPressed: () async {
           userRepo.getBooks(bookName: bookName.text,clean: true).whenComplete(() {
-            setState(() {
-
-            });
+            setState(() {});
           });
         },
       ),

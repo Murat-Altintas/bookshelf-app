@@ -19,6 +19,19 @@ class _LoginPageState extends State<LoginPage> {
   bool autoControl = false;
   var formKey = GlobalKey<FormState>();
   bool obscureText = true;
+  FocusNode _mailTextFocus;
+
+  @override
+  void initState() {
+    super.initState();
+    _mailTextFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _mailTextFocus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +56,8 @@ class _LoginPageState extends State<LoginPage> {
                     height: context.fieldSpaceContainer,
                   ),
                   TextFields(
-                    validator: UserRepository().nickAndMailControl,
+                    focusNode: _mailTextFocus,
+                    validator: UserRepository().mailControl,
                     obscureText: false,
                     controller: mailText,
                     hintText: "MAIL",
@@ -66,11 +80,16 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   BlueButtons(
                     onTap: () {
+                      if (mailText.text != null) {
+                        _mailTextFocus.unfocus();
+                      }
                       if (formKey.currentState.validate()) {
                         UserRepository().signIn(mailText.text, passwordText.text).then((value) {
+                          if(value=="verified")
                           UserRepository()
                               .getNickname()
                               .then((name) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
+                          else print("Not verified!");
                         });
                       }
                     },
