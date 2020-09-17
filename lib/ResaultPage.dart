@@ -241,7 +241,7 @@ class _ResaultPageState extends State<ResaultPage> {
           iconSize: 30,
         ),
         Text(
-          "Sayfa sayısı: " + loadedItem.volumeInfo.pageCount.toString(),
+          "Page Count: " + loadedItem.volumeInfo.pageCount.toString(),
           style: blueTheme.primaryTextTheme.headline3,
         ),
       ],

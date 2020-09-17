@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grade_point_avarage/LoginPage.dart';
 import 'package:grade_point_avarage/View/BlueButtons.dart';
@@ -19,8 +20,21 @@ var passwordText = TextEditingController();
 var _formKeyCreteAccount = GlobalKey<FormState>();
 bool autoControl = false;
 bool obscureText = true;
+FocusNode _passwordFocus;
 
 class _CreateAccountState extends State<CreateAccount> {
+  @override
+  void initState() {
+    super.initState();
+    _passwordFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _passwordFocus.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +76,14 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
                 TextFields(
                   keyboardType: TextInputType.number,
-                  suffixIcon: IconButton(icon: Icon(Icons.remove_red_eye), onPressed: _showPassword),
+                  suffixIcon: IconButton(
+                      icon: Icon(Icons.remove_red_eye),
+                      onPressed: () {
+                        _showPassword();
+                        setState(() {
+                          _passwordFocus.unfocus();
+                        });
+                      }),
                   controller: passwordText,
                   hintText: "PASSWORD",
                   obscureText: obscureText,
@@ -75,9 +96,9 @@ class _CreateAccountState extends State<CreateAccount> {
                 BlueButtons(
                   onTap: () async {
                     if (_formKeyCreteAccount.currentState.validate()) {
-                     await UserRepository().createUser(mailText.text, passwordText.text, nickNameText.text).then((value) {
-                       print("user olustu");
-                       Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                      await UserRepository().createUser(mailText.text, passwordText.text, nickNameText.text).then((value) {
+                        print("user olustu");
+                        _alertDialog(context);
                       });
                     }
                   },
@@ -87,9 +108,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   height: context.lowestContainer,
                 ),
                 BlueButtons(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                  },
+                  onTap: () {},
                   incomingText: "LOGIN",
                 ),
                 SizedBox(
@@ -113,5 +132,29 @@ class _CreateAccountState extends State<CreateAccount> {
     setState(() {
       obscureText = !obscureText;
     });
+  }
+
+  Future<void> _alertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Please verify your email"),
+            titleTextStyle: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText),
+            actions: [
+              FlatButton(
+                child: Text(
+                  "OK",
+                  style: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  print("complate");
+                },
+              ),
+            ],
+          );
+        });
   }
 }

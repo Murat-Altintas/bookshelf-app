@@ -21,23 +21,26 @@ class UserRepository {
 
   String userName;
 
-  Future<bool> createUser(String email, password, name,) async {
-
-    UserCredential credential= await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<bool> createUser(
+    String email,
+    password,
+    name,
+  ) async {
+    UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
     final user = credential.user;
-   await  user.sendEmailVerification().catchError((e) => print("Email verification Error: $e"));
-    Map<String, String> userMap = {
+    await user.sendEmailVerification().catchError((e) => print("Email verification Error: $e"));
+
+    await _firestore.collection("Users").doc(user.uid).set({
       "name": name,
-    };
-    await _firestore.collection("Users").doc(user.uid).set(userMap);
+    });
     return true;
   }
 
   Future<String> signIn(String email, String sifre) async {
     var credential = await _auth.signInWithEmailAndPassword(email: email, password: sifre);
-    if(credential.user.emailVerified) {
+    if (credential.user.emailVerified) {
       user = credential.user;
-      return "verified";
+      return "Email verified is OK";
     }
     return "Email is not verified";
   }
@@ -61,14 +64,14 @@ class UserRepository {
 
   Future<String> updatePassword(String password) async {
     await user.updatePassword(password);
-    return "Password Update is complete";
+    return "Password update is complete";
   }
 
-  Future<bool> updateNickname(String nickname) async {
+  Future<String> updateNickname(String nickname) async {
     final uid = user.uid;
     await _firestore.collection("Users").doc(uid).update({"name": nickname});
-    userName=nickname;
-    return true;
+    userName = nickname;
+    return "Nickname update is complete";
   }
 
   Future<void> saveBooks(allBook, favOrBookshelf) async {
@@ -104,7 +107,7 @@ class UserRepository {
 
   Future<void> getBooks({String bookName, int startIndex = 10, bool clean = false}) async {
     var dio = Dio();
-    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&startIndex=$startIndex");
+    var response = await dio.get("https://www.googleapis.com/books/v1/volumes?q=$bookName&startIndex=$startIndex");
     //        "https://www.googleapis.com/books/v1/volumes?q=$bookName+&langRestrict=tr&maxResults=20&startIndex=$startIndex"); //&maxResults=10&startIndex=$startIndex");
     Map data = await response.data;
     final booksResponse = Book.fromJson(data);
@@ -147,7 +150,6 @@ class UserRepository {
       return null;
     }
   }
-
 
   String passwordControl(String value) {
     if (value.isEmpty) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:grade_point_avarage/MasterPage.dart';
 import 'package:grade_point_avarage/View/BlueButtons.dart';
+import 'package:grade_point_avarage/repository/Components.dart';
 import 'CreateAccount.dart';
 import 'FavoritesPage.dart';
 import 'View/Images/CoffeeImage.dart';
@@ -85,11 +86,12 @@ class _LoginPageState extends State<LoginPage> {
                       }
                       if (formKey.currentState.validate()) {
                         UserRepository().signIn(mailText.text, passwordText.text).then((value) {
-                          if(value=="verified")
-                          UserRepository()
-                              .getNickname()
-                              .then((name) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
-                          else print("Not verified!");
+                          if (value == "verified")
+                            UserRepository()
+                                .getNickname()
+                                .then((name) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
+                          else
+                            _alertDialog(context, "Please verify your email", "OK");
                         });
                       }
                     },
@@ -124,5 +126,29 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       obscureText = !obscureText;
     });
+  }
+
+  Future<void> _alertDialog(BuildContext context, headText, subText) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(headText),
+            titleTextStyle: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText),
+            actions: [
+              FlatButton(
+                child: Text(
+                  subText,
+                  style: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  print("mail is not verified");
+                },
+              ),
+            ],
+          );
+        });
   }
 }
