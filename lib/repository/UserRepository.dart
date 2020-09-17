@@ -59,7 +59,7 @@ class UserRepository {
     await user.updateEmail(updateMail).then((value) {
       user.sendEmailVerification();
     });
-    return "Verify your new email";
+    return "Please verify your new email";
   }
 
   Future<String> updatePassword(String password) async {

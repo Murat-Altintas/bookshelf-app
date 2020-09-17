@@ -9,21 +9,23 @@ class Components extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container();
   }
-  Future<void> alertDialog(BuildContext context, headText, subText) {
+  Future<void> alertDialog(BuildContext context) {
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(headText),
-            titleTextStyle: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText),
+            title: Text("Please verify your email"),
+            titleTextStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
             actions: [
               FlatButton(
                 child: Text(
-                  subText,
-                  style: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                  "OK",
+                  style: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText),
                 ),
                 onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  print("mail is not verified");
                 },
               ),
             ],

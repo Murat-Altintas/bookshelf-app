@@ -7,6 +7,7 @@ import 'package:grade_point_avarage/View/Images/CoffeeImage.dart';
 import 'package:grade_point_avarage/View/TextFields.dart';
 import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
 import 'package:grade_point_avarage/View/ContextExtension.dart';
+import 'package:grade_point_avarage/repository/Components.dart';
 import 'package:grade_point_avarage/repository/UserRepository.dart';
 import 'LoginPage.dart';
 import 'MasterPage.dart';
@@ -63,6 +64,7 @@ class _OptionsPageState extends State<OptionsPage> {
 
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: true,
       key: scaffoldKey,
       body: Form(
         key: formKey,
@@ -70,7 +72,7 @@ class _OptionsPageState extends State<OptionsPage> {
         child: SafeArea(
           child: Padding(
             padding: context.paddingMedium,
-            child: Column(
+            child: ListView(
               children: <Widget>[
                 SizedBox(
                   width: context.width * 90,
@@ -107,7 +109,7 @@ class _OptionsPageState extends State<OptionsPage> {
                     onPressed: () {
                       if (UserRepository().nickControl(_nickNameText.text) == null) {
                         UserRepository()
-                            .updateNickname(_mailText.text)
+                            .updateNickname(_nickNameText.text)
                             .then((value) => showSnackBar(value))
                             .catchError((onError) => showSnackBar(onError));
                         _nickNameText.clear();
@@ -131,9 +133,8 @@ class _OptionsPageState extends State<OptionsPage> {
                       size: context.iconSmall,
                     ),
                     onPressed: () {
-                      UserRepository().updateMail(_mailText.text).then((value) => showSnackBar(value)).catchError(
-                            (onError) => showSnackBar(onError),
-                          );
+                      UserRepository().updateMail(_mailText.text);
+                      Components().alertDialog(context);
                       setState(() {
                         _fNode.unfocus();
                         _mailText.clear();
@@ -172,12 +173,6 @@ class _OptionsPageState extends State<OptionsPage> {
                   ),
                   textStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
                 ),
-                CoffeeImage(
-                  double: context.height * 20,
-                ),
-                SizedBox(
-                  height: context.lowestContainer,
-                ),
               ],
             ),
           ),
@@ -186,19 +181,19 @@ class _OptionsPageState extends State<OptionsPage> {
     );
   }
 
-  Future<void> _alertDialog(BuildContext context, headText, subText) {
+  Future<void> _alertDialog(BuildContext context) {
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(headText),
-            titleTextStyle: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText),
+            title: Text("Please verify your email"),
+            titleTextStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
             actions: [
               FlatButton(
                 child: Text(
-                  subText,
-                  style: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
+                  "OK",
+                  style: blueTheme.textTheme.headline1.copyWith(fontSize: context.normalText),
                 ),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
