@@ -1,4 +1,4 @@
-package com.muratA.MobileBookshelf
+package com.mobilebookshelf
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
