@@ -12,14 +12,12 @@ class CoffeeImage extends StatefulWidget {
 class _CoffeeImageState extends State<CoffeeImage> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Align(
-          alignment: Alignment.bottomLeft,
-          child: Image.asset(
-            "assets/images/loginCoffee.png",
-            width: widget.double,
-          )),
-    );
+    return Align(
+        alignment: Alignment.bottomLeft,
+        child: Image.asset(
+          "assets/images/loginCoffee.png",
+          width: widget.double,
+        ));
   }
 }
 

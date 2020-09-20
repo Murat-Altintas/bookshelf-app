@@ -3,10 +3,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:grade_point_avarage/MasterPage.dart';
-import 'package:grade_point_avarage/repository/UserRepository.dart';
+import 'package:MobileBookshelf/MasterPage.dart';
+import 'package:MobileBookshelf/repository/UserRepository.dart';
 import 'View/Images/ResaultImage.dart';
-import 'package:grade_point_avarage/View/ContextExtension.dart';
+import 'package:MobileBookshelf/View/ContextExtension.dart';
 import 'init/theme/BlueTheme.dart';
 import 'model/book.dart';
 

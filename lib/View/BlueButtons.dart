@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
-import 'package:grade_point_avarage/View/ContextExtension.dart';
+import 'package:MobileBookshelf/init/theme/BlueTheme.dart';
+import 'package:MobileBookshelf/View/ContextExtension.dart';
 
 class BlueButtons extends StatefulWidget {
   final onTap;

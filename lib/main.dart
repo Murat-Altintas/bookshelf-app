@@ -2,15 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:grade_point_avarage/BookshelfPage.dart';
-import 'package:grade_point_avarage/CreateAccount.dart';
-import 'package:grade_point_avarage/FavoritesPage.dart';
-import 'package:grade_point_avarage/LoginPage.dart';
-import 'package:grade_point_avarage/MasterPage.dart';
-import 'package:grade_point_avarage/OptionsPage.dart';
-import 'package:grade_point_avarage/ResaultPage.dart';
-import 'package:grade_point_avarage/View/Images/ResaultImage.dart';
-import 'package:grade_point_avarage/repository/UserRepository.dart';
+import 'package:MobileBookshelf/BookshelfPage.dart';
+import 'package:MobileBookshelf/CreateAccount.dart';
+import 'package:MobileBookshelf/FavoritesPage.dart';
+import 'package:MobileBookshelf/LoginPage.dart';
+import 'package:MobileBookshelf/MasterPage.dart';
+import 'package:MobileBookshelf/OptionsPage.dart';
+import 'package:MobileBookshelf/ResaultPage.dart';
+import 'package:MobileBookshelf/View/Images/ResaultImage.dart';
+import 'package:MobileBookshelf/repository/UserRepository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
-    else return CreateAccount();
+    else return LoginPage();
   }
 }

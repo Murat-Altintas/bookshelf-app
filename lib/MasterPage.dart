@@ -2,17 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:grade_point_avarage/FavoritesPage.dart';
-import 'package:grade_point_avarage/View/Images/CoffeeImage.dart';
-import 'package:grade_point_avarage/View/MasterPageButton.dart';
-import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
-import 'package:grade_point_avarage/repository/UserRepository.dart';
+import 'package:MobileBookshelf/FavoritesPage.dart';
+import 'package:MobileBookshelf/View/MasterPageButton.dart';
+import 'package:MobileBookshelf/init/theme/BlueTheme.dart';
+import 'package:MobileBookshelf/repository/UserRepository.dart';
 import 'BookshelfPage.dart';
 import 'OptionsPage.dart';
 import 'ResaultPage.dart';
-import 'package:grade_point_avarage/View/ContextExtension.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:MobileBookshelf/View/ContextExtension.dart';
 
 class MasterPage extends StatefulWidget {
 

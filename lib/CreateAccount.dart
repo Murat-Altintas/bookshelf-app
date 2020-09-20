@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:grade_point_avarage/LoginPage.dart';
-import 'package:grade_point_avarage/View/BlueButtons.dart';
-import 'package:grade_point_avarage/View/ContextExtension.dart';
-import 'package:grade_point_avarage/repository/UserRepository.dart';
-import 'MasterPage.dart';
+import 'package:MobileBookshelf/LoginPage.dart';
+import 'package:MobileBookshelf/View/BlueButtons.dart';
+import 'package:MobileBookshelf/View/ContextExtension.dart';
+import 'package:MobileBookshelf/repository/Components.dart';
+import 'package:MobileBookshelf/repository/UserRepository.dart';
+
 import 'View/TextFields.dart';
 import 'View/Images/CoffeeImage.dart';
 import 'init/theme/BlueTheme.dart';
@@ -39,13 +40,14 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: true,
       body: Form(
         key: _formKeyCreteAccount,
         autovalidate: autoControl,
         child: SafeArea(
           child: Padding(
             padding: context.paddingMedium,
-            child: Column(
+            child: ListView(
               children: [
                 Container(
                   height: context.height * 35,
@@ -79,8 +81,8 @@ class _CreateAccountState extends State<CreateAccount> {
                   suffixIcon: IconButton(
                       icon: Icon(Icons.remove_red_eye),
                       onPressed: () {
-                        _showPassword();
                         setState(() {
+                          _showPassword();
                           _passwordFocus.unfocus();
                         });
                       }),
@@ -97,8 +99,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   onTap: () async {
                     if (_formKeyCreteAccount.currentState.validate()) {
                       await UserRepository().createUser(mailText.text, passwordText.text, nickNameText.text).then((value) {
-                        print("user olustu");
-                        _alertDialog(context);
+                        Components().alertDialog(context, "Please verify your email");
                       });
                     }
                   },
@@ -108,17 +109,19 @@ class _CreateAccountState extends State<CreateAccount> {
                   height: context.lowestContainer,
                 ),
                 BlueButtons(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
                   incomingText: "LOGIN",
                 ),
                 SizedBox(
-                  height: context.fieldSpaceContainer,
+                  height: context.lowestContainer,
                 ),
                 CoffeeImage(
-                  double: context.height * 15,
+                  double: context.height * 12,
                 ),
                 SizedBox(
-                  height: context.fieldSpaceContainer,
+                  height: context.lowestContainer,
                 ),
               ],
             ),

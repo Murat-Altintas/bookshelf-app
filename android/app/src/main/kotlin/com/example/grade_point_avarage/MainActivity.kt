@@ -1,4 +1,4 @@
-package com.example.grade_point_avarage
+package com.muratA.MobileBookshelf
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

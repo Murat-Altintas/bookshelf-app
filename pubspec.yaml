@@ -1,4 +1,4 @@
-name: grade_point_avarage
+name: MobileBookshelf
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -19,14 +19,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.3
+  cupertino_icons: ^1.0.0
   dio: ^3.0.10
   firebase_core: ^0.5.0
   firebase_auth: ^0.18.0+1
   cloud_firestore: ^0.14.0+2
-  provider: ^4.3.2+1
   carousel_slider: ^2.2.1
-  flutter_svg: ^0.18.1
 
 
 dev_dependencies:

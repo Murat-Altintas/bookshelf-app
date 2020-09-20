@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:grade_point_avarage/MasterPage.dart';
-import 'package:grade_point_avarage/View/BlueButtons.dart';
-import 'package:grade_point_avarage/repository/Components.dart';
+import 'package:MobileBookshelf/MasterPage.dart';
+import 'package:MobileBookshelf/View/BlueButtons.dart';
+import 'package:MobileBookshelf/repository/Components.dart';
 import 'CreateAccount.dart';
 import 'FavoritesPage.dart';
 import 'View/Images/CoffeeImage.dart';
 import 'View/ContextExtension.dart';
 import 'View/TextFields.dart';
-import 'package:grade_point_avarage/repository/UserRepository.dart';
+import 'package:MobileBookshelf/repository/UserRepository.dart';
 import 'init/theme/BlueTheme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -85,13 +85,18 @@ class _LoginPageState extends State<LoginPage> {
                         _mailTextFocus.unfocus();
                       }
                       if (formKey.currentState.validate()) {
-                        UserRepository().signIn(mailText.text, passwordText.text).then((value) {
-                          if (value.contains("OK"))
-                            UserRepository()
-                                .getNickname()
-                                .then((name) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
-                          else
-                            _alertDialog(context);
+                        UserRepository().signIn(mailText.text, passwordText.text).then(
+                          (value) {
+                            if (value.contains("OK")) {
+                              UserRepository()
+                                  .getNickname()
+                                  .then((name) => Navigator.push(context, MaterialPageRoute(builder: (context) => MasterPage())));
+                            } else if (!value.contains("OK")) {
+                              Components().alertDialog(context, "Please verify your email");
+                            }
+                          },
+                        ).catchError((onError) {
+                          Components().alertDialog(context, "Wrong email or password");
                         });
                       }
                     },
@@ -107,10 +112,10 @@ class _LoginPageState extends State<LoginPage> {
                     incomingText: "CREATE ACCOUNT",
                   ),
                   SizedBox(
-                    height: context.lowestContainer,
+                    height: context.lowContainer,
                   ),
                   CoffeeImage(
-                    double: context.height * 20,
+                    double: context.height * 20
                   ),
                   SizedBox(
                     height: context.height * 1,
@@ -128,13 +133,13 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Future<void> _alertDialog(BuildContext context) {
+  Future<void> _alertDialog(BuildContext context, headline) {
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Please verify your email"),
+            title: Text(headline),
             titleTextStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
             actions: [
               FlatButton(
@@ -144,7 +149,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                  print("mail is not verified");
                 },
               ),
             ],

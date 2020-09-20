@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:grade_point_avarage/model/book.dart';
-import 'package:grade_point_avarage/model/firebaseBook.dart';
+import 'package:MobileBookshelf/model/book.dart';
+import 'package:MobileBookshelf/model/firebaseBook.dart';
 
 class UserRepository {
   static final UserRepository _singleton = UserRepository._internal();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grade_point_avarage/init/theme/BlueTheme.dart';
-import 'package:grade_point_avarage/View/ContextExtension.dart';
+import 'package:MobileBookshelf/init/theme/BlueTheme.dart';
+import 'package:MobileBookshelf/View/ContextExtension.dart';
 
 import '../LoginPage.dart';
 
@@ -9,13 +9,13 @@ class Components extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container();
   }
-  Future<void> alertDialog(BuildContext context) {
+  Future<void> alertDialog(BuildContext context, headline) {
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Please verify your email"),
+            title: Text(headline),
             titleTextStyle: blueTheme.textTheme.headline2.copyWith(fontSize: context.normalText),
             actions: [
               FlatButton(
@@ -25,7 +25,6 @@ class Components extends StatelessWidget {
                 ),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                  print("mail is not verified");
                 },
               ),
             ],
